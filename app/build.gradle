@@ -1,0 +1,32 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+
+    defaultConfig {
+        applicationId "com.morefun.ydmeo"
+        minSdkVersion 22
+        targetSdkVersion 26
+        versionCode 1
+        versionName "2.0." + new Date().format("yyMMdd")
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "YDemo.apk"
+        }
+    }
+}
+
+dependencies {
+    implementation files('libs/mfysdk.jar')
+   // implementation files('libs/commons-codec-1.2.jar')
+    //zxing lib
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+}

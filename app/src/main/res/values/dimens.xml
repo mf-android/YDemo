@@ -1,0 +1,58 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="text_size_13">13dp</dimen>
+    <dimen name="text_size_15">15dp</dimen>
+    <dimen name="text_size_23">23dp</dimen>
+    <dimen name="left_content_width">10dp</dimen>
+    <dimen name="right_content_width">10dp</dimen>
+    <dimen name="title_height">60dp</dimen>
+    <dimen name="btn_height">30dp</dimen>
+
+    <!-- 超小号 -->
+    <dimen name="text_size_micro">8sp</dimen>
+    <!-- 大一点的超小号 -->
+    <dimen name="text_size_lmicro">10sp</dimen>
+    <!-- 小号 -->
+    <dimen name="font_size_small">14sp</dimen>
+    <!-- 标准 -->
+    <dimen name="font_size_medium">18sp</dimen>
+    <!-- 大号 -->
+    <dimen name="font_size_large">22sp</dimen>
+    <!-- 大一号 -->
+    <dimen name="font_size_xlarge">26sp</dimen>
+    <!-- 大二号 -->
+    <dimen name="font_size_xxlarge">30sp</dimen>
+    <!-- 标题栏文字 -->
+    <dimen name="font_title">20sp</dimen>
+
+    <!-- 大三号 -->
+    <dimen name="font_size_xxxlarge">50sp</dimen>
+    <!-- 金额输入框字体大小 -->
+    <dimen name="font_size_cash">40sp</dimen>
+
+    <!-- 页眉显示高度 -->
+    <dimen name="headheight">50sp</dimen>
+
+    <dimen name="margin">10sp</dimen>
+    <dimen name="marginTop_small">5sp</dimen>
+    <dimen name="marginLeft_small">5sp</dimen>
+    <dimen name="marginRight_small">5sp</dimen>
+    <dimen name="marginBottom_small">5sp</dimen>
+    <dimen name="marginTop_middle">15sp</dimen>
+    <dimen name="marginLeft_middle">15sp</dimen>
+    <dimen name="marginRight_middle">15sp</dimen>
+    <dimen name="marginBottom_middle">15sp</dimen>
+    <dimen name="marginTop_large">35sp</dimen>
+    <dimen name="marginLeft_large">35sp</dimen>
+    <dimen name="marginRight_large">35sp</dimen>
+    <dimen name="marginBottom_large">35sp</dimen>
+    <dimen name="marginLeft_xlarge">80sp</dimen>
+    <dimen name="marginRight_xlarge">80sp</dimen>
+    <dimen name="marginTop_xlarge">80sp</dimen>
+    <dimen name="marginBottom_xlarge">80sp</dimen>
+    <dimen name="marginBottom_button">50sp</dimen>
+
+</resources>

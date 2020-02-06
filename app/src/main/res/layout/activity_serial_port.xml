@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/Coneect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Connect PC"
+        android:textAllCaps="false"
+        android:layout_marginTop="15dp"/>
+
+    <EditText
+        android:id="@+id/et_send"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="you can input message that you need to send"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/writeData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Message"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/Close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Close"
+        android:textAllCaps="false"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="read message from PC"/>
+
+    <TextView
+        android:id="@+id/tv_read_messsage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""/>
+
+</LinearLayout>

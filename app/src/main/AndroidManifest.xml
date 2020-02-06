@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.morefun.ypos"
+    android:versionCode="1"
+    android:versionName="1.0.0" >
+    <!--&lt;!&ndash; 读取磁条卡磁道数据 &ndash;&gt;-->
+    <!--<uses-permission android:name="com.morefun.permission.CLOUDPOS_MSR" />-->
+    <!--&lt;!&ndash; 读写非接触式卡片数据 &ndash;&gt;-->
+    <!--<uses-permission android:name="com.morefun.permission.CLOUDPOS_CONTACTLESS_CARD" />-->
+    <!--&lt;!&ndash; 读写智能卡数据 &ndash;&gt;-->
+    <!--<uses-permission android:name="com.morefun.permission.CLOUDPOS_SMARTCARD" />-->
+    <!--&lt;!&ndash; 使用热敏打印机 &ndash;&gt;-->
+    <!--<uses-permission android:name="com.morefun.permission.CLOUDPOS_PRINTER" />-->
+    <!--&lt;!&ndash; 使用内部串口 &ndash;&gt;-->
+    <!--<uses-permission android:name="com.morefun.permission.CLOUDPOS_SERIAL" />-->
+    <!--&lt;!&ndash; 获取PIN密码 &ndash;&gt;-->
+    <!--<uses-permission android:name="com.morefun.permission.CLOUDPOS_PIN_GET_PIN_BLOCK" />-->
+    <!--&lt;!&ndash; 获取MAC计算结果 &ndash;&gt;-->
+    <!--<uses-permission android:name="com.morefun.permission.CLOUDPOS_PIN_MAC" />-->
+    <!--&lt;!&ndash; 获取PIN加密结果 &ndash;&gt;-->
+    <!--<uses-permission android:name="com.morefun.permission.CLOUDPOS_PIN_ENCRYPT_DATA" />-->
+    <!--&lt;!&ndash; 更新主密钥 &ndash;&gt;-->
+    <!--<uses-permission android:name="com.morefun.permission.CLOUDPOS_PIN_UPDATE_MASTER_KEY" />-->
+    <!--&lt;!&ndash; 更新工作密钥 &ndash;&gt;-->
+    <!--<uses-permission android:name="com.morefun.permission.CLOUDPOS_PIN_UPDATE_USER_KEY" />-->
+    <!--&lt;!&ndash; 获取随机数 &ndash;&gt;-->
+    <!--<uses-permission android:name="com.morefun.permission.CLOUDPOS_GET_RANDUM_NUMBER" />-->
+    <!--<uses-permission android:name="com.morefun.permission.CLOUDPOS_SCANNER" />-->
+
+    <uses-permission android:name="android.permission.CLOUDPOS_EMV" />
+
+    <uses-permission android:name="android.permission.CLOUDPOS_MSR" />
+    <!-- 打印机权限 -->
+    <uses-permission android:name="android.permission.CLOUDPOS_PRINTER" />
+    <!-- LED权限 -->
+    <uses-permission android:name="android.permission.CLOUDPOS_LED" />
+    <!-- Pinpad权限 -->
+    <uses-permission android:name="android.permission.CLOUDPOS_PINPAD" />
+    <uses-permission android:name="android.permission.CLOUDPOS_PIN_GET_PIN_BLOCK" />
+    <uses-permission android:name="android.permission.CLOUDPOS_PIN_MAC" />
+    <uses-permission android:name="android.permission.CLOUDPOS_PIN_ENCRYPT_DATA" />
+    <uses-permission android:name="android.permission.CLOUDPOS_PIN_UPDATE_USER_KEY" />
+    <uses-permission android:name="android.permission.CLOUDPOS_PIN_UPDATE_MASTER_KEY" />
+
+    <!-- 安全模块的权限 -->
+    <uses-permission android:name="android.permission.CLOUDPOS_SAFE_MODULE_READONLY" />
+    <uses-permission android:name="android.permission.CLOUDPOS_SAFE_MODULE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.CLOUDPOS_SMARTCARD" />
+    <uses-permission android:name="android.permission.CLOUDPOS_CONTACTLESS_CARD" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <activity android:name=".SignActivity" android:screenOrientation="landscape"/>
+
+        <activity android:name=".activities.AIDAndCapkActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.SerialPortActivity" android:screenOrientation="portrait"/>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.morefun.ydmeo.fileProvider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>

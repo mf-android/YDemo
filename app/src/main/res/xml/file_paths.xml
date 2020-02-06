@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!--:/storage/emulated/0/Android/data/com.morefun.appstore/download-->
+    <!--<external-path path="" name="download" />-->
+    <!--<external-files-path path="/" name="my_download" />-->
+    <!--Environment.getExternalStorageDirectory().getAbsolutePath()-->
+    <external-files-path path="/" name="MyDownload" />
+    <external-path path="/" name="/storage/emulated/0/" />
+    <files-path path="/" name="downLoads"/>
+    <!--代表app 外部存储区域根目录下的文件 Context.getExternalCacheDir目录下的images目录-->
+    <!--/storage/emulated/0/Android/data/com.hm.camerademo/cache/images-->
+    <external-cache-path name="app_external_cache" path="/" />
+</paths>
