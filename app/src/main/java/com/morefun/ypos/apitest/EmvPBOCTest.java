@@ -21,6 +21,7 @@ import com.morefun.yapi.device.reader.mag.OnSearchMagCardListener;
 import com.morefun.yapi.emv.EmvAidPara;
 import com.morefun.yapi.emv.EmvCapk;
 import com.morefun.yapi.emv.EmvChannelType;
+import com.morefun.yapi.emv.EmvDataSource;
 import com.morefun.yapi.emv.EmvErrorCode;
 import com.morefun.yapi.emv.EmvErrorConstrants;
 import com.morefun.yapi.emv.EmvHandler;
@@ -92,7 +93,7 @@ public class EmvPBOCTest extends BaseApiTest {
                     //TODO >>> if is dukpt, Please check if you need KSN add one and genrate new PEK
                     if (DukptConfigs.isDukpt){
                         DukptConfigs.testInjectIPEK3(mSDKManager.getPinPad());
-                        DukptConfigs.increaseKSN(mSDKManager.getPinPad());
+                        DukptConfigs.getInstance().increaseKSN(mSDKManager.getPinPad());
                     }
                     EmvPBOCTest.getInstance().setEmvHandler(mSDKManager, listener).searchCard(new MainActivity.OnSearchListener() {
                         @Override
@@ -205,7 +206,7 @@ public class EmvPBOCTest extends BaseApiTest {
                 showOnlineDeal(bundle);
             }
 
-            //TODO  onFinish : it will return EMV result after ARPC perform.
+            //TODO  onFinish : it will return EMV result after ARPC (issuer script ) perform.
             @Override
             public void onFinish(int ret, Bundle bundle) throws RemoteException {
                 Log.d(TAG, "onFinish = " + ret);
@@ -225,7 +226,7 @@ public class EmvPBOCTest extends BaseApiTest {
                 }else if (ret == ServiceResult.Emv_Terminate){// trans end
                     if (errorCode != null){
                         mAlertDialogOnShowListener.showMessage("terminate, Error Code: " + new String(errorCode).trim());
-                        //TODO if the amount of connect less transactions is more than 2,000. The interface prompts you to swipe or insert a card.
+                        //TODO if the amount of connect less transactions is more than 2,0000. The interface prompts you to swipe or insert a card.
                         if (mEmvHandler.isErrorCode(EmvErrorCode.QPBOC_ERR_PRE_AMTLIMIT)){
                             mAlertDialogOnShowListener.showMessage("RF Limit Exceed, Pls try another page! ");
                         }
@@ -380,6 +381,12 @@ public class EmvPBOCTest extends BaseApiTest {
                 builder.append(tag + "=" + getTag(tag, inoutBundle) + "\n");
             }
         }
+        //custom tag
+        builder.append("PinKsn 00C1" + "=" + getTag(EmvDataSource.GET_PIN_KSN_TAG_C1, inoutBundle) + "\n");
+        builder.append("PinPlock 00C7" + "=" + getTag(EmvDataSource.GET_PIN_BLOCK_TAG_C7, inoutBundle) + "\n");
+        builder.append("Masked pan 00C4" + "=" + getTag(EmvDataSource.GET_MASKED_PAN_TAG_C4, inoutBundle) + "\n");
+        builder.append("track2 00C2" + "=" + getTag(EmvDataSource.GET_TRACK2_TAG_C2, inoutBundle) + "\n");
+        builder.append("Track ksn 00C0" + "=" + getTag(EmvDataSource.GET_TRACK_KSN_TAG_C0, inoutBundle) + "\n");
         ksn = inoutBundle.getString(KSNConstrants.DUKPT_KSN);
         Log.d(TAG , "track ksn =" + ksn);
         if (readLength > 0) {
@@ -461,9 +468,11 @@ public class EmvPBOCTest extends BaseApiTest {
     private String getTag(String tag, Bundle bundle) {
         return getTagByEmv(tag, mEmvHandler, bundle);
     }
+
     private byte[] getTagByBytes(String tag) {
         return getTagByEmvs(tag, mEmvHandler);
     }
+
     public static byte[] getTagByEmvs(String tag, EmvHandler emvHandler) {
         byte[] Tag = string2byte(tag);
         try {
@@ -475,6 +484,7 @@ public class EmvPBOCTest extends BaseApiTest {
         }
         return null;
     }
+
     public static String getTagByEmv(String tag, EmvHandler emvHandler, Bundle bundle) {
         byte[] Tag = string2byte(tag);
         try {

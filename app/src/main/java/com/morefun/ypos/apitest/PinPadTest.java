@@ -90,7 +90,8 @@ public class PinPadTest extends BaseApiTest {
         if (DukptConfigs.isDukpt){
             keyId = -1;
         }
-        byte[] macBlock = engine.getPinPad().getMac(keyId, MacAlgorithmType.ECB, DesAlgorithmType.TDES, string2byte(strmac), DukptConfigs.getMacIPEKBundle());
+        byte[] inputData = Utils.checkInputData(string2byte(strmac));
+        byte[] macBlock = engine.getPinPad().getMac(keyId, MacAlgorithmType.ECB, DesAlgorithmType.TDES, inputData, DukptConfigs.getMacIPEKBundle());
 //        System.arraycopy(block, block.length - 8, macBlock, 0, 8);
         alertDialogOnShowListener.showMessage(getString(R.string.msg_calresult) + byte2string(macBlock));
     }
@@ -184,8 +185,8 @@ public class PinPadTest extends BaseApiTest {
         }
         byte[] panBlock = pan.getBytes();
         Log.d(TAG,"pan =" + pan);
-        int minLength = 6;
-        int maxLength = 6;
+        int minLength = 4;
+        int maxLength = 4;
         mSDKManager.getPinPad().setSupportPinLen(new int[]{minLength, maxLength});
         int pinResult = mSDKManager.getPinPad().initPinPad(PinPadType.INTERNAL);
         if (checkPinPadNeedAllowPermission(mEmvHandler, pinResult)){
@@ -196,7 +197,7 @@ public class PinPadTest extends BaseApiTest {
         //default is true
         bundle.putBoolean(PinPadConstrants.IS_SHOW_PASSWORD_BOX ,true);
         bundle.putBoolean(PinPadConstrants.IS_SHOW_TITLE_HEAD ,true);
-//        bundle.putString(PinPadConstrants.TITLE_HEAD_CONTENT ,"test your test");
+        bundle.putString(PinPadConstrants.TITLE_HEAD_CONTENT ,"Please input online Pin");
         bundle.putString(PinPadConstrants.COMMON_TYPEFACE_PATH , path);
         //TODO if you need change pinpad KEY background color or text color ,you can follow this.
 //        int[] testColor = new int[]{Color.BLACK , Color.BLUE , Color.WHITE };
@@ -207,7 +208,7 @@ public class PinPadTest extends BaseApiTest {
         int[] testColor = new int[]{Color.BLACK , Color.BLUE , Color.WHITE ,Color.YELLOW , Color.BLUE , Color.WHITE, Color.BLACK , Color.BLUE , Color.RED , Color.WHITE};
 //        bundle.putIntArray(PinPadConstrants.NUMBER_TEXT_COLOR , testColor);
         Log.d(TAG, "inputOnlinePin  before");
-        pinResult = mSDKManager.getPinPad().inputOnlinePin(bundle,panBlock, 0, PinAlgorithmMode.ISO9564FMT1, new OnPinPadInputListener.Stub() {
+        pinResult = mSDKManager.getPinPad().inputOnlinePin(bundle, panBlock, 0, PinAlgorithmMode.ISO9564FMT1, new OnPinPadInputListener.Stub() {
             @Override
             public void onInputResult(int ret, byte[] pinBlock,String pinKsn) throws RemoteException {
                 Log.d(TAG, "onInputResult =  " + byte2string(pinBlock));
@@ -217,7 +218,7 @@ public class PinPadTest extends BaseApiTest {
                 alertDialogOnShowListener.showMessage("online pin : " + byte2string(pinBlock) + "\n pinKsn = "+ pinKsn);
 
                 if (mEmvHandler != null && ret == ServiceResult.Success){
-                    mEmvHandler.onSetCardHolderInputPin(isByPass ? null : Utils.getByteArray(pinBlock,0 , 8));
+                    mEmvHandler.onSetCardHolderInputPin(isByPass ? new byte[0] : Utils.getByteArray(pinBlock,0 , 8));
                 }
             }
 
@@ -228,7 +229,7 @@ public class PinPadTest extends BaseApiTest {
                     if (mEmvHandler != null){
                         mEmvHandler.onSetCardHolderInputPin(null);
                     }
-                    alertDialogOnShowListener.showMessage("Pin Pad is cancel.");
+//                    alertDialogOnShowListener.showMessage("Pin Pad is cancel.");
                 }else if (keyCode ==  (byte) ServiceResult.PinPad_Input_OK ){
                     Log.d(TAG ,"keyCode =  PinPad_Input_OK");
                 }else if (keyCode ==  (byte) ServiceResult.PinPad_Input_Clear ){
@@ -279,16 +280,19 @@ public class PinPadTest extends BaseApiTest {
     public static void dukptCalculation(DeviceServiceEngine engine, final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener)throws RemoteException{
         String ksn = engine.getPinPad().increaseKSN(KeyIndex, new Bundle());
         // data length should be is multiple of 8.
-        byte[] data = Utils.str2Bcd("11111111111111111111111111111111");
-
+         byte[] inputData = Utils.str2Bcd("5413330056003511D251210106775050".trim());
+		 byte[] data = Utils.checkInputData(inputData);
         byte keyType = DukptKeyType.MF_DUKPT_DES_KEY_DATA1;
         //only support TDES.
         int desAlgorithmType = DesAlgorithmType.TDES_CBC;
         int desMode = DesMode.ENCRYPT; // DesMode.ENCRYPT DesMode.DECRYPT
 //        String dukptCalculation(int keyIndex, byte keyType, int desAlgorithmType, byte[] data, int dataLen, int desMode, Bundle bundle)
-        String calculationData = engine.getPinPad().dukptCalculation(KeyIndex, keyType, desAlgorithmType ,data, data.length , desMode, null);
+        String calculationData = engine.getPinPad().dukptCalculation(DukptConfigs.TRACK_GROUP_INDEX, keyType, desAlgorithmType ,data, data.length , desMode, new Bundle());
         Log.d(TAG,"calculationData = " + calculationData);
         Log.d(TAG,"ksn = " + ksn);
-        alertDialogOnShowListener.showMessage("dukptCalculation ksn :" +(ksn) + "\n" + " calculationData :" + calculationData);
+        alertDialogOnShowListener.showMessage(
+                "multiple of 8 = " + (data.length / 8 ==0)
+                +"\n dukptCalculation ksn :" +(ksn)
+                + "\n" + " calculationData :" + calculationData);
     }
 }

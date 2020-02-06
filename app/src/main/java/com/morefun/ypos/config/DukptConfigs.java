@@ -17,6 +17,19 @@ public class DukptConfigs {
     public static final int EMV_GROUP_INDEX = DukptKeyGid.GID_GROUP_EMV_IPEK2;
     public static final int PIN_GROUP_INDEX = DukptKeyGid.GID_GROUP_PIN_IPEK;
     public static boolean isDukpt = false;
+    public static DukptConfigs mDukptConfigs;
+    private DukptConfigs() {
+    }
+    public static DukptConfigs getInstance(){
+        if (mDukptConfigs == null){
+            synchronized (DukptConfigs.class){
+                if (mDukptConfigs == null){
+                    mDukptConfigs = new DukptConfigs();
+                }
+            }
+        }
+        return mDukptConfigs;
+    }
 
     public static void testInjectIPEK3(PinPad pinPad) throws RemoteException {
         String IPEK = "C1D0F8FB4958670DBA40AB1F3752EF0D";
@@ -41,6 +54,19 @@ public class DukptConfigs {
         isDukpt = false;
         return "00000000";
     }
+    String trackKsn;
+    String emvKsn;
+    String pinKsn;
+    public void increaseKSN(PinPad pinPad) throws RemoteException {
+        //TODO plsease save the ksn to you Application.
+        // one transaction can only be called once, Every time you get it, the PEK key changes
+        //  need to get the ksn first before search card.
+        // increaseKSN API : Generate PEK and return new KSN
+        trackKsn = pinPad.increaseKSN(TRACK_GROUP_INDEX, new Bundle());
+        emvKsn = pinPad.increaseKSN(EMV_GROUP_INDEX, new Bundle());
+        pinKsn = pinPad.increaseKSN(PIN_GROUP_INDEX, new Bundle());
+        //check 57=
+    }
 
     public static Bundle getMacIPEKBundle(){
         return getBundle(MF_DUKPT_DES_KEY_MAC1, EMV_GROUP_INDEX);
@@ -51,12 +77,7 @@ public class DukptConfigs {
     public static Bundle getTrackIPEKBundle(){
         return getBundle(MF_DUKPT_DES_KEY_DATA1, TRACK_GROUP_INDEX);
     }
-    public static void increaseKSN(PinPad pinPad) throws RemoteException {
-        //TODO plsease save the ksn to you Application.
-        String trackKsn = pinPad.increaseKSN(TRACK_GROUP_INDEX, new Bundle());
-        String emvKsn = pinPad.increaseKSN(EMV_GROUP_INDEX, new Bundle());
-        String pinKsn = pinPad.increaseKSN(PIN_GROUP_INDEX, new Bundle());
-    }
+
     /**
      * dukpt
      * @retur
@@ -70,6 +91,19 @@ public class DukptConfigs {
         //default value is  DesAlgorithmType.TDES_CBC
         bundle.putInt(KSNConstrants.DesAlgorithmType , DesAlgorithmType.TDES_CBC);
         return bundle;
+    }
+
+
+    public String getTrackKsn() {
+        return trackKsn;
+    }
+
+    public String getEmvKsn() {
+        return emvKsn;
+    }
+
+    public String getPinKsn() {
+        return pinKsn;
     }
 
 }

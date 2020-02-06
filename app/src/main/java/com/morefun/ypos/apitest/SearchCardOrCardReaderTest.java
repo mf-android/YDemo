@@ -177,7 +177,7 @@ public class SearchCardOrCardReaderTest {
         Log.d(TAG, "Tk1 ===" + magCardInfoEntity.getTk1());
         Log.d(TAG, "Tk2 ===" + magCardInfoEntity.getTk2());
         Log.d(TAG, "Tk3 ===" + magCardInfoEntity.getTk3());
-        Log.d(TAG, "KSN ===" + magCardInfoEntity.getKsn());
+        Log.d(TAG, "trackKSN ===" + magCardInfoEntity.getKsn());
         Log.d(TAG, "ServiceCode ===" + magCardInfoEntity.getServiceCode());
         StringBuilder builder = new StringBuilder();
         builder.append("Card: " + magCardInfoEntity.getCardNo());

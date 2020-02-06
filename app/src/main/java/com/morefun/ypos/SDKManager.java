@@ -42,7 +42,7 @@ public class SDKManager {
             }
         }
         Bundle bundle = new Bundle();
-        //TODO if need dukpt ,Please set 09000000.
+        //TODO if need dukpt ,Please set 09000000.(DukptConfigs.getDukptBussinessId())
         try {
             int ret = mDeviceServiceEngine.login(bundle, DukptConfigs.getBussinessId());
             Log.d(TAG, "auto login result = " + ret);
