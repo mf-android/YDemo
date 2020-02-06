@@ -21,7 +21,6 @@ public class SerialPortTest {
      * COM & LPT: Qualcomm HS-USB Android GPS 9020
      */
     public static void SerialPort(final DeviceServiceEngine mSDKManager, final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener) {
-        //调用前，必须先在电脑Window系统上安装串口驱动。
         //call before must install driver in PC.
         //Qualcomm HS-USB Android GPS 9020
 

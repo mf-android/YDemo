@@ -190,4 +190,14 @@ public class SearchCardOrCardReaderTest {
         return builder.toString();
     }
 
+    public void checkCardIsExits() throws RemoteException {
+        IccCardReader iccCardReader = mEngine.getIccCardReader(IccReaderSlot.RFSlOT);
+        boolean cardExists = iccCardReader.isCardExists();
+        StringBuilder builder = new StringBuilder();
+        builder.append("check Contactless have the card = " + cardExists);
+        iccCardReader = mEngine.getIccCardReader(IccReaderSlot.ICSlOT1);
+        cardExists = iccCardReader.isCardExists();
+        builder.append("\ncheck Contact have the Card = " + cardExists);
+        mAlertDialogOnShowListener.showMessage(builder.toString());
+    }
 }

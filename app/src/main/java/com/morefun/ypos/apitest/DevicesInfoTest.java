@@ -35,7 +35,7 @@ public class DevicesInfoTest extends BaseApiTest {
     }
 
     public static void setSystemTime(DeviceServiceEngine mSDKManager){
-        //datetime - 时间日期(YYYYMMDDHHMMSS)
+        //datetime - (YYYYMMDDHHMMSS)
         try {
             mSDKManager.setSystemClock("20190730113422");
         } catch (RemoteException e) {

@@ -23,7 +23,7 @@ public class FileUtils {
         }
         return null;
     }
-    // 创建一个临时目录，用于复制临时文件，如assets目录下的离线资源文件
+    //
     public static String createTmpDir(Context context) {
         String sampleDir = "typeFace";
         String tmpDir = Environment.getExternalStorageDirectory().toString() + File.separator + sampleDir + File.separator;

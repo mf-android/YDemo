@@ -38,7 +38,6 @@ public class DukptConfigs {
     private static final String TAG = "DukptConfigs";
     public static void testInjectIPEK3(PinPad pinPad) throws RemoteException {
         String IPEK = "C1D0F8FB4958670DBA40AB1F3752EF0D";
-//                                      00000610F3C360600001
         //KSN must be 20 length String. 95A62700021021000000
         String ksn = "FFFF9876543210" + "000000";
         int ret = pinPad.initDukptIPEKAndKsn(PIN_GROUP_INDEX, IPEK, ksn,true, "00000");

@@ -21,11 +21,12 @@ public class EmvProcessConfig {
 //        bundle1.putByteArray(EmvTermCfgConstrants.MERID_ANS_9F16, new byte[]{(byte) 0x50, (byte) 0x43, (byte) 0x54,(byte) 0x53, (byte) 0x31, (byte) 0x32, (byte) 0x50, (byte) 0x43, (byte) 0x54,(byte) 0x53 });
         bundle1.putByteArray(EmvTermCfgConstrants.ADDTERMCAP, new byte[]{(byte) 0xF2, (byte) 0x00, (byte)0xF0 , (byte)0xA0 , (byte)0x01});
         //bundle1.putByteArray(EmvTermCfgConstrants.TERMCAP, new byte[]{(byte) 0xE0, (byte) 0xF8, (byte) 0xC8});
-        bundle1.putByte(EmvTermCfgConstrants.TERMTYPE, (byte) 0x22);//终端类型
-        // rupay 0356
-        bundle1.putByteArray(EmvTermCfgConstrants.COUNTRYCODE, new byte[]{(byte) 0x03, (byte) 0x56});//国家代码
-        bundle1.putByteArray(EmvTermCfgConstrants.CURRENCYCODE, new byte[]{(byte) 0x03, (byte) 0x56});//交易货币代码
-//        bundle1.putByteArray(EmvTermCfgConstrants.TRANS_PROP_9F66, new byte[]{(byte) 0x05, (byte) 0x06,(byte) 0x06,(byte) 0x06});//交易货币代码
+        bundle1.putByte(EmvTermCfgConstrants.TERMTYPE, (byte) 0x22);
+        // 0356 / 0840
+        bundle1.putByteArray(EmvTermCfgConstrants.COUNTRYCODE, new byte[]{(byte) 0x03, (byte) 0x56});
+        bundle1.putByteArray(EmvTermCfgConstrants.CURRENCYCODE, new byte[]{(byte) 0x03, (byte) 0x56});
+//        bundle1.putByteArray(EmvTermCfgConstrants.TRANS_PROP_9F66, new byte[]{(byte) 0x05, (byte) 0x06,(byte) 0x06,(byte) 0x06});
+        bundle1.putByteArray(EmvTermCfgConstrants.TRANS_PROP_9F66,new byte[]{0x36,(byte)0x00,(byte)0xc0,(byte)0x00});
         return bundle1;
     }
     public static byte[] getExampleARPCData() {
@@ -35,17 +36,19 @@ public class EmvProcessConfig {
 //        return Utils.str2Bcd("91087BAA1E5500860000");
     }
 
+    /**
+     * It's optional
+     * @return
+     */
     private static ArrayList<String> setTerminalParamByTlvs() {
         //DF811B0130DF8122050101010101DF81180170DF811901185F2A020156
-        //DF811B0130DF8122050101010101DF81180170DF811901185F2A020156
         ArrayList<String> terminalParams = new ArrayList<>();
-        terminalParams.add("DF811B0130");
-        terminalParams.add("DF8122050101010101");
+//        terminalParams.add("DF811B0130");
+//        terminalParams.add("DF8122050101010101");
+        //master adjust
         terminalParams.add("DF81180170");
         terminalParams.add("DF81190118");
-//        terminalParams.add("5F2A020840");
-        terminalParams.add("9F4005F200F0A001");
-        terminalParams.add("9F3303206808");
+//        terminalParams.add("9F4005F200F0A001");
         return terminalParams;
     }
 
@@ -80,8 +83,10 @@ public class EmvProcessConfig {
         bundle.putString(EmvTransDataConstrants.MERNAME, "MOREFUN");
         bundle.putString(EmvTransDataConstrants.MERID, "488923");
         bundle.putString(EmvTransDataConstrants.TERMID, "4999000");
+        //Pin Free Amount for contactLess
+        bundle.putString(EmvTransDataConstrants.CONTACTLESS_PIN_FREE_AMT, "200000");
         //TODO For online transactions, the terminal must force to enter the password,Please set true
-        bundle.putBoolean(EmvTransDataConstrants.FORCE_ONLINE_CALL_PIN, true);
+//        bundle.putBoolean(EmvTransDataConstrants.FORCE_ONLINE_CALL_PIN, false);
         //some additional requirements, It's optional
         bundle.putStringArrayList(EmvTransDataConstrants.TERMINAL_TLVS, setTerminalParamByTlvs());
         return bundle;
@@ -93,8 +98,8 @@ public class EmvProcessConfig {
      */
     public static byte getTrans9C(){
 //        return EMVTag9CConstants.EMV_TRANS_CASH;
-        return EMVTag9CConstants.EMV_TRANS_CASHBACK;
-//        return EMVTag9CConstants.EMV_TRANS_SALE;
+//        return EMVTag9CConstants.EMV_TRANS_CASHBACK;
+        return EMVTag9CConstants.EMV_TRANS_SALE;
 //        return EMVTag9CConstants.EMV_TRANS_INQUIRY;
 //        return EMVTag9CConstants.EMV_CASH_DISBUERSE;
         //Rupay

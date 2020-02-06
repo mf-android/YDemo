@@ -30,8 +30,8 @@ public class ViewAIDAndCAPK {
                 builder.setLength(0);
                 Map<String ,String> map = new HashMap<>();
                 byte[] bAid = para.getAID();
-                addStringItem("AID:" , bAid,16,builder);
-                addStringItem("TermAppVer(9F09):" , para.getTermAppVer() ,builder);
+                addStringItem("AID:" , bAid,16, builder);
+                addStringItem("TermAppVer(9F09):" , para.getTermAppVer(), builder);
                 addStringItem("TFL_Domestic(9F1B):" , para.getTFL_Domestic() ,builder);
                 addStringItem("TAC_Default(DF11):" , para.getTAC_Default() ,builder);
                 addStringItem("TAC_Online(DF12):" , para.getTAC_Online() ,builder);
@@ -75,7 +75,7 @@ public class ViewAIDAndCAPK {
             Log.d(TAG ,"capkList = " + capkList.size());
             for (EmvCapk para : capkList) {
                 builder.setLength(0);
-                builder.append("RID:" + Utils.hex2asc(para.getRID(),para.getRID().length ,1));
+                builder.append("RID:" + Utils.hex2asc(para.getRID(),para.getRID().length * 2 ,1));
                 builder.append("\n");
                 builder.append("CAPK_INDEK:" + para.getCA_PKIndex());
                 builder.append("\n");

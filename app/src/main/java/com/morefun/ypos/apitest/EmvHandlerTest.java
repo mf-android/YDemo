@@ -74,7 +74,7 @@ public class EmvHandlerTest extends BaseApiTest {
     public void clearAIDAndRID() {
         try {
             mSDKManager.getEmvHandler().clearAIDParam();
-//            mSDKManager.getEmvHandler().clearCAPKParam();
+            mSDKManager.getEmvHandler().clearCAPKParam();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -94,7 +94,31 @@ public class EmvHandlerTest extends BaseApiTest {
     }
 
     public void ICAidManage() {
-
+        /**
+         * DF19 Contactless Floor Limit       -----If the limit is exceeded, the transaction may request online
+         * DF20 Contactless Transaction Limit  -----If the limit is exceeded, the transaction will fail
+         * DF21 Contactless CVM Limit         ---- If the limit is exceeded, the transaction will request CVM method
+         *
+         * 9F06(07)    <T> Terminal Application Identifier
+         * 9F09(02)   <T> Application Version Number
+         * DF11(05)   <T> terminal Action Code-Default
+         * DF12(05)  <T> terminal Action Code-Online
+         * DF13(05)  <T> terminal Action Code-Denial
+         * 9F1B(04)  <T> Terminal Floor Limit
+         * 5F2A(02)  <T> Transaction Currency Code
+         * 5F36(01)  <T> Transaction Currency Exponent
+         * DF19(06)  <T>  Contactless Floor Limit
+         * DF20(06)  <T> Contactless Transaction Limit
+         * DF21(06)  <T> Contactless CVM Limit
+         * DF17(01)  <T> Target Percentage for Random Selection
+         * DF16(01)  <T> Maximum Target Percentage for Random Selection
+         * DF15(04)  <T> Threshold Value for Biased Random Selection
+         * 50(16)   <T>Application Label, e.g.(0xA0 0x00 0x00 0x00 0x03 0x10 0x10 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00)
+         * DF01(01)  <T> Application selection indicator,0 or 1, e.g.(0x00)
+         * DF18(01)  <T> Terminal online pin capability, 0x30 or 0x31 , e.g.(0x31)
+         * DF14(252)  <T> Default DDOL(Hex), e.g.(0x9F 0x37 0x04 0x00 ...)
+         * 9F7B(06)  <T> EC Terminal Transaction Limit, e.g.(0x00 0x00 0x00 0x00 0x20 0x00)--for UnionPay cards
+         */
         String[] keys = new String[]{
                 "9F0608A000000524010101DF0101009F08020030DF11050000000000DF12050000000000DF130500000000009F1B04000186A0DF150400000000DF160100DF170100DF14039F3704DF1801319F7B06000000010000DF1906000000010000DF2006000000050000DF2106000000004000",
                 "9F0607A0000003241010DF0101009F08020001DF11050000000000DF12050000000000DF130500000000009F1B0400001388DF150400000000DF160150DF170120DF14039F3704DF1801319F7B06000000200000DF1906000000200000DF2006000002000000DF2106000000100000",
@@ -120,6 +144,16 @@ public class EmvHandlerTest extends BaseApiTest {
     }
 
     public void ICPublicKeyManage() {
+        /**
+         * 9F06	Application Identifier (AID) – terminal
+         * 9F22	Certification Authority Public Key Index
+         * DF05
+         * DF06
+         * DF07
+         * DF02
+         * DF04
+         * DF03
+         */
         String[] keys = new String[]{
                 "9F0605A0000003339F220102DF050420211231DF060101DF070101DF028190A3767ABD1B6AA69D7F3FBF28C092DE9ED1E658BA5F0909AF7A1CCD907373B7210FDEB16287BA8E78E1529F443976FD27F991EC67D95E5F4E96B127CAB2396A94D6E45CDA44CA4C4867570D6B07542F8D4BF9FF97975DB9891515E66F525D2B3CBEB6D662BFB6C3F338E93B02142BFC44173A3764C56AADD202075B26DC2F9F7D7AE74BD7D00FD05EE430032663D27A57DF040103DF031403BB335A8549A03B87AB089D006F60852E4B8060",
                 "9F0605A0000003339F220103DF050420221231DF060101DF070101DF0281B0B0627DEE87864F9C18C13B9A1F025448BF13C58380C91F4CEBA9F9BCB214FF8414E9B59D6ABA10F941C7331768F47B2127907D857FA39AAF8CE02045DD01619D689EE731C551159BE7EB2D51A372FF56B556E5CB2FDE36E23073A44CA215D6C26CA68847B388E39520E0026E62294B557D6470440CA0AEFC9438C923AEC9B2098D6D3A1AF5E8B1DE36F4B53040109D89B77CAFAF70C26C601ABDF59EEC0FDC8A99089140CD2E817E335175B03B7AA33DDF040103DF031487F0CD7C0E86F38F89A66F8C47071A8B88586F26",

@@ -18,16 +18,14 @@ import com.morefun.yapi.device.reader.icc.IccReaderSlot;
 import com.morefun.yapi.device.reader.icc.OnSearchIccCardListener;
 import com.morefun.yapi.device.reader.mag.MagCardInfoEntity;
 import com.morefun.yapi.device.reader.mag.OnSearchMagCardListener;
-import com.morefun.yapi.emv.EmvAidPara;
-import com.morefun.yapi.emv.EmvCapk;
 import com.morefun.yapi.emv.EmvChannelType;
 import com.morefun.yapi.emv.EmvDataSource;
 import com.morefun.yapi.emv.EmvErrorCode;
 import com.morefun.yapi.emv.EmvErrorConstrants;
 import com.morefun.yapi.emv.EmvHandler;
+import com.morefun.yapi.emv.EmvListenerConstrants;
 import com.morefun.yapi.emv.EmvOnlineRequest;
 import com.morefun.yapi.emv.EmvOnlineResult;
-import com.morefun.yapi.emv.EmvProcessResult;
 import com.morefun.yapi.emv.OnEmvProcessListener;
 import com.morefun.yapi.engine.DeviceServiceEngine;
 import com.morefun.ypos.BaseApiTest;
@@ -36,8 +34,6 @@ import com.morefun.ypos.R;
 import com.morefun.ypos.config.DukptConfigs;
 import com.morefun.ypos.config.EmvProcessConfig;
 import com.morefun.ypos.interfaces.OnInputAmountCallBack;
-import com.morefun.ypos.interfaces.OnIssuerVoiceReference;
-import com.morefun.ypos.interfaces.OnSelectAccountType;
 import com.morefun.ypos.interfaces.OnSelectAppCallBack;
 import com.morefun.ypos.uitls.ActionItems;
 import com.morefun.ypos.uitls.CardOrgUtil;
@@ -165,7 +161,7 @@ public class EmvPBOCTest extends BaseApiTest {
                 mEmvHandler.onSetConfirmCardNoResponse(true);
             }
 
-            //持卡人输Pin回调
+            //
             @Override
             public void onCardHolderInputPin(boolean isOnlinePin, int messageType) throws RemoteException {
                 Log.d(TAG, "onCardHolderInputPin isOnlinePin = " + isOnlinePin + "," + messageType);
@@ -203,8 +199,32 @@ public class EmvPBOCTest extends BaseApiTest {
             @Override
             public void onOnlineProc(Bundle bundle) throws RemoteException {
                 Log.d(TAG, "onOnlineProc = " + bundle);
+//                beep(true);
                 showOnlineDeal(bundle);
             }
+
+            @Override
+            public void onContactlessOnlinePlaceCardMode(int mode) throws RemoteException {
+                //TODO RuPay Card need to check card again.
+                Log.d(TAG, "onRfOnlinePlaceCardMode = " + mode);
+                if (mode == EmvListenerConstrants.NEED_CHECK_CONTACTLESS_CARD_AGAIN){
+                    searchRfCard(new MainActivity.OnSearchListener() {
+                        @Override
+                        public void onSearchResult(int retCode, Bundle bundle) {
+                            try {
+                                mEmvHandler.onSetContactlessOnlinePlaceCardModeResponse(ServiceResult.Success == retCode);
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }else {
+                    //show Dialog Prompt the user not to remove the card
+                    mEmvHandler.onSetContactlessOnlinePlaceCardModeResponse(true);
+                }
+            }
+//            public void onREQUEST_ISS_ONLINE_MODE(){
+
 
             //TODO  onFinish : it will return EMV result after ARPC (issuer script ) perform.
             @Override
@@ -216,14 +236,16 @@ public class EmvPBOCTest extends BaseApiTest {
                 }
                 mAlertDialogOnShowListener.dismissProgress();
                 if (ret == ServiceResult.Success) {//trans accept
+                    beep(true);
                     // DF31
-                    byte[] scriptResult = bundle.getByteArray(EmvProcessResult.SCRIPTRESULT);
-                    if (scriptResult != null && scriptResult.length > 0) {
-                        mAlertDialogOnShowListener.showMessage(new String(scriptResult));
-                    }
+//                    byte[] scriptResult = bundle.getByteArray(EmvProcessResult.SCRIPTRESULT);
+//                    if (scriptResult != null && scriptResult.length > 0) {
+//                        mAlertDialogOnShowListener.showMessage(new String(scriptResult));
+//                    }
                 }else if (ret == ServiceResult.Emv_FallBack){// fallback
                     mAlertDialogOnShowListener.showMessage("Emv_FallBack");
                 }else if (ret == ServiceResult.Emv_Terminate){// trans end
+                    beep(false);
                     if (errorCode != null){
                         mAlertDialogOnShowListener.showMessage("terminate, Error Code: " + new String(errorCode).trim());
                         //TODO if the amount of connect less transactions is more than 2,0000. The interface prompts you to swipe or insert a card.
@@ -239,6 +261,7 @@ public class EmvPBOCTest extends BaseApiTest {
                         mAlertDialogOnShowListener.showMessage("EmvErrorCode is EMV_ERR_ICCOP_SELECTAID: " + isWithContactChip);
                     }
                 }else if (ret == ServiceResult.Emv_Declined){// trans refuse
+                    beep(false);
                     //TODO Please noted android time is correct ?
                     if (errorCode != null){
                         mAlertDialogOnShowListener.showMessage("trans refuse, Error Code: " + new String(errorCode).trim());
@@ -246,8 +269,10 @@ public class EmvPBOCTest extends BaseApiTest {
                         mAlertDialogOnShowListener.showMessage("trans refuse");
                     }
                 }else if (ret == ServiceResult.Emv_Cancel){// trans cancel
+                    beep(false);
                     mAlertDialogOnShowListener.showMessage("trans cancel");
                 }else {
+                    beep(false);
                     mAlertDialogOnShowListener.showMessage(getString(R.string.other_trans_result));
                     try {
                         mSDKManager.getBeeper().beep(BeepModeConstrants.FAIL);
@@ -260,57 +285,57 @@ public class EmvPBOCTest extends BaseApiTest {
 
             @Override
             public void onSetAIDParameter(String s) throws RemoteException {
-                EmvAidPara emvAidPara = new EmvAidPara();
-                mEmvHandler.onSetAIDParameterResponse(emvAidPara);
+//                EmvAidPara emvAidPara = new EmvAidPara();
+//                mEmvHandler.onSetAIDParameterResponse(emvAidPara);
             }
 
             @Override
             public void onSetCAPubkey(String s, int i, int i1) throws RemoteException {
-                EmvCapk emvCapk = new EmvCapk();
-                mEmvHandler.onSetCAPubkeyResponse(emvCapk);
+//                EmvCapk emvCapk = new EmvCapk();
+//                mEmvHandler.onSetCAPubkeyResponse(emvCapk);
             }
 
             @Override
             public void onTRiskManage(String pan, String panSn) throws RemoteException {
-                Log.d(TAG, "onTRiskManage = " + pan + ", " + panSn);
-                String resut = "";
-                mEmvHandler.onSetTRiskManageResponse(resut);
+//                Log.d(TAG, "onTRiskManage = " + pan + ", " + panSn);
+//                String resut = "";
+//                mEmvHandler.onSetTRiskManageResponse(resut);
             }
 
             @Override
             public void onSelectLanguage(String language) throws RemoteException {
-                Log.d(TAG, "onTRiskManage = " + language);
-                mEmvHandler.onSetSelAppResponse(true ? 0 : -1);
+//                Log.d(TAG, "onTRiskManage = " + language);
+//                mEmvHandler.onSetSelAppResponse(true ? 0 : -1);
             }
 
             @Override
             public void onSelectAccountType(List<String> accountTypes) throws RemoteException {
-                Log.d(TAG, "onSelectAccountType = " + accountTypes);
-                mAlertDialogOnShowListener.onSelectAccountType(accountTypes, new OnSelectAccountType() {
-                    @Override
-                    public void onSetSelectAccountResponse(int index) {
-                        try {
-                            mEmvHandler.onSetSelectAccountTypeResponse(index);
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+//                Log.d(TAG, "onSelectAccountType = " + accountTypes);
+//                mAlertDialogOnShowListener.onSelectAccountType(accountTypes, new OnSelectAccountType() {
+//                    @Override
+//                    public void onSetSelectAccountResponse(int index) {
+//                        try {
+//                            mEmvHandler.onSetSelectAccountTypeResponse(index);
+//                        } catch (RemoteException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
             }
 
             @Override
             public void onIssuerVoiceReference(String sPan) throws RemoteException {
-                Log.d(TAG, "onIssuerVoiceReference = " + sPan);
-                mAlertDialogOnShowListener.onIssuerVoiceReference(sPan, new OnIssuerVoiceReference() {
-                    @Override
-                    public void onSetIssuerVoiceReferenceResponse(int retCode) {
-                        try {
-                            mEmvHandler.onSetIssuerVoiceReferenceResponse(retCode);
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+//                Log.d(TAG, "onIssuerVoiceReference = " + sPan);
+//                mAlertDialogOnShowListener.onIssuerVoiceReference(sPan, new OnIssuerVoiceReference() {
+//                    @Override
+//                    public void onSetIssuerVoiceReferenceResponse(int retCode) {
+//                        try {
+//                            mEmvHandler.onSetIssuerVoiceReferenceResponse(retCode);
+//                        } catch (RemoteException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
             }
         };
     }
@@ -374,15 +399,15 @@ public class EmvPBOCTest extends BaseApiTest {
         builder.append("\nIC data \n");
         for (String tag : tagList) {
             if ("9F4E".equalsIgnoreCase(tag)) {
-                builder.append(tag + "=" + getTagByhex2asc(tag, inoutBundle) + "\n");
+                builder.append(tag + "=" + getTagByHex2asc(tag, inoutBundle) + "\n");
             }else if ("5F20".equalsIgnoreCase(tag)) {
-                builder.append(tag + "=" + getTagByhex2asc(tag, inoutBundle) + "\n");
+                builder.append(tag + "=" + getTagByHex2asc(tag, inoutBundle) + "\n");
             }else {
                 builder.append(tag + "=" + getTag(tag, inoutBundle) + "\n");
             }
         }
         //custom tag
-        builder.append("PinKsn 00C1" + "=" + getTagByhex2asc(EmvDataSource.GET_PIN_KSN_TAG_C1, inoutBundle) + "\n");
+        builder.append("PinKsn 00C1" + "=" + getTagByHex2asc(EmvDataSource.GET_PIN_KSN_TAG_C1, inoutBundle) + "\n");
         builder.append("PinBlock 00C7" + "=" + getTag(EmvDataSource.GET_PIN_BLOCK_TAG_C7, inoutBundle) + "\n");
         builder.append("Masked pan 00C4" + "=" + getTag(EmvDataSource.GET_MASKED_PAN_TAG_C4, inoutBundle) + "\n");
         builder.append("track2 00C2" + "=" + getTag(EmvDataSource.GET_TRACK2_TAG_C2, inoutBundle) + "\n");
@@ -401,7 +426,7 @@ public class EmvPBOCTest extends BaseApiTest {
     public void emvPBOC(Bundle bundle, String amount) {
         int channel = bundle.getInt(ICCSearchResult.CARDOTHER) == IccReaderSlot.ICSlOT1 ? EmvChannelType.FROM_ICC : EmvChannelType.FROM_PICC;
         mChannel = channel;
-        Bundle inBundle = EmvProcessConfig.getInitBundleValue(channel , amount, "0.02");
+        Bundle inBundle = EmvProcessConfig.getInitBundleValue(channel , amount, "0.22");
         cardNum = "";
         try {
             initTermConfig();
@@ -416,6 +441,37 @@ public class EmvPBOCTest extends BaseApiTest {
         }
     }
 
+    /**
+     * Contactless check card
+     * @param onSearchListener
+     * @throws RemoteException
+     */
+    public void searchRfCard(final MainActivity.OnSearchListener onSearchListener) throws RemoteException{
+        final IccCardReader rfReader = mSDKManager.getIccCardReader(IccReaderSlot.RFSlOT);
+        mAlertDialogOnShowListener.showProgress(getString(R.string.msg_icorrfid), new ActionItems.OnCancelCall() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                try {
+                    //m1Reader.stopSearch();
+                    rfReader.stopSearch();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        OnSearchIccCardListener.Stub listener = new OnSearchIccCardListener.Stub() {
+            @Override
+            public void onSearchResult(int retCode, Bundle bundle) throws RemoteException {
+                Log.d(TAG, "retCode= " + retCode);
+                Log.d(TAG, "rfReader  used by RF card  = " + (bundle.getInt(ICCSearchResult.CARDOTHER) == IccReaderSlot.RFSlOT));
+                Log.d(TAG, "iccCardReader used by IC  " + (bundle.getInt(ICCSearchResult.CARDOTHER) == IccReaderSlot.ICSlOT1));
+
+                rfReader.stopSearch();
+                onSearchListener.onSearchResult(retCode, bundle);
+            }
+        };
+        rfReader.searchCard(listener, 60, new String[]{IccCardType.CPUCARD, IccCardType.AT24CXX, IccCardType.AT88SC102});
+    }
     public void searchCard(final MainActivity.OnSearchListener onSearchListener) throws RemoteException {
         final IccCardReader iccCardReader = mSDKManager.getIccCardReader(IccReaderSlot.ICSlOT1);
         final IccCardReader rfReader = mSDKManager.getIccCardReader(IccReaderSlot.RFSlOT);
@@ -443,7 +499,7 @@ public class EmvPBOCTest extends BaseApiTest {
                 iccCardReader.stopSearch();
                 mSDKManager.getMagCardReader().stopSearch();
                 onSearchListener.onSearchResult(retCode, bundle);
-                mSDKManager.getBeeper().beep(retCode == ServiceResult.Success ? BeepModeConstrants.SUCCESS : BeepModeConstrants.FAIL);
+//                mSDKManager.getBeeper().beep(retCode == ServiceResult.Success ? BeepModeConstrants.SUCCESS : BeepModeConstrants.FAIL);
             }
         };
         iccCardReader.searchCard(listener, 60, new String[]{IccCardType.CPUCARD, IccCardType.AT24CXX, IccCardType.AT88SC102});
@@ -460,6 +516,7 @@ public class EmvPBOCTest extends BaseApiTest {
                     iccCardReader.stopSearch();
                     mSDKManager.getMagCardReader().stopSearch();
                     mSDKManager.getBeeper().beep(retCode == ServiceResult.Success ? BeepModeConstrants.SUCCESS : BeepModeConstrants.FAIL);
+//                    mAlertDialogOnShowListener.showPinPad(magCardInfoEntity.getCardNo());
                 }
             }
         }, 60, bundle);
@@ -497,7 +554,7 @@ public class EmvPBOCTest extends BaseApiTest {
         return null;
     }
 
-    private String getTagByhex2asc(String tag, Bundle bundle) {
+    private String getTagByHex2asc(String tag, Bundle bundle) {
         byte[] Tag = string2byte(tag);
         try {
             byte[] tlvs = mEmvHandler.getTlvs(Tag, 0, bundle);
@@ -517,14 +574,12 @@ public class EmvPBOCTest extends BaseApiTest {
         mSDKManager.getEmvHandler().initTermConfig(EmvProcessConfig.getInitTermConfig());
         Log.d(TAG, "initTermConfig after ");
     }
-
-    /*public void emvGetEcBalance(Bundle bundle) {
-        int channel = bundle.getInt(ICCSearchResult.CARDOTHER) == IccReaderSlot.ICSlOT1 ? EmvChannelType.FROM_ICC : EmvChannelType.FROM_PICC;
+    public void beep(boolean isSuccess){
         try {
-            int ret = mSDKManager.getEmvHandler().emvGetEcBalance(channel, mOnEmvProcessListener);
-            Log.d(TAG, "ret = " + ret);
+            mSDKManager.getBeeper().beep(isSuccess ? BeepModeConstrants.SUCCESS : BeepModeConstrants.FAIL);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-    }*/
+    }
+
 }

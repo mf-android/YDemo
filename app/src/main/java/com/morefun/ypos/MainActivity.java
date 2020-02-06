@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String QR_CODE = "Generates a QR code";
     private static final String BAR_CODE = "Generates a Barcode";
+    private static final String IS_EXITS_CARD = "Check Card is exits";
 
     private void intiitems() {
         items.add(getString(R.string.login_devices));
@@ -129,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         items.add(getString(R.string.menu_beep));
         items.add(getString(R.string.menu_mag_card_reader));
         items.add(getString(R.string.menu_ic_card_reader));
+        items.add(IS_EXITS_CARD);
         items.add(getString(R.string.menu_led));
         items.add(getString(R.string.menu_scanner));
         items.add(getString(R.string.menu_serialport));
@@ -170,14 +172,11 @@ public class MainActivity extends AppCompatActivity {
         } else if (id.equals(getString(R.string.menu_pboc2))) {
             PBOC2();
         } else if (id.equals(getString(R.string.menu_apdu))) {
-            // 读卡ic/非接卡sn号
             // "\x00\xA4\x04\x00\x0E\x32\x50\x41\x59\x2E\x53\x59\x53\x2E\x44\x44\x46\x30\x31\x00"
             testApdu("00A40400", "325041592E5359532E4444463031", (byte) 0x00);
         } else if (id.equals(getString(R.string.menu_m1card))) {
-            // 读卡ic/非接卡sn号
             testM1card();
         } else if (id.equals(getString(R.string.menu_felica))) {
-            // 读卡ic/非接卡sn号
             testFelica();
         } else if (id.equals(getString(R.string.init_dukpt))) {
             PinPadTest.initDukptBDKAndKsn(mSDKManager, mAlertDialogOnShowListener);
@@ -203,7 +202,9 @@ public class MainActivity extends AppCompatActivity {
             ICCardReaderApi();
         } else if (id.equals(getString(R.string.menu_mag_card_reader))) {
             MagCardReaderApi();
-        } else if (id.equals(getString(R.string.menu_led))) {
+        } else if (id.equals(IS_EXITS_CARD)) {
+            checkCardIsExits();
+        }else if (id.equals(getString(R.string.menu_led))) {
             LED();
         } else if (id.equals(getString(R.string.menu_scanner))) {
             ScannerApi();
@@ -212,8 +213,8 @@ public class MainActivity extends AppCompatActivity {
         } else if (id.equals(getString(R.string.menu_print))) {
             Print();
         } else if (id.equals(getString(R.string.menu_pinkeybord))) {
-            PinPadTest.showOffLinePinKey(mSDKManager,null,  mAlertDialogOnShowListener);
-//            PinPadTest.showOnlinePinPanKeyK(mSDKManager, null, pan, mTypeFacePath, mAlertDialogOnShowListener);
+//            PinPadTest.showOffLinePinKey(mSDKManager,null,  mAlertDialogOnShowListener);
+            PinPadTest.showOnlinePinPanKeyK(mSDKManager, null, pan, mTypeFacePath, mAlertDialogOnShowListener);
 //            PinPadTest.showPinKey(mSDKManager, pan, false ,mAlertDialogOnShowListener);
         } else if (id.equals(getString(R.string.menu_pinkeybord2))) {
 
@@ -235,7 +236,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (which >= 0) {
-                        //保存设置的语言
                         LanguageUtils.saveLanguage(which + 1);
                         ac.blockmsg(getString(R.string.msg_title), getString(R.string.msg_rest));
                     }
@@ -297,6 +297,9 @@ public class MainActivity extends AppCompatActivity {
     private void MagCardReaderApi() throws RemoteException {
         new SearchCardOrCardReaderTest(mSDKManager, mAlertDialogOnShowListener).MagCardReaderApi();
     }
+    private void checkCardIsExits() throws RemoteException {
+        new SearchCardOrCardReaderTest(mSDKManager, mAlertDialogOnShowListener).checkCardIsExits();
+    }
 
     /**
      * Before the call, you must first install the serial port driver
@@ -325,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
     static String mTypeFacePath;
 
     private void Print() throws RemoteException {
-        //打印输出
+        //Print test
         ac.showwait(getString(R.string.msg_title), getString(R.string.msg_printing));
         PrinterTest.Print(mSDKManager, getContext(), mTypeFacePath, mAlertDialogOnShowListener);
     }
@@ -369,13 +372,13 @@ public class MainActivity extends AppCompatActivity {
         ac.blockmsg(id, getString(R.string.msg_succ));
     }
 
-    // 主密钥下载 MainKey
+    // MainKey
     private void LoadMainKey() throws RemoteException {
         int ret = PinPadTest.LoadMainKey(mSDKManager);
         ac.blockmsg(id, ret == ServiceResult.Success ? getString(R.string.msg_succ) : getString(R.string.msg_fail));
     }
 
-    // 工作密钥(PIN/MAC/TRACK)下载
+    // workKey (PIN/MAC/TRACK)
     private void LoadWorkKey() throws RemoteException {
         PinPadTest.LoadWorkKey(mSDKManager, mAlertDialogOnShowListener);
     }
@@ -392,7 +395,7 @@ public class MainActivity extends AppCompatActivity {
         M1CardHandlerTest.test_m1card(mSDKManager, mAlertDialogOnShowListener);
     }
 
-    // 演示发送apdu指令
+    //  apdu command demo
     // "\x00\xA4\x04\x00\x0E\x32\x50\x41\x59\x2E\x53\x59\x53\x2E\x44\x44\x46\x30\x31\x00"
     private void testApdu(final String cmd, final String data, final byte le) throws RemoteException {
         new ApduCPUCardHandlerTest(mSDKManager, mAlertDialogOnShowListener).testApdu(cmd, data, le);
@@ -402,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            Bundle b = data.getExtras();  //data为B中回传的Intent
+            Bundle b = data.getExtras();
             if (requestCode == 1) {
                 String str = b.getString("result");
                 ac.blockmsg(id, str);

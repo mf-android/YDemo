@@ -17,7 +17,7 @@ public class SilentInstallUtils {
         Intent install_intent = new Intent("android.intent.action.INSTALL.HIDE");
         if (Build.VERSION.SDK_INT >= 24) {
             Uri apkUri = getUri(context, apkFile);
-            //添加这一句表示对目标应用临时授权该Uri所代表的文件
+            //
             install_intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
 //            getPermission(context, install_intent , apkUri);
             install_intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
@@ -25,21 +25,21 @@ public class SilentInstallUtils {
             install_intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
             install_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
-        if (isIntentAvaileble(context, install_intent)) {//
+        if (isIntentAvailable(context, install_intent)) {//
             context.startActivity(install_intent);
         } else {
             installApp(context, apkFile);
         }
     }
 
-    //Intent 是否可用
-    private static boolean isIntentAvaileble(Context context, Intent intent) {
+    //Intent available
+    private static boolean isIntentAvailable(Context context, Intent intent) {
         List resolves = context.getPackageManager().queryIntentActivities(intent, 0);
         return resolves.size() > 0;
     }
 
     /**
-     * 安装应用程序
+     * install app
      *
      * @param context
      * @param apkFile
@@ -57,7 +57,7 @@ public class SilentInstallUtils {
             intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
         }
 
-        if (isIntentAvaileble(context, intent)) {
+        if (isIntentAvailable(context, intent)) {
             context.startActivity(intent);
         } else {
             Log.d(TAG, "apkFile = " + apkFile.getName());

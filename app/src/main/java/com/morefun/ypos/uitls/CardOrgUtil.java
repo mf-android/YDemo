@@ -42,7 +42,7 @@ public class CardOrgUtil {
         }
         return ret;
     }
-    private static int getMagKernelId(String sPan)        //cardtype   0---磁条卡    1---芯片卡
+    private static int getMagKernelId(String sPan)        //cardtype   0---mag card    1--- nfc card
     {
         int CardInfo3 = Integer.parseInt(sPan.substring(0, 3));
         int CardInfo4 = Integer.parseInt(sPan.substring(0, 4));
@@ -71,7 +71,7 @@ public class CardOrgUtil {
             //6011 622126-622925 644-649 65
             return 0x06;        //DISCOVER 65\6011
         }else if (sPan.startsWith("62")){
-            return 0x07;        //PBOC 62开头
+            return 0x07;        //PBOC 62 head
         }
         return 0x00;
     }

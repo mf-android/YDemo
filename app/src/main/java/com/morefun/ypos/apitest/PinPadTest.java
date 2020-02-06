@@ -53,7 +53,7 @@ public class PinPadTest extends BaseApiTest {
 
     public static void LoadWorkKey(DeviceServiceEngine engine, MainActivity.AlertDialogOnShowListener alertDialogOnShowListener) throws RemoteException {
         PinPad pinPad = engine.getPinPad();
-        //8 + 4个字节 16 + 4字节（包含KVC） 3F854952 BFD0D79D
+        //8 + 4 bytes 16 + 4 bytes（KVC） 3F854952 BFD0D79D
         byte[] pkey12Bytes = string2byte("A26C78C550F023C53F854952");
         byte[] pkeyPlain8Bytes = string2byte("A37C78C550F023C5");
         byte[] pkeyPlain16Bytes = string2byte("A37C78C550F023C5A37C78C550F023C5");

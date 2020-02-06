@@ -105,7 +105,7 @@ public class TestActivity extends AppCompatActivity {
         } else if (id.equals(getString(R.string.menu_apdu))) {
             test_m1card2();
         } else if (id.equals(getString(R.string.menu_m1card))) {
-            // 读卡ic/非接卡sn号
+
             testM1card();
         }
     }
@@ -132,9 +132,9 @@ public class TestActivity extends AppCompatActivity {
         }
 
         int keyLen = key.length();
-        //转为bcd码，和62域一致
-        if (keyLen % 2 == 1) {            // 长度奇数
-            key = key + "0";        //左对齐
+        //bcd
+        if (keyLen % 2 == 1) {
+            key = key + "0";
         }
         int bcdLen = (keyLen + 1) / 2;
         byte[] bcdByte = new byte[bcdLen];
@@ -330,7 +330,7 @@ public class TestActivity extends AppCompatActivity {
         }
     }
 
-    // 演示发送apdu指令
+    //
     // "\x00\xA4\x04\x00\x0E\x32\x50\x41\x59\x2E\x53\x59\x53\x2E\x44\x44\x46\x30\x31\x00"
     private void testApdu(final String cmd, final String data, final byte le) throws RemoteException {
 
@@ -411,7 +411,7 @@ public class TestActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            Bundle b = data.getExtras();  //data为B中回传的Intent
+            Bundle b = data.getExtras();
             if (requestCode == 1) {
                 String str = b.getString("result");
                 ac.blockmsg(id, str);
