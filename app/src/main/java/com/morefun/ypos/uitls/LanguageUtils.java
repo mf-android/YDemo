@@ -33,7 +33,6 @@ public class LanguageUtils {
                 , Context.MODE_PRIVATE);
 
         int language_id = sharedPreferences.getInt("id", 3);
-        // 获取应用内语言
         final Configuration configuration = resources.getConfiguration();
 
         switch (language_id) {

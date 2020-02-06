@@ -32,7 +32,7 @@ public class EmvProcessConfig {
     public static byte[] getExampleARPCData() {
         //TODO Data returned by background server ,should be contain 91 tag, if you need to test ARPC
         // such as : 91 0A F9 8D 4B 51 B4 76 34 74 30 30 ,   if need to set 71 and 72  ,Please add this String
-        return Utils.str2Bcd("91 0A F9 8D 4B 51 B4 76 34 74 30 30 =".trim());
+        return Utils.str2Bcd("91 0A F9 8D 4B 51 B4 76 34".trim());
 //        return Utils.str2Bcd("91087BAA1E5500860000");
     }
 

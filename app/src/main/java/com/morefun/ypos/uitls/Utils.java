@@ -60,12 +60,14 @@ public class Utils {
         return str;
     }
 
-    // 0 左对齐 1右对齐
-    public static String hex2asc(byte[] b, int len, int type) { // 二进制转字符串
+    /**
+     * @param type 0 Left justify 1 Right justify
+     **/
+    public static String hex2asc(byte[] b, int len, int type) {
         String hs = "";
         String stmp = "";
         int start = 0;
-        int count = (len + 1) / 2;        // 转成需要的字节长度
+        int count = (len + 1) / 2;
 
         for (int n = 0; n < count; n++) {
             stmp = (java.lang.Integer.toHexString(b[n] & 0XFF)).toUpperCase();
@@ -76,7 +78,7 @@ public class Utils {
             }
         }
 
-        if ((len & 0x01) == 0x1 && type == 1) {    // 长度奇数且右对齐
+        if ((len & 0x01) == 0x1 && type == 1) {
             start = 1;
         }
 
@@ -104,7 +106,7 @@ public class Utils {
     public static int getDateTime(byte[] itransDate, byte[] itransTime) {
 
         Time t = new Time(); //
-        t.setToNow(); // 取得系统时间。
+        t.setToNow();
 
         int year = t.year;
         itransDate[0] = str2Bcd(String.valueOf(year % 100))[0];
@@ -271,9 +273,8 @@ public class Utils {
         }
 
         int keyLen = key.length();
-        //转为bcd码，和62域一致
-        if (keyLen % 2 == 1) {            // 长度奇数
-            key = key + "0";        //左对齐
+        if (keyLen % 2 == 1) {
+            key = key + "0";
         }
         int bcdLen = (keyLen + 1) / 2;
         byte[] bcdByte = new byte[bcdLen];

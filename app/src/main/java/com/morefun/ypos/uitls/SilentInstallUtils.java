@@ -17,7 +17,6 @@ public class SilentInstallUtils {
         Intent install_intent = new Intent("android.intent.action.INSTALL.HIDE");
         if (Build.VERSION.SDK_INT >= 24) {
             Uri apkUri = getUri(context, apkFile);
-            //
             install_intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
 //            getPermission(context, install_intent , apkUri);
             install_intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
@@ -49,7 +48,6 @@ public class SilentInstallUtils {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (Build.VERSION.SDK_INT >= 24) {
             Uri apkUri = getUri(context, apkFile);
-            //添加这一句表示对目标应用临时授权该Uri所代表的文件
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
 //            getPermission(context, intent , apkUri);
             intent.setDataAndType(apkUri, "application/vnd.android.package-archive");

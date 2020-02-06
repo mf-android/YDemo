@@ -84,7 +84,6 @@ public class EmvPBOCTest extends BaseApiTest {
                     listener.showMessage("input amount fail");
                     return;
                 }
-                int keyIndex = 0;
                 try {
                     //TODO >>> if is dukpt, Please check if you need KSN add one and genrate new PEK
                     if (DukptConfigs.isDukpt){
@@ -138,7 +137,6 @@ public class EmvPBOCTest extends BaseApiTest {
 
     public void initEmvListener() {
         mOnEmvProcessListener = new OnEmvProcessListener.Stub() {
-            //应用选择
             @Override
             public void onSelApp(List<String> appNameList, boolean isFirstSelect) throws RemoteException {
                 Log.d(TAG, "onSelApp = " + isFirstSelect);
@@ -161,7 +159,6 @@ public class EmvPBOCTest extends BaseApiTest {
                 mEmvHandler.onSetConfirmCardNoResponse(true);
             }
 
-            //
             @Override
             public void onCardHolderInputPin(boolean isOnlinePin, int messageType) throws RemoteException {
                 Log.d(TAG, "onCardHolderInputPin isOnlinePin = " + isOnlinePin + "," + messageType);
@@ -223,8 +220,6 @@ public class EmvPBOCTest extends BaseApiTest {
                     mEmvHandler.onSetContactlessOnlinePlaceCardModeResponse(true);
                 }
             }
-//            public void onREQUEST_ISS_ONLINE_MODE(){
-
 
             //TODO  onFinish : it will return EMV result after ARPC (issuer script ) perform.
             @Override
@@ -285,57 +280,32 @@ public class EmvPBOCTest extends BaseApiTest {
 
             @Override
             public void onSetAIDParameter(String s) throws RemoteException {
-//                EmvAidPara emvAidPara = new EmvAidPara();
-//                mEmvHandler.onSetAIDParameterResponse(emvAidPara);
+                //reserved
             }
 
             @Override
             public void onSetCAPubkey(String s, int i, int i1) throws RemoteException {
-//                EmvCapk emvCapk = new EmvCapk();
-//                mEmvHandler.onSetCAPubkeyResponse(emvCapk);
+                //reserved
             }
 
             @Override
             public void onTRiskManage(String pan, String panSn) throws RemoteException {
-//                Log.d(TAG, "onTRiskManage = " + pan + ", " + panSn);
-//                String resut = "";
-//                mEmvHandler.onSetTRiskManageResponse(resut);
+                //reserved
             }
 
             @Override
             public void onSelectLanguage(String language) throws RemoteException {
-//                Log.d(TAG, "onTRiskManage = " + language);
-//                mEmvHandler.onSetSelAppResponse(true ? 0 : -1);
+                //reserved
             }
 
             @Override
             public void onSelectAccountType(List<String> accountTypes) throws RemoteException {
-//                Log.d(TAG, "onSelectAccountType = " + accountTypes);
-//                mAlertDialogOnShowListener.onSelectAccountType(accountTypes, new OnSelectAccountType() {
-//                    @Override
-//                    public void onSetSelectAccountResponse(int index) {
-//                        try {
-//                            mEmvHandler.onSetSelectAccountTypeResponse(index);
-//                        } catch (RemoteException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                });
+                //reserved
             }
 
             @Override
             public void onIssuerVoiceReference(String sPan) throws RemoteException {
-//                Log.d(TAG, "onIssuerVoiceReference = " + sPan);
-//                mAlertDialogOnShowListener.onIssuerVoiceReference(sPan, new OnIssuerVoiceReference() {
-//                    @Override
-//                    public void onSetIssuerVoiceReferenceResponse(int retCode) {
-//                        try {
-//                            mEmvHandler.onSetIssuerVoiceReferenceResponse(retCode);
-//                        } catch (RemoteException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                });
+                //reserved
             }
         };
     }
@@ -472,6 +442,7 @@ public class EmvPBOCTest extends BaseApiTest {
         };
         rfReader.searchCard(listener, 60, new String[]{IccCardType.CPUCARD, IccCardType.AT24CXX, IccCardType.AT88SC102});
     }
+
     public void searchCard(final MainActivity.OnSearchListener onSearchListener) throws RemoteException {
         final IccCardReader iccCardReader = mSDKManager.getIccCardReader(IccReaderSlot.ICSlOT1);
         final IccCardReader rfReader = mSDKManager.getIccCardReader(IccReaderSlot.RFSlOT);

@@ -18,7 +18,6 @@ import java.util.Hashtable;
  * so  must
  * implementation 'com.google.zxing:core:3.3.0'
  * In Your Project build.gradle.
- * 生成条形码和二维码的工具
  */
 public class ZXingUtils {
     /**
