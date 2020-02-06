@@ -7,7 +7,6 @@ import android.os.RemoteException;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.morefun.yapi.ServiceResult;
 import com.morefun.yapi.device.pinpad.DesAlgorithmType;
@@ -27,6 +26,7 @@ import com.morefun.ypos.BaseApiTest;
 import com.morefun.ypos.MainActivity;
 import com.morefun.ypos.R;
 import com.morefun.ypos.config.DukptConfigs;
+import com.morefun.ypos.uitls.ToastUtils;
 import com.morefun.ypos.uitls.Utils;
 
 import static com.morefun.ypos.uitls.Utils.byte2string;
@@ -209,15 +209,15 @@ public class PinPadTest extends BaseApiTest {
         Log.d(TAG, "inputOnlinePin  before");
         pinResult = mSDKManager.getPinPad().inputOnlinePin(bundle,panBlock, 0, PinAlgorithmMode.ISO9564FMT1, new OnPinPadInputListener.Stub() {
             @Override
-            public void onInputResult(int ret, byte[] bytes,String pinKsn) throws RemoteException {
-                Log.d(TAG, "onInputResult =  " + byte2string(bytes));
+            public void onInputResult(int ret, byte[] pinBlock,String pinKsn) throws RemoteException {
+                Log.d(TAG, "onInputResult =  " + byte2string(pinBlock));
                 Log.d(TAG, "onInputResult pinKsn=  " + pinKsn);
-                boolean isByPass = "000000000000".equals(byte2string(bytes));
+                boolean isByPass = "000000000000".equals(byte2string(pinBlock));
                 Log.d(TAG, "onInputResult =  " + isByPass);
-                alertDialogOnShowListener.showMessage("online pin : " + byte2string(bytes) + "\n pinKsn = "+ pinKsn);
+                alertDialogOnShowListener.showMessage("online pin : " + byte2string(pinBlock) + "\n pinKsn = "+ pinKsn);
 
                 if (mEmvHandler != null && ret == ServiceResult.Success){
-                    mEmvHandler.onSetCardHolderInputPin(isByPass ? null : Utils.getByteArray(bytes,0 , 8));
+                    mEmvHandler.onSetCardHolderInputPin(isByPass ? null : Utils.getByteArray(pinBlock,0 , 8));
                 }
             }
 
@@ -248,7 +248,7 @@ public class PinPadTest extends BaseApiTest {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
             MainActivity.getContext().startActivity(intent);
             Log.d(TAG, " =   Please allow YSDK App permission");
-            Toast.makeText(MainActivity.getContext() ,"Please allow YSDK App permission" ,Toast.LENGTH_LONG).show();
+            ToastUtils.show(MainActivity.getContext(), "Please allow YSDK App permission");
             if (mEmvHandler != null) {
                 mEmvHandler.onSetCardHolderInputPin(null);
             }

@@ -88,7 +88,9 @@ public class SearchCardOrCardReaderTest {
                 public void onSearchResult(int retCode, Bundle bundle) throws RemoteException {
                     Log.d(TAG, "retCode:" + retCode
                             + ", cardType:" + bundle.getString(ICCSearchResult.CARDTYPE)
-                            + ", cardOther:" + bundle.getInt(ICCSearchResult.CARDOTHER));
+                            + ", cardOther:" + bundle.getInt(ICCSearchResult.CARDOTHER)
+                            + ", is contact :" + (bundle.getInt(ICCSearchResult.CARDOTHER)== IccReaderSlot.ICSlOT1));
+
                     icReader.stopSearch();
                     rfReader.stopSearch();
                     beeper(retCode);

@@ -52,9 +52,10 @@ public class DukptConfigs {
         return getBundle(MF_DUKPT_DES_KEY_DATA1, TRACK_GROUP_INDEX);
     }
     public static void increaseKSN(PinPad pinPad) throws RemoteException {
-        pinPad.increaseKSN(TRACK_GROUP_INDEX,new Bundle());
-        pinPad.increaseKSN(EMV_GROUP_INDEX,new Bundle());
-        pinPad.increaseKSN(PIN_GROUP_INDEX,new Bundle());
+        //TODO plsease save the ksn to you Application.
+        String trackKsn = pinPad.increaseKSN(TRACK_GROUP_INDEX, new Bundle());
+        String emvKsn = pinPad.increaseKSN(EMV_GROUP_INDEX, new Bundle());
+        String pinKsn = pinPad.increaseKSN(PIN_GROUP_INDEX, new Bundle());
     }
     /**
      * dukpt
@@ -66,7 +67,7 @@ public class DukptConfigs {
         bundle.putByte(KSNConstrants.DukptKeyType , keyType);
         //default is 0
         bundle.putInt(KSNConstrants.DUKPT_KEY_GID , key_index);
-        //default value is  DesAlgorithmType.TDES_ECB
+        //default value is  DesAlgorithmType.TDES_CBC
         bundle.putInt(KSNConstrants.DesAlgorithmType , DesAlgorithmType.TDES_CBC);
         return bundle;
     }

@@ -225,6 +225,10 @@ public class EmvPBOCTest extends BaseApiTest {
                 }else if (ret == ServiceResult.Emv_Terminate){// trans end
                     if (errorCode != null){
                         mAlertDialogOnShowListener.showMessage("terminate, Error Code: " + new String(errorCode).trim());
+                        //TODO if the amount of connect less transactions is more than 2,000. The interface prompts you to swipe or insert a card.
+                        if (mEmvHandler.isErrorCode(EmvErrorCode.QPBOC_ERR_PRE_AMTLIMIT)){
+                            mAlertDialogOnShowListener.showMessage("RF Limit Exceed, Pls try another page! ");
+                        }
                     }else{
                         mAlertDialogOnShowListener.showMessage("trans terminate");
                     }

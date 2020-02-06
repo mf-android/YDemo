@@ -7,8 +7,8 @@ android {
         applicationId "com.morefun.ydmeo"
         minSdkVersion 22
         targetSdkVersion 26
-        versionCode 1
-        versionName "2.0." + new Date().format("yyMMdd")
+        versionCode 2020
+        versionName new Date().format("yyMMdd")
     }
     buildTypes {
         release {
