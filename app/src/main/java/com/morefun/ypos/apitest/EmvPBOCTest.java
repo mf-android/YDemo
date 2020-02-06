@@ -382,8 +382,8 @@ public class EmvPBOCTest extends BaseApiTest {
             }
         }
         //custom tag
-        builder.append("PinKsn 00C1" + "=" + getTag(EmvDataSource.GET_PIN_KSN_TAG_C1, inoutBundle) + "\n");
-        builder.append("PinPlock 00C7" + "=" + getTag(EmvDataSource.GET_PIN_BLOCK_TAG_C7, inoutBundle) + "\n");
+        builder.append("PinKsn 00C1" + "=" + getTagByhex2asc(EmvDataSource.GET_PIN_KSN_TAG_C1, inoutBundle) + "\n");
+        builder.append("PinBlock 00C7" + "=" + getTag(EmvDataSource.GET_PIN_BLOCK_TAG_C7, inoutBundle) + "\n");
         builder.append("Masked pan 00C4" + "=" + getTag(EmvDataSource.GET_MASKED_PAN_TAG_C4, inoutBundle) + "\n");
         builder.append("track2 00C2" + "=" + getTag(EmvDataSource.GET_TRACK2_TAG_C2, inoutBundle) + "\n");
         builder.append("Track ksn 00C0" + "=" + getTag(EmvDataSource.GET_TRACK_KSN_TAG_C0, inoutBundle) + "\n");
@@ -401,7 +401,7 @@ public class EmvPBOCTest extends BaseApiTest {
     public void emvPBOC(Bundle bundle, String amount) {
         int channel = bundle.getInt(ICCSearchResult.CARDOTHER) == IccReaderSlot.ICSlOT1 ? EmvChannelType.FROM_ICC : EmvChannelType.FROM_PICC;
         mChannel = channel;
-        Bundle inBundle = EmvProcessConfig.getInitBundleValue(channel, (byte) 0x00, amount);
+        Bundle inBundle = EmvProcessConfig.getInitBundleValue(channel , amount, "0.02");
         cardNum = "";
         try {
             initTermConfig();

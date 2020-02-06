@@ -12,6 +12,7 @@ import com.morefun.yapi.ServiceResult;
 import com.morefun.yapi.device.pinpad.DesAlgorithmType;
 import com.morefun.yapi.device.pinpad.DesMode;
 import com.morefun.yapi.device.pinpad.DispTextMode;
+import com.morefun.yapi.device.pinpad.DukptKeyGid;
 import com.morefun.yapi.device.pinpad.DukptKeyType;
 import com.morefun.yapi.device.pinpad.MacAlgorithmType;
 import com.morefun.yapi.device.pinpad.OnPinPadInputListener;
@@ -87,6 +88,7 @@ public class PinPadTest extends BaseApiTest {
     public static void getMac(DeviceServiceEngine engine, MainActivity.AlertDialogOnShowListener alertDialogOnShowListener) throws RemoteException {
         String strmac = "00000000005010016222620910029130840241205100100367FD3414057DB801BE18A309A544C5174CC777525974CBD467BCC56EA16629F3B016488A6C314921485C75F57066D4682FEDC1F910C5C8136A201279B590898B40D7098461D345168810CCFEBC61204B3E6F364A95175EF54C7EBAAEC2A6AEE44D9783747124D313B78A3F754C5ECC611533C4957377DD2067DF927C80461C4E4C20A8A4CC57EF1CCE2BC1AEEA442431256F66A25AB855912BA82FB8AD308F0EDE358CDDDEA63C95401B8335C8689E5735E0FB96733426FD71A7248E140A95CB4B4313AC0DBDA1E70EA8800000000000";
         int keyId = 0;
+        String ksn = null;
         if (DukptConfigs.isDukpt){
             keyId = -1;
         }
@@ -146,14 +148,19 @@ public class PinPadTest extends BaseApiTest {
         int minLength = 4;
         int maxLength = 12;
         mSDKManager.getPinPad().setSupportPinLen(new int[]{minLength, maxLength});
-        pinResult = mSDKManager.getPinPad().inputText(new OnPinPadInputListener.Stub() {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(PinPadConstrants.IS_SHOW_PASSWORD_BOX ,true);
+        bundle.putBoolean(PinPadConstrants.IS_SHOW_TITLE_HEAD ,true);
+        bundle.putString(PinPadConstrants.TITLE_HEAD_CONTENT ,"Please input offline Pin\n");
+//        bundle.putString(PinPadConstrants.COMMON_TYPEFACE_PATH , path);
+        pinResult = mSDKManager.getPinPad().inputText(bundle, new OnPinPadInputListener.Stub() {
             @Override
-            public void onInputResult(int ret, byte[] bytes, String ksn) throws RemoteException {
-                Log.d(TAG ,"ret= " + ret + ",bytes = " + bytes);
+            public void onInputResult(int ret, byte[] pin, String ksn) throws RemoteException {
+                Log.d(TAG ,"ret= " + ret + ",bytes = " + pin);
                 if (mEmvHandler != null && ret == ServiceResult.Success){
-                    mEmvHandler.onSetCardHolderInputPin(bytes);
+                    mEmvHandler.onSetCardHolderInputPin(pin);
                 }else {
-                    alertDialogOnShowListener.showMessage("offline pin : " + new String(bytes));
+                    alertDialogOnShowListener.showMessage("offline pin : " + new String(pin));
                 }
             }
 
@@ -244,7 +251,7 @@ public class PinPadTest extends BaseApiTest {
     }
 
     private static boolean checkPinPadNeedAllowPermission(EmvHandler mEmvHandler, int pinResult) throws RemoteException {
-        if (pinResult == ServiceResult.PinPad_Base_Error) {
+        if (pinResult == ServiceResult.PinPad_Need_Permissions_Draw_over_other_apps) {
             Log.d(TAG, " =  " + pinResult);
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
             MainActivity.getContext().startActivity(intent);
@@ -280,14 +287,14 @@ public class PinPadTest extends BaseApiTest {
     public static void dukptCalculation(DeviceServiceEngine engine, final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener)throws RemoteException{
         String ksn = engine.getPinPad().increaseKSN(KeyIndex, new Bundle());
         // data length should be is multiple of 8.
-         byte[] inputData = Utils.str2Bcd("5413330056003511D251210106775050".trim());
+         byte[] inputData = Utils.str2Bcd("04953DFFFF9D9D7B".trim());
 		 byte[] data = Utils.checkInputData(inputData);
-        byte keyType = DukptKeyType.MF_DUKPT_DES_KEY_DATA1;
+        byte keyType = DukptKeyType.MF_DUKPT_DES_KEY_PIN;
         //only support TDES.
         int desAlgorithmType = DesAlgorithmType.TDES_CBC;
         int desMode = DesMode.ENCRYPT; // DesMode.ENCRYPT DesMode.DECRYPT
 //        String dukptCalculation(int keyIndex, byte keyType, int desAlgorithmType, byte[] data, int dataLen, int desMode, Bundle bundle)
-        String calculationData = engine.getPinPad().dukptCalculation(DukptConfigs.TRACK_GROUP_INDEX, keyType, desAlgorithmType ,data, data.length , desMode, new Bundle());
+        String calculationData = engine.getPinPad().dukptCalculation(DukptKeyGid.GID_GROUP_EMV_IPEK, keyType, desAlgorithmType ,data, data.length , desMode, new Bundle());
         Log.d(TAG,"calculationData = " + calculationData);
         Log.d(TAG,"ksn = " + ksn);
         alertDialogOnShowListener.showMessage(

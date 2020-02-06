@@ -2,6 +2,7 @@ package com.morefun.ypos.config;
 
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.util.Log;
 
 import com.morefun.yapi.device.pinpad.DesAlgorithmType;
 import com.morefun.yapi.device.pinpad.DukptKeyGid;
@@ -14,8 +15,11 @@ import static com.morefun.yapi.device.pinpad.DukptKeyType.MF_DUKPT_DES_KEY_PIN;
 
 public class DukptConfigs {
     public static final int TRACK_GROUP_INDEX = DukptKeyGid.GID_GROUP_TRACK_IPEK;
-    public static final int EMV_GROUP_INDEX = DukptKeyGid.GID_GROUP_EMV_IPEK2;
+    public static final int EMV_GROUP_INDEX = DukptKeyGid.GID_GROUP_EMV_IPEK;
     public static final int PIN_GROUP_INDEX = DukptKeyGid.GID_GROUP_PIN_IPEK;
+//    public static final int TRACK_GROUP_INDEX = DukptKeyGid.GID_GROUP_TRACK_IPEK2;
+//    public static final int EMV_GROUP_INDEX = DukptKeyGid.GID_GROUP_EMV_IPEK2;
+//    public static final int PIN_GROUP_INDEX = DukptKeyGid.GID_GROUP_PIN_IPEK2;
     public static boolean isDukpt = false;
     public static DukptConfigs mDukptConfigs;
     private DukptConfigs() {
@@ -31,11 +35,14 @@ public class DukptConfigs {
         return mDukptConfigs;
     }
 
+    private static final String TAG = "DukptConfigs";
     public static void testInjectIPEK3(PinPad pinPad) throws RemoteException {
         String IPEK = "C1D0F8FB4958670DBA40AB1F3752EF0D";
-        //KSN must be 20 length String. 95A627000210210 00000
+//                                      00000610F3C360600001
+        //KSN must be 20 length String. 95A62700021021000000
         String ksn = "FFFF9876543210" + "000000";
         int ret = pinPad.initDukptIPEKAndKsn(PIN_GROUP_INDEX, IPEK, ksn,true, "00000");
+        IPEK = "C1D0F8FB4958670DBA40AB1F3752EF0D";
         ksn = "00000123456789" + "000000";
         ret = pinPad.initDukptIPEKAndKsn(TRACK_GROUP_INDEX, IPEK, ksn,true, "00000");
         //ksn = "00001122334455000000";
@@ -71,6 +78,7 @@ public class DukptConfigs {
     public static Bundle getMacIPEKBundle(){
         return getBundle(MF_DUKPT_DES_KEY_MAC1, EMV_GROUP_INDEX);
     }
+    //keyType DUKPT_PIN
     public static Bundle getPinIPEKBundle(){
         return getBundle(MF_DUKPT_DES_KEY_PIN, PIN_GROUP_INDEX);
     }
@@ -88,6 +96,7 @@ public class DukptConfigs {
         bundle.putByte(KSNConstrants.DukptKeyType , keyType);
         //default is 0
         bundle.putInt(KSNConstrants.DUKPT_KEY_GID , key_index);
+        Log.d("DukptConfigs" , "gid =" + key_index);
         //default value is  DesAlgorithmType.TDES_CBC
         bundle.putInt(KSNConstrants.DesAlgorithmType , DesAlgorithmType.TDES_CBC);
         return bundle;

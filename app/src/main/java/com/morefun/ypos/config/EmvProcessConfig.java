@@ -2,6 +2,7 @@ package com.morefun.ypos.config;
 
 import android.os.Bundle;
 
+import com.morefun.yapi.emv.EMVTag9CConstants;
 import com.morefun.yapi.emv.EmvTermCfgConstrants;
 import com.morefun.yapi.emv.EmvTransDataConstrants;
 import com.morefun.ypos.uitls.Utils;
@@ -42,7 +43,7 @@ public class EmvProcessConfig {
         terminalParams.add("DF8122050101010101");
         terminalParams.add("DF81180170");
         terminalParams.add("DF81190118");
-    //    terminalParams.add("5F2A020840");
+//        terminalParams.add("5F2A020840");
         terminalParams.add("9F4005F200F0A001");
         terminalParams.add("9F3303206808");
         return terminalParams;
@@ -51,11 +52,11 @@ public class EmvProcessConfig {
     /**
      *  getEmvHandler().emvProcess(Bundle bundle,
      * @param channelType
-     * @param trans9C
      * @param amount
+     * @param cashBackAmt
      * @return
      */
-    public static Bundle getInitBundleValue(int channelType, byte trans9C, String amount) {
+    public static Bundle getInitBundleValue(int channelType, String amount ,String cashBackAmt) {
         Bundle bundle = new Bundle();
         byte[] transDate = new byte[3];
         byte[] transTime = new byte[3];
@@ -68,13 +69,13 @@ public class EmvProcessConfig {
         bundle.putInt(EmvTransDataConstrants.ISQPBOCFORCEONLINE, 0);
         bundle.putInt(EmvTransDataConstrants.CHANNELTYPE, channelType);
 
-        bundle.putByte(EmvTransDataConstrants.B9C, trans9C);
+        bundle.putByte(EmvTransDataConstrants.B9C, getTrans9C());
         bundle.putString(EmvTransDataConstrants.TRANSDATE, pubByteToHexString(transDate));
         bundle.putString(EmvTransDataConstrants.TRANSTIME, pubByteToHexString(transTime));
         bundle.putString(EmvTransDataConstrants.SEQNO, "00001");
 
         bundle.putString(EmvTransDataConstrants.TRANSAMT, amount);
-        bundle.putString(EmvTransDataConstrants.CASHBACKAMT, "0");
+        bundle.putString(EmvTransDataConstrants.CASHBACKAMT, cashBackAmt);
 
         bundle.putString(EmvTransDataConstrants.MERNAME, "MOREFUN");
         bundle.putString(EmvTransDataConstrants.MERID, "488923");
@@ -86,6 +87,21 @@ public class EmvProcessConfig {
         return bundle;
     }
 
+    /**
+     *
+     * @return
+     */
+    public static byte getTrans9C(){
+//        return EMVTag9CConstants.EMV_TRANS_CASH;
+        return EMVTag9CConstants.EMV_TRANS_CASHBACK;
+//        return EMVTag9CConstants.EMV_TRANS_SALE;
+//        return EMVTag9CConstants.EMV_TRANS_INQUIRY;
+//        return EMVTag9CConstants.EMV_CASH_DISBUERSE;
+        //Rupay
+//        return EMVTag9CConstants.RUPAY_VOID;
+//        return EMVTag9CConstants.RUPAY_LEGACY_MONEY_ADD;
+//        return EMVTag9CConstants.RUPAY_MONEY_ADD;
+    }
     public static List<String> getTagList() {
         List<String> tagList = new ArrayList<>();
         tagList.add("5A");

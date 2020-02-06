@@ -1,3 +1,12 @@
+[20200206-dev]
+
+
+
+[20200109-dev]
+1.fix bypass value(new byte[0])
+2.add custom tag
+3.change input online pin length( 4 position)
+
 [20200103-dev]
 1.Add Grad logcat switch
 2.Add jude:

@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SDKManager.getInstance().bindService(getApplicationContext());
+//        SDKManager.getInstance().bindService(getApplicationContext());
         mContext = this;
         LanguageUtils.setLanguage();
         Log.d(TAG, "onCreate" + Build.MODEL);
@@ -212,8 +212,8 @@ public class MainActivity extends AppCompatActivity {
         } else if (id.equals(getString(R.string.menu_print))) {
             Print();
         } else if (id.equals(getString(R.string.menu_pinkeybord))) {
-//            PinPadTest.showOffLinePinKey(mSDKManager, mAlertDialogOnShowListener);
-            PinPadTest.showOnlinePinPanKeyK(mSDKManager, null, pan, mTypeFacePath, mAlertDialogOnShowListener);
+            PinPadTest.showOffLinePinKey(mSDKManager,null,  mAlertDialogOnShowListener);
+//            PinPadTest.showOnlinePinPanKeyK(mSDKManager, null, pan, mTypeFacePath, mAlertDialogOnShowListener);
 //            PinPadTest.showPinKey(mSDKManager, pan, false ,mAlertDialogOnShowListener);
         } else if (id.equals(getString(R.string.menu_pinkeybord2))) {
 

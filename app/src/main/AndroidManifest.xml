@@ -57,6 +57,7 @@
 
     <application
         android:allowBackup="true"
+        android:name=".SDKApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
