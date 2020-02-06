@@ -28,7 +28,7 @@ APK compiled with project, can be used to run viewing functions directly.
 
 # FEATURES
 
-Login
+[Login](https://github.com/mf-android/YDemo/blob/master/docs/Login.md "Markdown")
 
 Device info
 
@@ -76,7 +76,17 @@ FELICA Card
 
 # DOCUMENT
 
-[CHANGES.md]:(https://github.com/mf-android/YDemo/blob/master/CHANGES.md "Markdown")
+[CHANGES.md](https://github.com/mf-android/YDemo/blob/master/CHANGES.md "Markdown")
+
+MFYSDK_Android_Programming_Manual.pdf
+
+This manual is applicable to MF919 POS Terminal (hereinafter referred to as “MFPOS”).
+
+```
+path:docs/MFYSDK_Android_Programming_Manual.pdf
+```
+
+
 
 
 #  FAQ
@@ -101,6 +111,8 @@ FELICA Card
 Could I load the aids of each brand card? Visa, visa electron, master card and amex? 
 
 We have sorted out the related parameter information of the card group AID, you first understand.
+
+```
 9F06(07)    <T> Terminal Application Identifier
 9F09(02)   <T> Application Version Number
 DF11(05)   <T> terminal Action Code-Default
@@ -120,6 +132,9 @@ DF01(01)  <T> Application selection indicator,0 or 1, e.g.(0x00)
 DF18(01)  <T> Terminal online pin capability, 0x30 or 0x31 , e.g.(0x31)
 DF14(252)  <T> Default DDOL(Hex), e.g.(0x9F 0x37 0x04 0x00 ...)  
 9F7B(06)  <T> EC Terminal Transaction Limit, e.g.(0x00 0x00 0x00 0x00 0x20 0x00)--for UnionPay cards
+```
+
+
 
 The method of setting aid is like the way provided by demo.
 
@@ -131,13 +146,17 @@ Contactless CVM Limit              ---- If the limit is exceeded, the transactio
 
 ###  View the values of AID & CAPK 
 
-menu on homePage YDEMO.apk 
+Open YDEMO.apk;
+
+AID& CAPK menu -> View AID list、 View AID list.
+
+
 
 ### About Dukpt
 
 ##### 1.Inject IPEK key & KSN 
 
-Please see YDEMO source code (init IPEK And Ksn)
+Please see YDEMO source code (init IPEK And Ksn).
 
 ```
 String IPEK = "C1D0F8FB4958670DBA40AB1F3752EF0D";
@@ -223,4 +242,4 @@ There have other for new system.
 There is a window to verify. You need to enter a verification code.
 
 Please send the random code on the window to the discussion group, 
-and we will give you the corresponding verification code
+and we will give you the corresponding verification code.
