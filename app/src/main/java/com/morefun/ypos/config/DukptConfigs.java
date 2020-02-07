@@ -17,17 +17,19 @@ public class DukptConfigs {
     public static final int TRACK_GROUP_INDEX = DukptKeyGid.GID_GROUP_TRACK_IPEK;
     public static final int EMV_GROUP_INDEX = DukptKeyGid.GID_GROUP_EMV_IPEK;
     public static final int PIN_GROUP_INDEX = DukptKeyGid.GID_GROUP_PIN_IPEK;
-//    public static final int TRACK_GROUP_INDEX = DukptKeyGid.GID_GROUP_TRACK_IPEK2;
+    //    public static final int TRACK_GROUP_INDEX = DukptKeyGid.GID_GROUP_TRACK_IPEK2;
 //    public static final int EMV_GROUP_INDEX = DukptKeyGid.GID_GROUP_EMV_IPEK2;
 //    public static final int PIN_GROUP_INDEX = DukptKeyGid.GID_GROUP_PIN_IPEK2;
     public static boolean isDukpt = false;
     public static DukptConfigs mDukptConfigs;
+
     private DukptConfigs() {
     }
-    public static DukptConfigs getInstance(){
-        if (mDukptConfigs == null){
-            synchronized (DukptConfigs.class){
-                if (mDukptConfigs == null){
+
+    public static DukptConfigs getInstance() {
+        if (mDukptConfigs == null) {
+            synchronized (DukptConfigs.class) {
+                if (mDukptConfigs == null) {
                     mDukptConfigs = new DukptConfigs();
                 }
             }
@@ -36,33 +38,39 @@ public class DukptConfigs {
     }
 
     private static final String TAG = "DukptConfigs";
+
     public static void testInjectIPEK3(PinPad pinPad) throws RemoteException {
         String IPEK = "C1D0F8FB4958670DBA40AB1F3752EF0D";
         //KSN must be 20 length String. 95A62700021021000000
         String ksn = "FFFF9876543210" + "000000";
-        int ret = pinPad.initDukptIPEKAndKsn(PIN_GROUP_INDEX, IPEK, ksn,true, "00000");
+        int ret = pinPad.initDukptIPEKAndKsn(PIN_GROUP_INDEX, IPEK, ksn, true, "00000");
         IPEK = "C1D0F8FB4958670DBA40AB1F3752EF0D";
         ksn = "00000123456789" + "000000";
-        ret = pinPad.initDukptIPEKAndKsn(TRACK_GROUP_INDEX, IPEK, ksn,true, "00000");
+        ret = pinPad.initDukptIPEKAndKsn(TRACK_GROUP_INDEX, IPEK, ksn, true, "00000");
         //ksn = "00001122334455000000";
         ksn = "00001122334455" + "000000";
-        ret = pinPad.initDukptIPEKAndKsn(EMV_GROUP_INDEX, IPEK, ksn,true, "00000");
+        ret = pinPad.initDukptIPEKAndKsn(EMV_GROUP_INDEX, IPEK, ksn, true, "00000");
     }
+
     /**
      * TODO if need able dukpt, Please set login with 09000000
+     *
      * @return
      */
-    public static String getDukptBussinessId(){
-        isDukpt  =true;
+    public static String getDukptBussinessId() {
+        isDukpt = true;
         return "09000000";
     }
-    public static String getBussinessId(){
+
+    public static String getBussinessId() {
         isDukpt = false;
         return "00000000";
     }
+
     String trackKsn;
     String emvKsn;
     String pinKsn;
+
     public void increaseKSN(PinPad pinPad) throws RemoteException {
         //TODO plsease save the ksn to you Application.
         // one transaction can only be called once, Every time you get it, the PEK key changes
@@ -74,30 +82,33 @@ public class DukptConfigs {
         //check 57=
     }
 
-    public static Bundle getMacIPEKBundle(){
+    public static Bundle getMacIPEKBundle() {
         return getBundle(MF_DUKPT_DES_KEY_MAC1, EMV_GROUP_INDEX);
     }
+
     //keyType DUKPT_PIN
-    public static Bundle getPinIPEKBundle(){
+    public static Bundle getPinIPEKBundle() {
         return getBundle(MF_DUKPT_DES_KEY_PIN, PIN_GROUP_INDEX);
     }
-    public static Bundle getTrackIPEKBundle(){
+
+    public static Bundle getTrackIPEKBundle() {
         return getBundle(MF_DUKPT_DES_KEY_DATA1, TRACK_GROUP_INDEX);
     }
 
     /**
      * dukpt
+     *
      * @retur
      */
-    public static Bundle getBundle(Byte keyType, int key_index){
+    public static Bundle getBundle(Byte keyType, int key_index) {
         Bundle bundle = new Bundle();
         //default value is  DukptKeyType.MF_DUKPT_DES_KEY_DATA1
-        bundle.putByte(KSNConstrants.DukptKeyType , keyType);
+        bundle.putByte(KSNConstrants.DukptKeyType, keyType);
         //default is 0
-        bundle.putInt(KSNConstrants.DUKPT_KEY_GID , key_index);
-        Log.d("DukptConfigs" , "gid =" + key_index);
+        bundle.putInt(KSNConstrants.DUKPT_KEY_GID, key_index);
+        Log.d("DukptConfigs", "gid =" + key_index);
         //default value is  DesAlgorithmType.TDES_CBC
-        bundle.putInt(KSNConstrants.DesAlgorithmType , DesAlgorithmType.TDES_CBC);
+        bundle.putInt(KSNConstrants.DesAlgorithmType, DesAlgorithmType.TDES_CBC);
         return bundle;
     }
 

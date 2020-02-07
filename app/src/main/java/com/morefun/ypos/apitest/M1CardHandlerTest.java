@@ -39,6 +39,10 @@ public class M1CardHandlerTest extends BaseApiTest {
 
     private static void m1card(DeviceServiceEngine engine, MainActivity.AlertDialogOnShowListener alertDialogOnShowListener) {
         try {
+            if (engine == null) {
+                alertDialogOnShowListener.showMessage(getString(R.string.msg_readfail_retry));
+                return;
+            }
             M1CardHandler m1CardHandler = engine.getM1CardHandler(engine.getIccCardReader(IccReaderSlot.RFSlOT));
             byte key[] = new byte[]{(byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff};
             if (m1CardHandler == null) {

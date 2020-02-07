@@ -37,20 +37,20 @@ public class InstallApkTest {
         }
         Utils.copyAsstes(MainActivity.getContext(), apkName, path);
         try {
-            mSDKManager.installApp(path ,"" ,"com.morefun.test.install");
+            mSDKManager.installApp(path, "", "com.morefun.test.install");
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
 
-    public static void uninstallApp(DeviceServiceEngine mSDKManager){
+    public static void uninstallApp(DeviceServiceEngine mSDKManager) {
         try {
             String packageName = "com.morefun.test.install";
 //            String packageName = "com.android.nfc";
-            mSDKManager.uninstallApp(packageName , new OnUninstallAppListener.Stub() {
+            mSDKManager.uninstallApp(packageName, new OnUninstallAppListener.Stub() {
                 @Override
                 public void onUninstallAppResult(int retCode) throws RemoteException {
-                    Log.d(TAG ,"retCode = " + retCode);
+                    Log.d(TAG, "retCode = " + retCode);
                 }
             });
         } catch (RemoteException e) {

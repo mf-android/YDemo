@@ -10,6 +10,7 @@ import com.morefun.ypos.uitls.ZXingUtils;
 
 public class ZxingTest {
     private static final String TAG = "ZxingTest";
+
     public Bitmap qrCode() {
         try {
             Bitmap bitQrCode = ZXingUtils.createQRImage("I am test Content..............", 600, 600);

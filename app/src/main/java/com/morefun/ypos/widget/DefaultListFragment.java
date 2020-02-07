@@ -22,6 +22,7 @@ public class DefaultListFragment extends BaseDialogFragment {
     private String mTitle;
     private ArrayAdapter<String> mAdapter;
     AdapterView.OnItemClickListener mOnItemClickListener;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -33,8 +34,8 @@ public class DefaultListFragment extends BaseDialogFragment {
     }
 
     private void findView(View view) {
-        mTvTitle =  view.findViewById(R.id.tv_title);
-        mListView =  view.findViewById(R.id.listView);
+        mTvTitle = view.findViewById(R.id.tv_title);
+        mListView = view.findViewById(R.id.listView);
     }
 
     private void initView() {
@@ -65,7 +66,8 @@ public class DefaultListFragment extends BaseDialogFragment {
         mAdapter = adapter;
         return this;
     }
-    public DefaultListFragment setOnItemClickListener(AdapterView.OnItemClickListener listener){
+
+    public DefaultListFragment setOnItemClickListener(AdapterView.OnItemClickListener listener) {
         if (mListView != null) {
             mListView.setOnItemClickListener(listener);
         }

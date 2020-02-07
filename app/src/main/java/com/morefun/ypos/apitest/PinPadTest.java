@@ -73,10 +73,11 @@ public class PinPadTest extends BaseApiTest {
         alertDialogOnShowListener.showMessage(sb.toString());
     }
 
-    public static void LoadDesBykey(DeviceServiceEngine engine) throws RemoteException  {
+    public static void LoadDesBykey(DeviceServiceEngine engine) throws RemoteException {
         PinPad pinPad = engine.getPinPad();
 //        pinPad.desEncByWKey()
     }
+
     public static void format(PinPad pinPad) {
         try {
             pinPad.format();
@@ -89,7 +90,7 @@ public class PinPadTest extends BaseApiTest {
         String strmac = "00000000005010016222620910029130840241205100100367FD3414057DB801BE18A309A544C5174CC777525974CBD467BCC56EA16629F3B016488A6C314921485C75F57066D4682FEDC1F910C5C8136A201279B590898B40D7098461D345168810CCFEBC61204B3E6F364A95175EF54C7EBAAEC2A6AEE44D9783747124D313B78A3F754C5ECC611533C4957377DD2067DF927C80461C4E4C20A8A4CC57EF1CCE2BC1AEEA442431256F66A25AB855912BA82FB8AD308F0EDE358CDDDEA63C95401B8335C8689E5735E0FB96733426FD71A7248E140A95CB4B4313AC0DBDA1E70EA8800000000000";
         int keyId = 0;
         String ksn = null;
-        if (DukptConfigs.isDukpt){
+        if (DukptConfigs.isDukpt) {
             keyId = -1;
         }
         byte[] inputData = Utils.checkInputData(string2byte(strmac));
@@ -104,7 +105,7 @@ public class PinPadTest extends BaseApiTest {
         byte[] tsrc = string2byte(src);
         int groupcount = (tsrc.length % 8) == 0 ? tsrc.length / 8 : tsrc.length / 8 + 1;
         int keyId = 0;
-        if (DukptConfigs.isDukpt){
+        if (DukptConfigs.isDukpt) {
             keyId = -1;
         }
         byte[] tdst = engine.getPinPad().getMac(keyId, MacAlgorithmType.ECB, DesAlgorithmType.TDES, tsrc, DukptConfigs.getMacIPEKBundle());
@@ -124,15 +125,17 @@ public class PinPadTest extends BaseApiTest {
         }
     }
 
-    public static void showPinKey(DeviceServiceEngine mSDKManager, String pan, String typefontPath ,boolean isOffLine,final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener) throws RemoteException {
-        if (isOffLine){
-            showOffLinePinKey(mSDKManager, null,alertDialogOnShowListener);
-        }else {
-            showOnlinePinPanKeyK(mSDKManager,null, pan, typefontPath,  alertDialogOnShowListener);
+    public static void showPinKey(DeviceServiceEngine mSDKManager, String pan, String typefontPath, boolean isOffLine, final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener) throws RemoteException {
+        if (isOffLine) {
+            showOffLinePinKey(mSDKManager, null, alertDialogOnShowListener);
+        } else {
+            showOnlinePinPanKeyK(mSDKManager, null, pan, typefontPath, alertDialogOnShowListener);
         }
     }
+
     /**
      * Offline PinPad Demo
+     *
      * @throws RemoteException
      */
     public static void showOffLinePinKey(DeviceServiceEngine mSDKManager, final EmvHandler mEmvHandler, final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener) throws RemoteException {
@@ -140,7 +143,7 @@ public class PinPadTest extends BaseApiTest {
 //        int textMode = DispTextMode.PLAINTEXT;
         //check permission for PinPad dialog.
         int pinResult = mSDKManager.getPinPad().initPinPad(PinPadType.INTERNAL);
-        if (checkPinPadNeedAllowPermission(mEmvHandler, pinResult)){
+        if (checkPinPadNeedAllowPermission(mEmvHandler, pinResult)) {
             Log.d(TAG, "checkPinPadNeedAllowPermission =  true");
             return;
         }
@@ -149,100 +152,101 @@ public class PinPadTest extends BaseApiTest {
         int maxLength = 12;
         mSDKManager.getPinPad().setSupportPinLen(new int[]{minLength, maxLength});
         Bundle bundle = new Bundle();
-        bundle.putBoolean(PinPadConstrants.IS_SHOW_PASSWORD_BOX ,true);
-        bundle.putBoolean(PinPadConstrants.IS_SHOW_TITLE_HEAD ,true);
-        bundle.putString(PinPadConstrants.TITLE_HEAD_CONTENT ,"Please input offline Pin\n");
+        bundle.putBoolean(PinPadConstrants.IS_SHOW_PASSWORD_BOX, true);
+        bundle.putBoolean(PinPadConstrants.IS_SHOW_TITLE_HEAD, true);
+        bundle.putString(PinPadConstrants.TITLE_HEAD_CONTENT, "Please input offline Pin\n");
 //        bundle.putString(PinPadConstrants.COMMON_TYPEFACE_PATH , path);
         pinResult = mSDKManager.getPinPad().inputText(bundle, new OnPinPadInputListener.Stub() {
             @Override
             public void onInputResult(int ret, byte[] pin, String ksn) throws RemoteException {
-                Log.d(TAG ,"ret= " + ret + ",bytes = " + pin);
-                if (mEmvHandler != null && ret == ServiceResult.Success){
+                Log.d(TAG, "ret= " + ret + ",bytes = " + pin);
+                if (mEmvHandler != null && ret == ServiceResult.Success) {
                     mEmvHandler.onSetCardHolderInputPin(pin);
-                }else {
+                } else {
                     alertDialogOnShowListener.showMessage("offline pin : " + new String(pin));
                 }
             }
 
             @Override
             public void onSendKey(byte keyCode) throws RemoteException {
-                Log.d(TAG ,"keyCode = " + keyCode);
-                if (keyCode == (byte)ServiceResult.PinPad_Input_Cancel){
-                    if (mEmvHandler != null){
+                Log.d(TAG, "keyCode = " + keyCode);
+                if (keyCode == (byte) ServiceResult.PinPad_Input_Cancel) {
+                    if (mEmvHandler != null) {
                         mEmvHandler.onSetCardHolderInputPin(null);
                     }
                     alertDialogOnShowListener.showMessage("Pin Pad is cancel.");
-                }else if (keyCode ==  (byte) ServiceResult.PinPad_Input_OK ){
-                    Log.d(TAG ,"keyCode =  PinPad_Input_OK");
-                }else if (keyCode ==  (byte) ServiceResult.PinPad_Input_Clear ){
-                    Log.d(TAG ,"keyCode =  PinPad_Input_Clear");
-                }else if (keyCode ==  (byte) ServiceResult.PinPad_Input_Num ){
-                    Log.d(TAG ,"keyCode =  PinPad_Input_Num");
+                } else if (keyCode == (byte) ServiceResult.PinPad_Input_OK) {
+                    Log.d(TAG, "keyCode =  PinPad_Input_OK");
+                } else if (keyCode == (byte) ServiceResult.PinPad_Input_Clear) {
+                    Log.d(TAG, "keyCode =  PinPad_Input_Clear");
+                } else if (keyCode == (byte) ServiceResult.PinPad_Input_Num) {
+                    Log.d(TAG, "keyCode =  PinPad_Input_Num");
                 }
             }
-        },textMode);
+        }, textMode);
         checkPinPadNeedAllowPermission(mEmvHandler, pinResult);
     }
-    public static void showOnlinePinPanKeyK(DeviceServiceEngine mSDKManager, final EmvHandler mEmvHandler , String pan, String path, final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener) throws RemoteException {
+
+    public static void showOnlinePinPanKeyK(DeviceServiceEngine mSDKManager, final EmvHandler mEmvHandler, String pan, String path, final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener) throws RemoteException {
         mSDKManager.getPinPad().initPinPad(PinPadType.EXTERNAL);
         Bundle bundle = DukptConfigs.getPinIPEKBundle();
-        if (TextUtils.isEmpty(pan)){
+        if (TextUtils.isEmpty(pan)) {
             //pan
             pan = EmvPBOCTest.getTagByEmv("5A", mSDKManager.getEmvHandler(), bundle);
         }
         byte[] panBlock = pan.getBytes();
-        Log.d(TAG,"pan =" + pan);
+        Log.d(TAG, "pan =" + pan);
         int minLength = 4;
         int maxLength = 4;
         mSDKManager.getPinPad().setSupportPinLen(new int[]{minLength, maxLength});
         int pinResult = mSDKManager.getPinPad().initPinPad(PinPadType.INTERNAL);
-        if (checkPinPadNeedAllowPermission(mEmvHandler, pinResult)){
+        if (checkPinPadNeedAllowPermission(mEmvHandler, pinResult)) {
             Log.d(TAG, "checkPinPadNeedAllowPermission =  true");
             return;
         }
 
         //default is true
-        bundle.putBoolean(PinPadConstrants.IS_SHOW_PASSWORD_BOX ,true);
-        bundle.putBoolean(PinPadConstrants.IS_SHOW_TITLE_HEAD ,true);
-        bundle.putString(PinPadConstrants.TITLE_HEAD_CONTENT ,"Please input online Pin");
-        bundle.putString(PinPadConstrants.COMMON_TYPEFACE_PATH , path);
+        bundle.putBoolean(PinPadConstrants.IS_SHOW_PASSWORD_BOX, true);
+        bundle.putBoolean(PinPadConstrants.IS_SHOW_TITLE_HEAD, true);
+        bundle.putString(PinPadConstrants.TITLE_HEAD_CONTENT, "Please input online Pin");
+        bundle.putString(PinPadConstrants.COMMON_TYPEFACE_PATH, path);
         //TODO if you need change pinpad KEY background color or text color ,you can follow this.
 //        int[] testColor = new int[]{Color.BLACK , Color.BLUE , Color.WHITE };
 //        int[] bgColor = new int[]{Color.RED , Color.YELLOW , Color.GREEN };
 //        bundle.putIntArray(PinPadConstrants.COMMON_TEXT_COLOR , testColor);
 //        bundle.putIntArray(PinPadConstrants.COMMON_BG_COLOR , bgColor);
         //need 10 color.
-        int[] testColor = new int[]{Color.BLACK , Color.BLUE , Color.WHITE ,Color.YELLOW , Color.BLUE , Color.WHITE, Color.BLACK , Color.BLUE , Color.RED , Color.WHITE};
+        int[] testColor = new int[]{Color.BLACK, Color.BLUE, Color.WHITE, Color.YELLOW, Color.BLUE, Color.WHITE, Color.BLACK, Color.BLUE, Color.RED, Color.WHITE};
 //        bundle.putIntArray(PinPadConstrants.NUMBER_TEXT_COLOR , testColor);
         Log.d(TAG, "inputOnlinePin  before");
         pinResult = mSDKManager.getPinPad().inputOnlinePin(bundle, panBlock, 0, PinAlgorithmMode.ISO9564FMT1, new OnPinPadInputListener.Stub() {
             @Override
-            public void onInputResult(int ret, byte[] pinBlock,String pinKsn) throws RemoteException {
+            public void onInputResult(int ret, byte[] pinBlock, String pinKsn) throws RemoteException {
                 Log.d(TAG, "onInputResult =  " + byte2string(pinBlock));
                 Log.d(TAG, "onInputResult pinKsn=  " + pinKsn);
                 boolean isByPass = "000000000000".equals(byte2string(pinBlock));
                 Log.d(TAG, "onInputResult =  " + isByPass);
-                alertDialogOnShowListener.showMessage("online pin : " + byte2string(pinBlock) + "\n pinKsn = "+ pinKsn);
+                alertDialogOnShowListener.showMessage("online pin : " + byte2string(pinBlock) + "\n pinKsn = " + pinKsn);
 
-                if (mEmvHandler != null && ret == ServiceResult.Success){
-                    mEmvHandler.onSetCardHolderInputPin(isByPass ? new byte[0] : Utils.getByteArray(pinBlock,0 , 8));
+                if (mEmvHandler != null && ret == ServiceResult.Success) {
+                    mEmvHandler.onSetCardHolderInputPin(isByPass ? new byte[0] : Utils.getByteArray(pinBlock, 0, 8));
                 }
             }
 
             @Override
             public void onSendKey(byte keyCode) throws RemoteException {
-                Log.d(TAG ,"keyCode = " + keyCode);
-                if (keyCode == (byte) ServiceResult.PinPad_Input_Cancel){
-                    if (mEmvHandler != null){
+                Log.d(TAG, "keyCode = " + keyCode);
+                if (keyCode == (byte) ServiceResult.PinPad_Input_Cancel) {
+                    if (mEmvHandler != null) {
                         mEmvHandler.onSetCardHolderInputPin(null);
                     }
 //                    alertDialogOnShowListener.showMessage("Pin Pad is cancel.");
-                }else if (keyCode ==  (byte) ServiceResult.PinPad_Input_OK ){
-                    Log.d(TAG ,"keyCode =  PinPad_Input_OK");
-                }else if (keyCode ==  (byte) ServiceResult.PinPad_Input_Clear ){
-                    Log.d(TAG ,"keyCode =  PinPad_Input_Clear");
-                }else if (keyCode ==  (byte) ServiceResult.PinPad_Input_Num ){
-                    Log.d(TAG ,"keyCode =  PinPad_Input_Num");
+                } else if (keyCode == (byte) ServiceResult.PinPad_Input_OK) {
+                    Log.d(TAG, "keyCode =  PinPad_Input_OK");
+                } else if (keyCode == (byte) ServiceResult.PinPad_Input_Clear) {
+                    Log.d(TAG, "keyCode =  PinPad_Input_Clear");
+                } else if (keyCode == (byte) ServiceResult.PinPad_Input_Num) {
+                    Log.d(TAG, "keyCode =  PinPad_Input_Num");
                 }
             }
         });
@@ -265,41 +269,43 @@ public class PinPadTest extends BaseApiTest {
         return false;
     }
 
-    public static void initDukptBDKAndKsn(DeviceServiceEngine engine, final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener)throws RemoteException{
+    public static void initDukptBDKAndKsn(DeviceServiceEngine engine, final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener) throws RemoteException {
         //BDK 32 length String.
         String BDK = "C1D0F8FB4958670DBA40AB1F3752EF0D";
         //KSN must be 20 length String. 95A627000210210 00000
         String ksn = "FFFF9876543210" + "000000";
-        int ret = engine.getPinPad().initDukptBDKAndKsn(KeyIndex, BDK, ksn,true, "00000");
-        alertDialogOnShowListener.showMessage("initDukptBDKAndKsn ret :" +( ret == ServiceResult.Success));
+        int ret = engine.getPinPad().initDukptBDKAndKsn(KeyIndex, BDK, ksn, true, "00000");
+        alertDialogOnShowListener.showMessage("initDukptBDKAndKsn ret :" + (ret == ServiceResult.Success));
     }
+
     //support 0~5;
     static int KeyIndex = 0;
-    public static void initDukptIPEKAndKsn(DeviceServiceEngine engine, final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener)throws RemoteException{
+
+    public static void initDukptIPEKAndKsn(DeviceServiceEngine engine, final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener) throws RemoteException {
         //IPEK 32 length String.
         String IPEK = "C1D0F8FB4958670DBA40AB1F3752EF0D";
         //KSN must be 20 length String. 95A627000210210 00000
         String ksn = "FFFF9876543210" + "000000";
-        int ret = engine.getPinPad().initDukptIPEKAndKsn(KeyIndex, IPEK, ksn,true, "00000");//its a open function for ipek keys
-        alertDialogOnShowListener.showMessage("initDukptIPEKAndKsn ret :" +( ret == ServiceResult.Success));
+        int ret = engine.getPinPad().initDukptIPEKAndKsn(KeyIndex, IPEK, ksn, true, "00000");//its a open function for ipek keys
+        alertDialogOnShowListener.showMessage("initDukptIPEKAndKsn ret :" + (ret == ServiceResult.Success));
     }
 
-    public static void dukptCalculation(DeviceServiceEngine engine, final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener)throws RemoteException{
+    public static void dukptCalculation(DeviceServiceEngine engine, final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener) throws RemoteException {
         String ksn = engine.getPinPad().increaseKSN(KeyIndex, new Bundle());
         // data length should be is multiple of 8.
-         byte[] inputData = Utils.str2Bcd("04953DFFFF9D9D7B".trim());
-		 byte[] data = Utils.checkInputData(inputData);
+        byte[] inputData = Utils.str2Bcd("04953DFFFF9D9D7B".trim());
+        byte[] data = Utils.checkInputData(inputData);
         byte keyType = DukptKeyType.MF_DUKPT_DES_KEY_PIN;
         //only support TDES.
         int desAlgorithmType = DesAlgorithmType.TDES_CBC;
         int desMode = DesMode.ENCRYPT; // DesMode.ENCRYPT DesMode.DECRYPT
 //        String dukptCalculation(int keyIndex, byte keyType, int desAlgorithmType, byte[] data, int dataLen, int desMode, Bundle bundle)
-        String calculationData = engine.getPinPad().dukptCalculation(DukptKeyGid.GID_GROUP_EMV_IPEK, keyType, desAlgorithmType ,data, data.length , desMode, new Bundle());
-        Log.d(TAG,"calculationData = " + calculationData);
-        Log.d(TAG,"ksn = " + ksn);
+        String calculationData = engine.getPinPad().dukptCalculation(DukptKeyGid.GID_GROUP_EMV_IPEK, keyType, desAlgorithmType, data, data.length, desMode, new Bundle());
+        Log.d(TAG, "calculationData = " + calculationData);
+        Log.d(TAG, "ksn = " + ksn);
         alertDialogOnShowListener.showMessage(
-                "multiple of 8 = " + (data.length / 8 ==0)
-                +"\n dukptCalculation ksn :" +(ksn)
-                + "\n" + " calculationData :" + calculationData);
+                "multiple of 8 = " + (data.length / 8 == 0)
+                        + "\n dukptCalculation ksn :" + (ksn)
+                        + "\n" + " calculationData :" + calculationData);
     }
 }

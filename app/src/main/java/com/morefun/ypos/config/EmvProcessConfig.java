@@ -15,20 +15,21 @@ import static com.morefun.ypos.uitls.Utils.getDateTime;
 import static com.morefun.ypos.uitls.Utils.pubByteToHexString;
 
 public class EmvProcessConfig {
-    public static Bundle getInitTermConfig(){
+    public static Bundle getInitTermConfig() {
         Bundle bundle1 = new Bundle();
         bundle1.putByteArray(EmvTermCfgConstrants.TERMCAP, new byte[]{(byte) 0x20, (byte) 0x68, (byte) 0x08});
 //        bundle1.putByteArray(EmvTermCfgConstrants.MERID_ANS_9F16, new byte[]{(byte) 0x50, (byte) 0x43, (byte) 0x54,(byte) 0x53, (byte) 0x31, (byte) 0x32, (byte) 0x50, (byte) 0x43, (byte) 0x54,(byte) 0x53 });
-        bundle1.putByteArray(EmvTermCfgConstrants.ADDTERMCAP, new byte[]{(byte) 0xF2, (byte) 0x00, (byte)0xF0 , (byte)0xA0 , (byte)0x01});
+        bundle1.putByteArray(EmvTermCfgConstrants.ADDTERMCAP, new byte[]{(byte) 0xF2, (byte) 0x00, (byte) 0xF0, (byte) 0xA0, (byte) 0x01});
         //bundle1.putByteArray(EmvTermCfgConstrants.TERMCAP, new byte[]{(byte) 0xE0, (byte) 0xF8, (byte) 0xC8});
         bundle1.putByte(EmvTermCfgConstrants.TERMTYPE, (byte) 0x22);
-        // 0356 / 0840
+        //TODO please change the country code  & currency code
         bundle1.putByteArray(EmvTermCfgConstrants.COUNTRYCODE, new byte[]{(byte) 0x03, (byte) 0x56});
         bundle1.putByteArray(EmvTermCfgConstrants.CURRENCYCODE, new byte[]{(byte) 0x03, (byte) 0x56});
 //        bundle1.putByteArray(EmvTermCfgConstrants.TRANS_PROP_9F66, new byte[]{(byte) 0x05, (byte) 0x06,(byte) 0x06,(byte) 0x06});
-        bundle1.putByteArray(EmvTermCfgConstrants.TRANS_PROP_9F66,new byte[]{0x36,(byte)0x00,(byte)0xc0,(byte)0x00});
+        bundle1.putByteArray(EmvTermCfgConstrants.TRANS_PROP_9F66, new byte[]{0x36, (byte) 0x00, (byte) 0xc0, (byte) 0x00});
         return bundle1;
     }
+
     public static byte[] getExampleARPCData() {
         //TODO Data returned by background server ,should be contain 91 tag, if you need to test ARPC
         // such as : 91 0A F9 8D 4B 51 B4 76 34 74 30 30 ,   if need to set 71 and 72  ,Please add this String
@@ -38,6 +39,7 @@ public class EmvProcessConfig {
 
     /**
      * It's optional
+     *
      * @return
      */
     private static ArrayList<String> setTerminalParamByTlvs() {
@@ -53,13 +55,14 @@ public class EmvProcessConfig {
     }
 
     /**
-     *  getEmvHandler().emvProcess(Bundle bundle,
+     * getEmvHandler().emvProcess(Bundle bundle,
+     *
      * @param channelType
      * @param amount
      * @param cashBackAmt
      * @return
      */
-    public static Bundle getInitBundleValue(int channelType, String amount ,String cashBackAmt) {
+    public static Bundle getInitBundleValue(int channelType, String amount, String cashBackAmt) {
         Bundle bundle = new Bundle();
         byte[] transDate = new byte[3];
         byte[] transTime = new byte[3];
@@ -93,10 +96,9 @@ public class EmvProcessConfig {
     }
 
     /**
-     *
      * @return
      */
-    public static byte getTrans9C(){
+    public static byte getTrans9C() {
 //        return EMVTag9CConstants.EMV_TRANS_CASH;
 //        return EMVTag9CConstants.EMV_TRANS_CASHBACK;
         return EMVTag9CConstants.EMV_TRANS_SALE;
@@ -107,6 +109,7 @@ public class EmvProcessConfig {
 //        return EMVTag9CConstants.RUPAY_LEGACY_MONEY_ADD;
 //        return EMVTag9CConstants.RUPAY_MONEY_ADD;
     }
+
     public static List<String> getTagList() {
         List<String> tagList = new ArrayList<>();
         tagList.add("5A");
@@ -162,10 +165,11 @@ public class EmvProcessConfig {
 
     /**
      * TODO : Please add any EMV tag, if you need
+     *
      * @return
      */
     public static List<String> getTagListThirdCompany() {
-        return Arrays.asList("9F16","9F34","9F06","5F30","9F33", "57","9F02", "9F03", "9F10", "9F1A", "9F1E", "9F21", "9F26", "9F27", "9F36", "9F37"
+        return Arrays.asList("9F16", "9F34", "9F06", "5F30", "9F33", "57", "9F02", "9F03", "9F10", "9F1A", "9F1E", "9F21", "9F26", "9F27", "9F36", "9F37"
                 , "9F4E", "9F6E", "4F", "50", "82", "84", "95", "9A", "9C", "5F20", "5F24", "5F2A", "5F2D", "5F34");
     }
 }

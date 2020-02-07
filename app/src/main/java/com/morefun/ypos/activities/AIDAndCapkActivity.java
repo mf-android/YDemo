@@ -56,17 +56,21 @@ public class AIDAndCapkActivity extends AppCompatActivity {
             }
         });
     }
- // mpos more then 20
+
+    // mpos more then 20
     private void initItems() {
-        items.add(API_NAME.GET_AID );
-        items.add(API_NAME.SET_AID );
+        items.add(getString(R.string.menu_capk));
+        items.add(getString(R.string.menu_aid));
+        items.add(API_NAME.GET_AID);
+        items.add(API_NAME.SET_AID);
         items.add(API_NAME.GET_CAPK);
         items.add(API_NAME.SET_CAPK);
         items.add(API_NAME.VIEW_AID);
         items.add(API_NAME.VIEW_CAPK);
+        items.add(getString(R.string.clear_capk_aid));
     }
 
-    interface API_NAME{
+    interface API_NAME {
         String GET_AID = "Get AID list";
         String SET_AID = "Set AID list";
         String GET_CAPK = "Get CAPK list";
@@ -82,8 +86,13 @@ public class AIDAndCapkActivity extends AppCompatActivity {
             Log.e(TAG, "ServiceEngine is Null");
             return;
         }
-
-        if (id.equals(API_NAME.GET_AID)) {
+        if (id.equals(getString(R.string.menu_capk))) {
+            EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).ICPublicKeyManage();
+        } else if (id.equals(getString(R.string.menu_aid))) {
+            EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).ICAidManage();
+        } else if (id.equals(getString(R.string.clear_capk_aid))) {
+            EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).clearAIDAndRID();
+        } else if (id.equals(API_NAME.GET_AID)) {
             EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).getAidList();
         } else if (id.equals(API_NAME.SET_AID)) {
             EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).setAIDList();
@@ -91,32 +100,32 @@ public class AIDAndCapkActivity extends AppCompatActivity {
             EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).getCAPKList();
         } else if (id.equals(API_NAME.SET_CAPK)) {
             EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).setCAPKList();
-        }else if (id.equals(API_NAME.VIEW_AID)){
+        } else if (id.equals(API_NAME.VIEW_AID)) {
             ViewAIDAndCAPK aid = new ViewAIDAndCAPK(mSDKManager.getEmvHandler());
             final Map<String, String> aidMap = aid.getAidMap();
             final String[] data = aid.getStringArray(aidMap);
-            final DefaultListFragment fragment =  new DefaultListFragment().setTitle("Pls choice a AID")
-                    .setAdapter(new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1 , data));
+            final DefaultListFragment fragment = new DefaultListFragment().setTitle("Pls choice a AID")
+                    .setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, data));
             fragment.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
-                    Log.d(TAG ,"item = " + index);
+                    Log.d(TAG, "item = " + index);
                     fragment.dismissAllowingStateLoss();
                     showmsg(aidMap.get(data[index]));
                 }
             });
             fragment.show(AIDAndCapkActivity.this, "aid");
-        }else if (id.equals(API_NAME.VIEW_CAPK)){
+        } else if (id.equals(API_NAME.VIEW_CAPK)) {
             ViewAIDAndCAPK capk = new ViewAIDAndCAPK(mSDKManager.getEmvHandler());
             ArrayList<String> capkList = capk.getCapkList();
             String[] data = capkList.toArray(new String[capkList.size()]);
 
-            final DefaultListFragment fragment =  new DefaultListFragment().setTitle("Pls choice a app")
-                    .setAdapter(new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1 , data));
+            final DefaultListFragment fragment = new DefaultListFragment().setTitle("Pls choice a app")
+                    .setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, data));
             fragment.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
-                    Log.d(TAG ,"item = " + index);
+                    Log.d(TAG, "item = " + index);
                     fragment.dismissAllowingStateLoss();
                 }
             });
@@ -124,6 +133,9 @@ public class AIDAndCapkActivity extends AppCompatActivity {
         }
     }
 
+    private void ICPublicKeyManage() {
+        EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).ICPublicKeyManage();
+    }
 
     private MainActivity.AlertDialogOnShowListener mAlertDialogOnShowListener = new MainActivity.AlertDialogOnShowListener() {
         @Override
@@ -182,6 +194,7 @@ public class AIDAndCapkActivity extends AppCompatActivity {
             }
         });
     }
+
     public Context getContext() {
         return this;
     }

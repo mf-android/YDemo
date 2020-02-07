@@ -42,7 +42,7 @@ public class SignActivity extends Activity {
                     //获取签名bitmap
                     Bitmap signBitmap = mPaintView.getCanvasBitmap();
                     DeviceServiceEngine mDeviceServiceEngine = SDKManager.getInstance().getDeviceServiceEngine();
-                    if (mDeviceServiceEngine == null){
+                    if (mDeviceServiceEngine == null) {
                         return;
                     }
                     Printer printer = mDeviceServiceEngine.getPrinter();

@@ -42,6 +42,7 @@ import com.morefun.ypos.apitest.PrinterTest;
 import com.morefun.ypos.apitest.ScannerApi;
 import com.morefun.ypos.apitest.SearchCardOrCardReaderTest;
 import com.morefun.ypos.apitest.ZxingTest;
+import com.morefun.ypos.config.DukptConfigs;
 import com.morefun.ypos.interfaces.OnInputAmountCallBack;
 import com.morefun.ypos.interfaces.OnIssuerVoiceReference;
 import com.morefun.ypos.interfaces.OnSelectAccountType;
@@ -105,44 +106,44 @@ public class MainActivity extends AppCompatActivity {
     private static final String QR_CODE = "Generates a QR code";
     private static final String BAR_CODE = "Generates a Barcode";
     private static final String IS_EXITS_CARD = "Check Card is exits";
+    private static final String AID_CAPK = "AID & CAPK (Add、Delete、Get)";
 
     private void intiitems() {
         items.add(getString(R.string.login_devices));
+        items.add(getString(R.string.device_info));
         items.add(getString(R.string.menu_pboc2));
         items.add(getString(R.string.menu_apdu));
-        items.add(getString(R.string.menu_m1card));
-        items.add(getString(R.string.menu_felica));
+        items.add(AID_CAPK);
+        items.add(getString(R.string.menu_mag_card_reader));
+        items.add(getString(R.string.menu_ic_card_reader));
+        items.add(IS_EXITS_CARD);
+
 //        items.add(getString(R.string.menu_eleccash));
 
         items.add(getString(R.string.init_dukpt));
         items.add(getString(R.string.initIPEK));
         items.add(getString(R.string.dukpt_calculation));
+        items.add(getString(R.string.menu_pinkeybord));
+
+        items.add(getString(R.string.menu_m1card));
+        items.add(getString(R.string.menu_felica));
 //        items.add(getString(R.string.menu_carddetail));
 //        items.add(getString(R.string.menu_loadkek));
 //        items.add(getString(R.string.menu_loadmasterkey));
 //        items.add(getString(R.string.menu_loadworkkey));
-        items.add(getString(R.string.menu_calmac));
 //        items.add(getString(R.string.menu_caldata));
-        items.add(getString(R.string.menu_capk));
-        items.add(getString(R.string.menu_aid));
-
-        items.add(getString(R.string.clear_capk_aid));
+        items.add(getString(R.string.menu_calmac));
+        items.add(getString(R.string.menu_print));
         items.add(getString(R.string.menu_beep));
-        items.add(getString(R.string.menu_mag_card_reader));
-        items.add(getString(R.string.menu_ic_card_reader));
-        items.add(IS_EXITS_CARD);
         items.add(getString(R.string.menu_led));
         items.add(getString(R.string.menu_scanner));
         items.add(getString(R.string.menu_serialport));
-        items.add(getString(R.string.menu_print));
-        items.add(getString(R.string.menu_pinkeybord));
+
         items.add(getString(R.string.menu_sign));
 //        items.add(QR_CODE);
 //        items.add(BAR_CODE);
         items.add(getString(R.string.menu_chooselan));
-        items.add(getString(R.string.device_info));
         items.add(getString(R.string.install_app));
-        items.add("More");
 //        items.add("uninstall");
     }
 
@@ -166,9 +167,9 @@ public class MainActivity extends AppCompatActivity {
         }*/
         if (id.equals(getString(R.string.login_devices))) {
             Bundle bundle = new Bundle();
-            int ret = mSDKManager.login(bundle, "09000000");
-            isLogin = (ret == 0);
-            ac.blockmsg(id, ret == ServiceResult.Success ? getString(R.string.msg_succ) : getString(R.string.msg_fail));
+            int ret = mSDKManager.login(bundle, DukptConfigs.getDukptBussinessId());
+            isLogin = (ret == ServiceResult.Success);
+            ac.blockmsg(id, isLogin ? getString(R.string.msg_succ) : getString(R.string.msg_fail));
         } else if (id.equals(getString(R.string.menu_pboc2))) {
             PBOC2();
         } else if (id.equals(getString(R.string.menu_apdu))) {
@@ -180,9 +181,9 @@ public class MainActivity extends AppCompatActivity {
             testFelica();
         } else if (id.equals(getString(R.string.init_dukpt))) {
             PinPadTest.initDukptBDKAndKsn(mSDKManager, mAlertDialogOnShowListener);
-        }else if (id.equals(getString(R.string.initIPEK))) {
+        } else if (id.equals(getString(R.string.initIPEK))) {
             PinPadTest.initDukptIPEKAndKsn(mSDKManager, mAlertDialogOnShowListener);
-        }else if (id.equals(getString(R.string.dukpt_calculation))) {
+        } else if (id.equals(getString(R.string.dukpt_calculation))) {
             PinPadTest.dukptCalculation(mSDKManager, mAlertDialogOnShowListener);
         } else if (id.equals(getString(R.string.menu_loadkek))) {
             LoadKek();
@@ -190,12 +191,6 @@ public class MainActivity extends AppCompatActivity {
 //            LoadMainKey();
         } else if (id.equals(getString(R.string.menu_calmac))) {
             CalMac();
-        } else if (id.equals(getString(R.string.menu_capk))) {
-            EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).ICPublicKeyManage();
-        } else if (id.equals(getString(R.string.menu_aid))) {
-            EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).ICAidManage();
-        } else if (id.equals(getString(R.string.clear_capk_aid))) {
-            EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).clearAIDAndRID();
         } else if (id.equals(getString(R.string.menu_beep))) {
             Beep();
         } else if (id.equals(getString(R.string.menu_ic_card_reader))) {
@@ -204,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
             MagCardReaderApi();
         } else if (id.equals(IS_EXITS_CARD)) {
             checkCardIsExits();
-        }else if (id.equals(getString(R.string.menu_led))) {
+        } else if (id.equals(getString(R.string.menu_led))) {
             LED();
         } else if (id.equals(getString(R.string.menu_scanner))) {
             ScannerApi();
@@ -250,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
             getDeviceInfo();
         } else if (id.equals(getString(R.string.install_app))) {
             InstallApp();
-        } else if (id.equals("More")) {
+        } else if (id.equals(AID_CAPK)) {
             startActivity(new Intent(this, AIDAndCapkActivity.class));
         }
     }
@@ -297,6 +292,7 @@ public class MainActivity extends AppCompatActivity {
     private void MagCardReaderApi() throws RemoteException {
         new SearchCardOrCardReaderTest(mSDKManager, mAlertDialogOnShowListener).MagCardReaderApi();
     }
+
     private void checkCardIsExits() throws RemoteException {
         new SearchCardOrCardReaderTest(mSDKManager, mAlertDialogOnShowListener).checkCardIsExits();
     }
@@ -335,11 +331,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void Beep() throws RemoteException {
         BeepLEDTest.beep(mSDKManager);
-    }
-
-
-    private void ICPublicKeyManage() {
-        EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).ICPublicKeyManage();
     }
 
     private void CalMac() throws RemoteException {
@@ -592,12 +583,14 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
 //        LogReader.stopCatchLog();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

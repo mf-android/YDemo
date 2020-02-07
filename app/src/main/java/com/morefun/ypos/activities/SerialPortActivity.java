@@ -29,6 +29,7 @@ public class SerialPortActivity extends AppCompatActivity {
     SerialPortDriver mSerialPortDriver;
     volatile boolean isOpen;
     volatile boolean isWrite;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,17 +38,17 @@ public class SerialPortActivity extends AppCompatActivity {
         findViews();
     }
 
-    private void connectPC() throws RemoteException{
+    private void connectPC() throws RemoteException {
         isOpen = false;
         SDKManager mSDKManager = SDKManager.getInstance();
-        if (mSDKManager == null){
+        if (mSDKManager == null) {
             throw new NullPointerException("Please install YDEMO.APK first");
         }
         mSerialPortDriver = mSDKManager.getDeviceServiceEngine().getSerialPortDriver(4);
         int connect = mSerialPortDriver.connect("115200,N,8,1");
         Log.d(TAG, "SerialPortDriver connect reuslt = " + (connect == ServiceResult.Success));
         if (connect == ServiceResult.Success) {
-            Toast.makeText(this,"Connect success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Connect success", Toast.LENGTH_SHORT).show();
             isOpen = true;
         }
     }
@@ -61,8 +62,8 @@ public class SerialPortActivity extends AppCompatActivity {
         mBtConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isOpen){
-                    Toast.makeText(SerialPortActivity.this,"Connected", Toast.LENGTH_SHORT).show();
+                if (isOpen) {
+                    Toast.makeText(SerialPortActivity.this, "Connected", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 try {
@@ -70,7 +71,7 @@ public class SerialPortActivity extends AppCompatActivity {
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
-                if (isOpen){
+                if (isOpen) {
                     createReadThread();
                 }
             }
@@ -94,7 +95,7 @@ public class SerialPortActivity extends AppCompatActivity {
     }
 
     private void close() {
-        isOpen  = false;
+        isOpen = false;
         try {
             mSerialPortDriver.disconnect();
         } catch (RemoteException e) {
@@ -103,28 +104,29 @@ public class SerialPortActivity extends AppCompatActivity {
     }
 
     private void writeData() throws RemoteException {
-        if (!isOpen){
-            Toast.makeText(SerialPortActivity.this,"Please connect first", Toast.LENGTH_SHORT).show();
+        if (!isOpen) {
+            Toast.makeText(SerialPortActivity.this, "Please connect first", Toast.LENGTH_SHORT).show();
             return;
         }
         String sendMessage = mEtContent.getText().toString();
-        if (TextUtils.isEmpty(sendMessage)){
+        if (TextUtils.isEmpty(sendMessage)) {
             return;
         }
         isWrite = true;
         byte[] messageBytes = sendMessage.getBytes();
-        int send = mSerialPortDriver.send(messageBytes,messageBytes.length);
+        int send = mSerialPortDriver.send(messageBytes, messageBytes.length);
         Log.d(TAG, "SerialPortDriver read reuslt = " + (send == ServiceResult.Success));
         isWrite = false;
     }
+
     private void ReadMessageFromPC() throws RemoteException {
 //        SystemClock.sleep(1000);
-        while (isOpen){
+        while (isOpen) {
             final byte[] recvBytes = new byte[1024];
-            if (!isWrite){
+            if (!isWrite) {
                 final int read = mSerialPortDriver.recv(recvBytes, recvBytes.length, 1_000);
                 Log.d(TAG, "SerialPortDriver read reuslt = " + (read > ServiceResult.Success));
-                if (read > 0){
+                if (read > 0) {
                     Log.d(TAG, "SerialPortDriver recv reuslt = " + Utils.pubByteToHexString(Utils.getByteArray(recvBytes, 0, read)));
                     SerialPortActivity.this.runOnUiThread(new Runnable() {
                         @Override

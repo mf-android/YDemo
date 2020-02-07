@@ -30,7 +30,7 @@ public class DefaultInputDialogFragment extends BaseDialogFragment {
     private String mLeftButtonText;
     private String mRightButtonText;
     private String mContent;
-    private int mRawInputType = - 1;
+    private int mRawInputType = -1;
     private KeyListener mKeyListener;
     @LayoutRes
     private int mLayoutId = R.layout.fragment_default_input;
@@ -91,6 +91,7 @@ public class DefaultInputDialogFragment extends BaseDialogFragment {
             }
         });
     }
+
     public void setTitle(String title) {
         if (mTvTitle != null) {
             mTvTitle.setText(title);
@@ -163,6 +164,7 @@ public class DefaultInputDialogFragment extends BaseDialogFragment {
 
     public interface OnClickListener {
         void onLeftClick(String content);
+
         void onRightClick(String content);
     }
 }

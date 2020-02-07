@@ -23,6 +23,7 @@ public class FileUtils {
         }
         return null;
     }
+
     //
     public static String createTmpDir(Context context) {
         String sampleDir = "typeFace";
@@ -50,6 +51,7 @@ public class FileUtils {
     public static boolean isExists(String filePath) {
         return !TextUtils.isEmpty(filePath) && new File(filePath).exists();
     }
+
     public static boolean fileCanRead(String filename) {
         File f = new File(filename);
         return f.canRead();

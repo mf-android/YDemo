@@ -33,6 +33,10 @@ public class SearchCardOrCardReaderTest {
     }
 
     public void searchRFCard(final String[] cardtype, final MainActivity.OnSearchListener onSearchListener) {
+        if (mEngine == null) {
+            //Please check NullPointException
+            return;
+        }
         try {
             final IccCardReader rfReader = mEngine.getIccCardReader(IccReaderSlot.RFSlOT);
             mAlertDialogOnShowListener.showProgress(getString(R.string.msg_rfcard), new ActionItems.OnCancelCall() {
@@ -89,7 +93,7 @@ public class SearchCardOrCardReaderTest {
                     Log.d(TAG, "retCode:" + retCode
                             + ", cardType:" + bundle.getString(ICCSearchResult.CARDTYPE)
                             + ", cardOther:" + bundle.getInt(ICCSearchResult.CARDOTHER)
-                            + ", is contact :" + (bundle.getInt(ICCSearchResult.CARDOTHER)== IccReaderSlot.ICSlOT1));
+                            + ", is contact :" + (bundle.getInt(ICCSearchResult.CARDOTHER) == IccReaderSlot.ICSlOT1));
 
                     icReader.stopSearch();
                     rfReader.stopSearch();
@@ -127,7 +131,7 @@ public class SearchCardOrCardReaderTest {
             public void onSearchResult(final int retCode, Bundle bundle) throws RemoteException {
 //                    ICCSearchResult.CARDTYPE
                 String cardType = bundle.getString(ICCSearchResult.CARDTYPE);
-                String cardOther = bundle.getString(ICCSearchResult.CARDOTHER);
+                int cardOther = bundle.getInt(ICCSearchResult.CARDOTHER, -1);
                 Log.d(TAG, "retCode= " + retCode + "," + cardType + "," + cardOther);
                 m1Reader.stopSearch();
                 rfReader.stopSearch();
@@ -159,7 +163,7 @@ public class SearchCardOrCardReaderTest {
             }
         });
         Bundle bundle = DukptConfigs.getTrackIPEKBundle();
-        mEngine.getMagCardReader().searchCard (new OnSearchMagCardListener.Stub() {
+        mEngine.getMagCardReader().searchCard(new OnSearchMagCardListener.Stub() {
             @Override
             public void onSearchResult(int retCode, MagCardInfoEntity magCardInfoEntity) throws RemoteException {
                 if (retCode == ServiceResult.Success) {
@@ -172,7 +176,7 @@ public class SearchCardOrCardReaderTest {
         }, 60, bundle);// second
     }
 
-    public static String getCardInfo(MagCardInfoEntity magCardInfoEntity){
+    public static String getCardInfo(MagCardInfoEntity magCardInfoEntity) {
         Log.d(TAG, "ret ===" + magCardInfoEntity.getCardNo());
         Log.d(TAG, "Tk1 ===" + magCardInfoEntity.getTk1());
         Log.d(TAG, "Tk2 ===" + magCardInfoEntity.getTk2());

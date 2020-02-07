@@ -34,7 +34,7 @@ public class DevicesInfoTest extends BaseApiTest {
         alertDialogOnShowListener.showMessage(builder.toString());
     }
 
-    public static void setSystemTime(DeviceServiceEngine mSDKManager){
+    public static void setSystemTime(DeviceServiceEngine mSDKManager) {
         //datetime - (YYYYMMDDHHMMSS)
         try {
             mSDKManager.setSystemClock("20190730113422");

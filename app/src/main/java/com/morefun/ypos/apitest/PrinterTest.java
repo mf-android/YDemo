@@ -89,6 +89,7 @@ public class PrinterTest {
             MulPrintStrEntity entity = new MulPrintStrEntity("POS purchase order", fontSize);
 //            entity.setGravity(Gravity.CENTER);
             entity.setMarginX(50);
+            entity.setIsBold(1);
             entity.setUnderline(true);
             entity.setYspace(30);
             list.add(entity);

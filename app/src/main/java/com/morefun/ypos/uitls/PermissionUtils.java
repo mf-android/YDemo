@@ -73,7 +73,7 @@ public class PermissionUtils {
             return true;
         boolean isPermissionGranted = true;
         ArrayList<String> permissionList = new ArrayList<String>();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
         }
         for (String permission : permissions) {

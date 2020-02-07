@@ -45,23 +45,23 @@ public class SerialPortTest {
                     if (connect == ServiceResult.Success) {
                         int count = 10;
                         //test wait 1 second
-                            SystemClock.sleep(1_000);
-                            byte[] sendData = ("test Mag"+ count  ).getBytes();
-                            int send = serialPortDriver.send(sendData, sendData.length);
-                            Log.d(TAG, "SerialPortDriver send reuslt = " + (send == ServiceResult.Success));
-                            // read
-                            while (count > 0 ){
-                                count --;
-                                byte[] recvBytes = new byte[1024];
-                                int read = serialPortDriver.recv(recvBytes, recvBytes.length, 10_000);
-                                Log.d(TAG, "SerialPortDriver read reuslt = " + (read > ServiceResult.Success));
-                                if (read > 0){
-                                    Log.d(TAG, "SerialPortDriver recv reuslt = " + Utils.pubByteToHexString(Utils.getByteArray(recvBytes, 0, read)));
-                                    sendData = (" recv msg success"+ count  ).getBytes();
-                                    serialPortDriver.send(sendData, sendData.length);
-                                }
-                                SystemClock.sleep(1_000);
+                        SystemClock.sleep(1_000);
+                        byte[] sendData = ("test Mag" + count).getBytes();
+                        int send = serialPortDriver.send(sendData, sendData.length);
+                        Log.d(TAG, "SerialPortDriver send reuslt = " + (send == ServiceResult.Success));
+                        // read
+                        while (count > 0) {
+                            count--;
+                            byte[] recvBytes = new byte[1024];
+                            int read = serialPortDriver.recv(recvBytes, recvBytes.length, 10_000);
+                            Log.d(TAG, "SerialPortDriver read reuslt = " + (read > ServiceResult.Success));
+                            if (read > 0) {
+                                Log.d(TAG, "SerialPortDriver recv reuslt = " + Utils.pubByteToHexString(Utils.getByteArray(recvBytes, 0, read)));
+                                sendData = (" recv msg success" + count).getBytes();
+                                serialPortDriver.send(sendData, sendData.length);
                             }
+                            SystemClock.sleep(1_000);
+                        }
                     }
                     alertDialogOnShowListener.dismissProgress();
                     serialPortDriver.disconnect();

@@ -36,37 +36,40 @@ public class EmvHandlerTest extends BaseApiTest {
 
     private EmvHandlerTest() {
     }
+
     public void setAIDList() throws RemoteException {
         List<EmvAidPara> aidParaList = mSDKManager.getEmvHandler().getAidParaList();
-        if (aidParaList != null && aidParaList.size() > 0 ){
-            Log.d(TAG ,"aid size =" + aidParaList.size());
-        }else {
-            Log.d(TAG ,"clear success. AID num 0.");
+        if (aidParaList != null && aidParaList.size() > 0) {
+            Log.d(TAG, "aid size =" + aidParaList.size());
+        } else {
+            Log.d(TAG, "clear success. AID num 0.");
             return;
         }
         int ret = mSDKManager.getEmvHandler().setAidParaList(aidParaList);
-        Log.d(TAG ,"setAidParaList= " + ret);
+        Log.d(TAG, "setAidParaList= " + ret);
         mAlertDialogOnShowListener.showMessage("setAidParaList = " + (ret == 0));
     }
+
     public void getCAPKList() throws RemoteException {
         List<EmvCapk> capkList = mSDKManager.getEmvHandler().getCapkList();
-        if (capkList != null && capkList.size() > 0 ){
-            Log.d(TAG ,"Capk size =" + capkList.size());
+        if (capkList != null && capkList.size() > 0) {
+            Log.d(TAG, "Capk size =" + capkList.size());
             mAlertDialogOnShowListener.showMessage("CAPK size = " + capkList.size());
-        }else {
-            Log.d(TAG ,"clear success. CAPK num 0.");
-            mAlertDialogOnShowListener.showMessage("CAPK size = 0" );
+        } else {
+            Log.d(TAG, "clear success. CAPK num 0.");
+            mAlertDialogOnShowListener.showMessage("CAPK size = 0");
         }
     }
+
     public void setCAPKList() throws RemoteException {
         List<EmvCapk> capkList = mSDKManager.getEmvHandler().getCapkList();
-        if (capkList != null && capkList.size() > 0 ){
-            Log.d(TAG ,"Capk size =" + capkList.size());
-        }else {
-            Log.d(TAG ,"clear success. CAPK num 0.");
+        if (capkList != null && capkList.size() > 0) {
+            Log.d(TAG, "Capk size =" + capkList.size());
+        } else {
+            Log.d(TAG, "clear success. CAPK num 0.");
         }
         int ret = mSDKManager.getEmvHandler().setCAPKList(capkList);
-        Log.d(TAG ,"setCAPKList ret = " + ret);
+        Log.d(TAG, "setCAPKList ret = " + ret);
         mAlertDialogOnShowListener.showMessage("setCAPKList = " + (ret == 0));
     }
 
@@ -83,11 +86,11 @@ public class EmvHandlerTest extends BaseApiTest {
 
     public void getAidList() throws RemoteException {
         List<EmvAidPara> aidParaList = mSDKManager.getEmvHandler().getAidParaList();
-        if (aidParaList != null && aidParaList.size() > 0 ){
-            Log.d(TAG ,"aid size =" + aidParaList.size());
-            mAlertDialogOnShowListener.showMessage("aid size = "+ aidParaList.size());
-        }else {
-            Log.d(TAG ,"clear success. AID num 0.");
+        if (aidParaList != null && aidParaList.size() > 0) {
+            Log.d(TAG, "aid size =" + aidParaList.size());
+            mAlertDialogOnShowListener.showMessage("aid size = " + aidParaList.size());
+        } else {
+            Log.d(TAG, "clear success. AID num 0.");
             mAlertDialogOnShowListener.showMessage("aid size = 0");
             return;
         }
@@ -133,11 +136,11 @@ public class EmvHandlerTest extends BaseApiTest {
                 String key = keys[j];
                 ret = mSDKManager.getEmvHandler().addAidParam(string2byte(key));
                 Log.d(TAG, "result = " + (ret == ServiceResult.Success));
-                if (ret != ServiceResult.Success){
+                if (ret != ServiceResult.Success) {
                     break;
                 }
             }
-            mAlertDialogOnShowListener.showMessage(getString(R.string.msg_done) +":"+ (ret == ServiceResult.Success));
+            mAlertDialogOnShowListener.showMessage(getString(R.string.msg_done) + ":" + (ret == ServiceResult.Success));
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -165,11 +168,11 @@ public class EmvHandlerTest extends BaseApiTest {
                 String key = keys[j];
                 ret = mSDKManager.getEmvHandler().addCAPKParam(string2byte(key));
                 Log.d(TAG, "result = " + (ret == ServiceResult.Success));
-                if (ret != ServiceResult.Success){
+                if (ret != ServiceResult.Success) {
                     break;
                 }
             }
-            mAlertDialogOnShowListener.showMessage(getString(R.string.msg_done) +":"+ (ret == ServiceResult.Success));
+            mAlertDialogOnShowListener.showMessage(getString(R.string.msg_done) + ":" + (ret == ServiceResult.Success));
         } catch (RemoteException e) {
             e.printStackTrace();
         }

@@ -34,9 +34,11 @@ public class Utils {
         }
 
     }
-    public static int memcpy(byte [] dst , byte[] src ,  int len){
-        return memcpy(dst , 0 ,src ,0, len);
+
+    public static int memcpy(byte[] dst, byte[] src, int len) {
+        return memcpy(dst, 0, src, 0, len);
     }
+
     public static int memcpy(byte[] dst, int des_i, byte[] src, int src_i, int len) {
         try {
             if (len > dst.length - des_i) {
@@ -239,13 +241,15 @@ public class Utils {
         }
         return buffer;
     }
-    public static byte[] checkInputData(byte[] data){
+
+    public static byte[] checkInputData(byte[] data) {
         int len = ((data.length + 7) / 8 * 8);
         byte[] inputData = new byte[len];
         memset(inputData, 0, 0xFF, len);
         memcpy(inputData, data, data.length);
         return inputData;
     }
+
     public static void chmod(String permission, String path) {
         try {
             String command = "chmod " + permission + " " + path;

@@ -39,7 +39,7 @@ public class ScannerApi extends BaseApiTest {
             innerScanner.startScan(3, new OnScannedListener.Stub() {
                 @Override
                 public void onScanResult(final int retCode, final byte[] scanResult) throws RemoteException {
-                    Log.d("ScannerApi","scanResult = " + new String(scanResult));
+                    Log.d("ScannerApi", "scanResult = " + new String(scanResult));
                     listener.showMessage((retCode == ServiceResult.Success) ?
                             "scanResult = " + new String(scanResult)
                             : "Scan Fail " + retCode);

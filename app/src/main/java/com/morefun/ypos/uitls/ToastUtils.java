@@ -88,6 +88,7 @@ public class ToastUtils {
             mToast.show();
         }
     }
+
     public static Handler getmHandler() {
         return mHandler;
     }

@@ -15,6 +15,7 @@ public class BaseDialogFragment extends DialogFragment {
     private DialogInterface.OnKeyListener onKeyListener;
     private boolean mCancelable;
     private Drawable mBackgroundDrawable;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
