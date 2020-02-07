@@ -66,7 +66,7 @@ Dukptcalculation
 
 MK/SK
 
-calculate MAC
+Calculate MAC
 
 M1Card
 
@@ -91,7 +91,7 @@ path:docs/MFYSDK_Android_Programming_Manual.pdf
 
 #  FAQ
 
-### Offline PIN ERROR
+### Offline Pin error message
 ```
 //Pin call back ,need jude the messageType. There are three cases.
             @Override
@@ -107,7 +107,7 @@ path:docs/MFYSDK_Android_Programming_Manual.pdf
                 }
 ```
 
-### AID tag Details
+### AID tag details
 Could I load the aids of each brand card? Visa, visa electron, master card and amex? 
 
 We have sorted out the related parameter information of the card group AID, you first understand.
@@ -138,9 +138,11 @@ DF14(252)  <T> Default DDOL(Hex), e.g.(0x9F 0x37 0x04 0x00 ...)
 
 The method of setting aid is like the way provided by demo.
 
-Contactless Transaction Limit  -----If the limit is exceeded, the transaction will fail
-Contactless Floor Limit              -----If the limit is exceeded, the transaction may request online
-Contactless CVM Limit              ---- If the limit is exceeded, the transaction will request CVM method
+Contactless Transaction Limit : If the limit is exceeded, the transaction will fail.
+
+Contactless Floor Limit            :  If the limit is exceeded, the transaction may request online.
+
+Contactless CVM Limit             :  If the limit is exceeded, the transaction will request CVM method.
 
 
 

@@ -1,13 +1,16 @@
-[20200206]
+#### [20200206]
+
 1.change OnEmvProcessListener:
 Add Rupay contactless (double tap、Long tag) case.
+
+
 
 2.EmvTransDataConstrants.CONTACTLESS_PIN_FREE_AMT
 Pin Free Amount for contactLess(Amount 2000).
 
 
 
-[20200116]
+#### [20200116]
 
 1.change inputText API.
 
@@ -17,14 +20,16 @@ Pin Free Amount for contactLess(Amount 2000).
 
 
 
-[20200109-dev]
+#### [20200109-dev]
+
 1.fix bypass value(new byte[0]).
 2.add custom tag.
 3.change input online pin length( 4 position).
 
 
 
-[20200103-dev]
+#### [20200103-dev]
+
 1.Add Grad logcat switch.
 2.Add jude:
   if the amount of connect less transactions is more than 2,000. The interface prompts you to swipe or insert a card.
@@ -33,7 +38,7 @@ For online transactions, the terminal must force to enter the password,Please se
 
 
 
-[20191225]
+#### [20191225]
 
 1、Dukpt：At most 6 groups of keys are supported.
 2、Dukpt：increaseKSN API : Generate new PEK and return new KSN.
