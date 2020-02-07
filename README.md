@@ -10,7 +10,7 @@ YDemo base on YSDK, for Morefun Android POS
 YSDK/YSDK.apk.
 
 ```
-adb install  YSDK.apk
+adb install YSDK.apk
 ```
 
 ##### You may need to add mfysdk.jar to your project.
@@ -30,29 +30,29 @@ APK compiled with project, can be used to run viewing functions directly.
 
 [Login](https://github.com/mf-android/YDemo/blob/master/docs/Login.md "Markdown")
 
-Device info
+[Device info](https://github.com/mf-android/YDemo/blob/master/docs/DeviceInfo.md "Markdown")
 
-PBOC
+[PBOC](https://github.com/mf-android/YDemo/blob/master/docs/PBOC.md "Markdown")
 
-AID & CAPK (Add、Delete、Get)
+[AID & CAPK (Add、Delete、Get)](https://github.com/mf-android/YDemo/blob/master/docs/AID&CAPK.md "Markdown")
 
-Magnetic stripe 
 
-Contact & Contactless(Dip & Tap)
+[Magnetic stripe](https://github.com/mf-android/YDemo/blob/master/docs/MagneticStripe.md"Markdown")
 
-PinPad
+[Contact & Contactless(Dip & Tap)](https://github.com/mf-android/YDemo/blob/master/docs/Contact&Contactless.md"Markdown")
+
+[PinPad](https://github.com/mf-android/YDemo/blob/master/docs/PinPad.md "Markdown")
 
 ------
 
-Printer
+[Printer](https://github.com/mf-android/YDemo/blob/master/docs/Printer.md "Markdown")
 
-LED & Buzzer
+[LED & Buzzer](https://github.com/mf-android/YDemo/blob/master/docs/LED&Buzzer.md "Markdown")
 
 Scanner
 
 ------
-
-DUKPT （Derived Unique Key Per Transaction）《ANSI X9.24》
+[DUKPT（Derived Unique Key Per Transaction）《ANSI X9.24》](https://github.com/mf-android/YDemo/blob/master/docs/DUKPT.md "Markdown")
 
 Load BDK
 
@@ -68,7 +68,7 @@ MK/SK
 
 Calculate MAC
 
-M1Card
+[M1Card](https://github.com/mf-android/YDemo/blob/master/docs/M1Card.md "Markdown")
 
 FELICA Card
 
@@ -83,7 +83,7 @@ MFYSDK_Android_Programming_Manual.pdf
 This manual is applicable to MF919 POS Terminal (hereinafter referred to as “MFPOS”).
 
 ```
-path:docs/MFYSDK_Android_Programming_Manual.pdf
+path:YSDK/MFYSDK_Android_Programming_Manual.pdf
 ```
 
 
