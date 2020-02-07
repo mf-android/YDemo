@@ -24,7 +24,7 @@ android {
 }
 
 dependencies {
-    implementation files('libs/mfysdk0131.jar')
+    implementation files('libs/mfysdk0207.jar')
    // implementation files('libs/commons-codec-1.2.jar')
     //zxing lib
     implementation 'com.google.zxing:core:3.3.0'

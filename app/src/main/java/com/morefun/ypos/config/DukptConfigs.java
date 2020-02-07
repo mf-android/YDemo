@@ -109,6 +109,7 @@ public class DukptConfigs {
         Log.d("DukptConfigs", "gid =" + key_index);
         //default value is  DesAlgorithmType.TDES_CBC
         bundle.putInt(KSNConstrants.DesAlgorithmType, DesAlgorithmType.TDES_CBC);
+        bundle.putInt(KSNConstrants.DUKPT_MAKE_UP, 0x00);
         return bundle;
     }
 
