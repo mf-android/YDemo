@@ -28,31 +28,31 @@ APK compiled with project, can be used to run viewing functions directly.
 
 # FEATURES
 
-[Login](https://github.com/mf-android/YDemo/blob/master/docs/Login.md "Markdown")
+[Login](https://github.com/mf-android/YDemo/blob/master/docs/Login.md)
 
-[Device info](https://github.com/mf-android/YDemo/blob/master/docs/DeviceInfo.md "Markdown")
+[Device info](https://github.com/mf-android/YDemo/blob/master/docs/DeviceInfo.md)
 
-[PBOC](https://github.com/mf-android/YDemo/blob/master/docs/PBOC.md "Markdown")
+[PBOC](https://github.com/mf-android/YDemo/blob/master/docs/PBOC.md)
 
-[AID & CAPK (Add、Delete、Get)](https://github.com/mf-android/YDemo/blob/master/docs/AID&CAPK.md "Markdown")
+[AID & CAPK (Add、Delete、Get)](https://github.com/mf-android/YDemo/blob/master/docs/AID&CAPK.md)
 
 
-[Magnetic stripe](https://github.com/mf-android/YDemo/blob/master/docs/MagneticStripe.md"Markdown")
+[Magnetic stripe](https://github.com/mf-android/YDemo/blob/master/docs/MagneticStripe.md)
 
-[Contact & Contactless(Dip & Tap)](https://github.com/mf-android/YDemo/blob/master/docs/Contact&Contactless.md"Markdown")
+[Contact & Contactless(Dip & Tap)](https://github.com/mf-android/YDemo/blob/master/docs/Contact&Contactless.md)
 
-[PinPad](https://github.com/mf-android/YDemo/blob/master/docs/PinPad.md "Markdown")
+[PinPad](https://github.com/mf-android/YDemo/blob/master/docs/PinPad.md)
 
 ------
 
-[Printer](https://github.com/mf-android/YDemo/blob/master/docs/Printer.md "Markdown")
+[Printer](https://github.com/mf-android/YDemo/blob/master/docs/Printer.md)
 
-[LED & Buzzer](https://github.com/mf-android/YDemo/blob/master/docs/LED&Buzzer.md "Markdown")
+[LED & Buzzer](https://github.com/mf-android/YDemo/blob/master/docs/LED&Buzzer.md)
 
 Scanner
 
 ------
-[DUKPT（Derived Unique Key Per Transaction）《ANSI X9.24》](https://github.com/mf-android/YDemo/blob/master/docs/DUKPT.md "Markdown")
+[DUKPT（Derived Unique Key Per Transaction）《ANSI X9.24》](https://github.com/mf-android/YDemo/blob/master/docs/DUKPT.md)
 
 Load BDK
 
