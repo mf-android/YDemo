@@ -3,6 +3,7 @@ package com.morefun.ypos.uitls;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.Log;
 
@@ -300,5 +301,12 @@ public class Utils {
         } catch (PackageManager.NameNotFoundException e) {
             return "unknown";
         }
+    }
+
+    public static String covertPanPadding(String cardNum) {
+        if (!TextUtils.isEmpty(cardNum) && (cardNum.endsWith("F") || cardNum.endsWith("f"))) {
+            cardNum = cardNum.substring(0, cardNum.length() - 1);
+        }
+        return cardNum;
     }
 }

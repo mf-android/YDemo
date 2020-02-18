@@ -87,9 +87,9 @@ public class AIDAndCapkActivity extends AppCompatActivity {
             return;
         }
         if (id.equals(getString(R.string.menu_capk))) {
-            EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).ICPublicKeyManage();
+            EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).addCapkParam();
         } else if (id.equals(getString(R.string.menu_aid))) {
-            EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).ICAidManage();
+            EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).addAidParam();
         } else if (id.equals(getString(R.string.clear_capk_aid))) {
             EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).clearAIDAndRID();
         } else if (id.equals(API_NAME.GET_AID)) {
@@ -131,10 +131,6 @@ public class AIDAndCapkActivity extends AppCompatActivity {
             });
             fragment.show(AIDAndCapkActivity.this, "capk");
         }
-    }
-
-    private void ICPublicKeyManage() {
-        EmvHandlerTest.getInstance().setEmvHandler(mSDKManager, mAlertDialogOnShowListener).ICPublicKeyManage();
     }
 
     private MainActivity.AlertDialogOnShowListener mAlertDialogOnShowListener = new MainActivity.AlertDialogOnShowListener() {

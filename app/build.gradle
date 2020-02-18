@@ -9,6 +9,7 @@ android {
         targetSdkVersion 26
         versionCode 2020
         versionName new Date().format("yyMMdd")
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -24,9 +25,12 @@ android {
 }
 
 dependencies {
-    implementation files('libs/mfysdk0207.jar')
+    implementation files('libs/mfysdk0215.jar')
    // implementation files('libs/commons-codec-1.2.jar')
     //zxing lib
     implementation 'com.google.zxing:core:3.3.0'
     implementation 'com.android.support:appcompat-v7:26.1.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

@@ -26,6 +26,7 @@ import com.morefun.yapi.emv.EmvHandler;
 import com.morefun.yapi.emv.EmvListenerConstrants;
 import com.morefun.yapi.emv.EmvOnlineRequest;
 import com.morefun.yapi.emv.EmvOnlineResult;
+import com.morefun.yapi.emv.GoToConstants;
 import com.morefun.yapi.emv.OnEmvProcessListener;
 import com.morefun.yapi.engine.DeviceServiceEngine;
 import com.morefun.ypos.BaseApiTest;
@@ -241,6 +242,9 @@ public class EmvPBOCTest extends BaseApiTest {
                     mAlertDialogOnShowListener.showMessage("Emv_FallBack");
                 } else if (ret == ServiceResult.Emv_Terminate) {// trans end
                     beep(false);
+                    int gotoCode = bundle.getInt(EmvErrorConstrants.EMV_GOTO_CODE, 0);
+                    Log.d(TAG, "gotoCode error= " + (gotoCode == GoToConstants.GOTO_CDV_TRY_AGAIN));
+                    Log.d(TAG, "gotoCode error= " + (gotoCode == GoToConstants.GOTO_TRY_AGAIN));
                     if (errorCode != null) {
                         mAlertDialogOnShowListener.showMessage("terminate, Error Code: " + new String(errorCode).trim());
                         //TODO if the amount of connect less transactions is more than 2,0000. The interface prompts you to swipe or insert a card.
