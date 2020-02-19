@@ -50,8 +50,8 @@
     <string name="menu_calmac"> Calculate MAC</string>
     <string name="menu_caltrack"> calculte magnetic track cryptograph</string>
     <string name="menu_caldata"> data encryption and decryption</string>
-    <string name="menu_capk">Add IC public key (CAPK)</string>
-    <string name="menu_aid">Add IC data (AID)</string>
+    <string name="menu_capk">IC public key download(CAPK)</string>
+    <string name="menu_aid">IC data download(AID)</string>
     <string name="menu_beep">Buzzer</string>
     <string name="menu_print">Print</string>
     <string name="menu_devicesn">Read device SN</string>
@@ -62,7 +62,7 @@
     <string name="menu_sign"> Manual signature </string>
     <string name="menu_signpass"> signature-free and password-free</string>
     <string name="menu_tusn">Series number encrypt</string>
-    <string name="menu_pboc2">PBOC(contain all callback show)</string>
+    <string name="menu_pboc2">PBOC2(contain all callback show)</string>
     <string name="menu_onlineauth">secondary authorization</string>
     <string name="menu_setmid">set up manufacturer id</string>
     <string name="menu_chooselan"> Language(Language)</string>
@@ -116,8 +116,8 @@
     <string name="menu_led">LED</string>
     <string name="menu_scanner">Scanner</string>
     <string name="menu_serialport">SerialPort</string>
-    <string name="menu_ic_card_reader">Contact And Contactless(Dip And Tap)</string>
-    <string name="menu_mag_card_reader">Magnetic stripe check</string>
+    <string name="menu_ic_card_reader">ICCard Reader</string>
+    <string name="menu_mag_card_reader">MagCard Reader</string>
     <string name="menu_randomnumber">Random Number</string>
     <string name="menu_m1card">M1Card</string>
     <string name="menu_felica">FELICA Card</string>
@@ -134,4 +134,11 @@
     <string name="init_dukpt">Load Dukpt BDKAndKsn</string>
     <string name="initIPEK">init IPEK And Ksn</string>
     <string name="other_trans_result">other trans result</string>
+    <string name="success">success</string>
+    <string name="fail">fail</string>
+    <string name="please_login_first">Please login device first</string>
+    <string name="please_swipe_card">Please swipe card</string>
+    <string name="aid_manager">AID Manager</string>
+    <string name="puk_manager">PUK Manager</string>
+
 </resources>

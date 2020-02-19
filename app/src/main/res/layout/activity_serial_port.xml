@@ -2,46 +2,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/Coneect"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Connect PC"
-        android:textAllCaps="false"
-        android:layout_marginTop="15dp"/>
+        android:orientation="horizontal"
+        android:layout_height="50dp">
 
-    <EditText
-        android:id="@+id/et_send"
-        android:layout_width="wrap_content"
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/connect"
+            android:layout_width="match_parent"
+            style="@style/doneBtn"
+            android:text="Connect PC" />
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/close"
+            android:layout_width="match_parent"
+            style="@style/doneBtn"
+            android:text="Close" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
         android:layout_marginTop="10dp"
-        android:hint="you can input message that you need to send"
-        android:layout_height="wrap_content" />
+        android:layout_height="50dp">
 
-    <Button
-        android:id="@+id/writeData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Send Message"
-        android:textAllCaps="false"/>
+        <EditText
+            android:id="@+id/etTransData"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp"
+            android:text=""
+            android:hint=""
+            android:layout_width="match_parent"
+            android:layout_height="45dip"/>
 
-    <Button
-        android:id="@+id/Close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Close"
-        android:textAllCaps="false"/>
+        <Button
+            android:layout_weight="3"
+            android:id="@+id/send"
+            style="@style/doneBtn"
+            android:layout_width="match_parent"
+            android:text="Send" />
+
+    </LinearLayout>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="read message from PC"/>
-
-    <TextView
-        android:id="@+id/tv_read_messsage"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""/>

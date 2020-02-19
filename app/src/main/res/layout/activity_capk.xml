@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/downloadPuk"
+        android:layout_width="match_parent"
+        style="@style/doneBtn"
+        android:text="Download Puk" />
+
+    <Button
+        android:id="@+id/clearPuk"
+        android:layout_width="match_parent"
+        style="@style/doneBtn"
+        android:text="Clear PUK" />
+
+    <Button
+        android:id="@+id/getPukList"
+        android:layout_width="match_parent"
+        style="@style/doneBtn"
+        android:text="Get PUK" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:layout_margin="5dp"
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="18sp" />
+
+    </ScrollView>
+
+</LinearLayout>

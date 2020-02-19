@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Please input amount"
+            android:textSize="22sp" />
+
+
+        <EditText
+            android:layout_marginTop="20dp"
+            android:id="@+id/etInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="right"
+            android:inputType="number"
+            android:maxLength="13"
+            android:text="0.01"
+            android:textSize="20sp" />
+
+
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:id="@+id/btnPositive"
+                style="@style/doneBtn"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="@string/dialog_ok" />
+
+            <Button
+                android:id="@+id/btnNegtive"
+                style="@style/doneBtn"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="@string/dialog_cancel" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

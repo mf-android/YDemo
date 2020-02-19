@@ -16,4 +16,7 @@
     <color name="text_grenn_color">#00ff00</color>
 
     <color name="set_succed_background_color">#ffffff</color>
+
+    <color name="grey_background">#DDDDDD</color>
+    <color name="light_blue">#689afc</color>
 </resources>

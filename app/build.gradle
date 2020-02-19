@@ -1,10 +1,11 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.jakewharton.butterknife'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 28
 
     defaultConfig {
-        applicationId "com.morefun.ydmeo"
+        applicationId "com.morefun.ysdk.sample"
         minSdkVersion 22
         targetSdkVersion 26
         versionCode 2020
@@ -18,15 +19,22 @@ android {
     }
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "YDemo.apk"
+            outputFileName = "YDemo-" + versionName + ".apk"
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
-    implementation files('libs/mfysdk0131.jar')
-   // implementation files('libs/commons-codec-1.2.jar')
-    //zxing lib
+    implementation files('libs/mfysdk.jar')
     implementation 'com.google.zxing:core:3.3.0'
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.annotation:annotation:1.0.0'
+    implementation 'com.jakewharton:butterknife:10.2.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
+    implementation 'com.github.f0ris.sweetalert:library:1.5.1'
 }

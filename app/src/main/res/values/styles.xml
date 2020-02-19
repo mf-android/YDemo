@@ -8,4 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="doneBtn">
+        <item name="android:background">@drawable/button_error_state</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_margin">2dip</item>
+        <item name="android:layout_height">45dip</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>

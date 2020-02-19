@@ -57,7 +57,7 @@
     <string name="menu_devicesn">读取设备SN</string>
     <string name="menu_version">查看版本</string>
     <string name="menu_codebar">读取一维码</string>
-    <string name="menu_pinkeybord">密码键盘(控件索引)</string>
+    <string name="menu_pinkeybord">密码键盘</string>
     <string name="menu_pinkeybord2">密码键盘(控件坐标)</string>
     <string name="menu_sign">手签测试</string>
     <string name="menu_signpass">免签免密</string>
@@ -112,7 +112,7 @@
     <string name="msg_password">密码(</string>
     <string name="btn_ok">确认</string>
     <string name="M1CardTest">M1 Card</string>
-    <string name="login_devices">登陆设备</string>
+    <string name="login_devices">登录设备</string>
     <string name="menu_led">LED</string>
 
     <string name="menu_scanner">扫码</string>
@@ -136,4 +136,12 @@
     <string name="init_dukpt">初始化BDK和KSN</string>
     <string name="initIPEK">初始化 IPEK 和 KSN</string>
     <string name="other_trans_result">其它错误</string>
+
+    <string name="success">成功</string>
+    <string name="fail">失败</string>
+    <string name="please_login_first">请先登录设备</string>
+    <string name="please_swipe_card">请刷卡</string>
+    <string name="aid_manager">AID管理</string>
+    <string name="puk_manager">PUK管理</string>
+
 </resources>
