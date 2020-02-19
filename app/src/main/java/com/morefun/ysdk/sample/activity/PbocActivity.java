@@ -88,7 +88,6 @@ public class PbocActivity extends BaseActivity {
                     inputAmout.dismiss();
                     try {
                         showResult(textView, getString(R.string.msg_icorrfid));
-                        stopSearch();
                         searchCard();
                     } catch (RemoteException e) {
 
