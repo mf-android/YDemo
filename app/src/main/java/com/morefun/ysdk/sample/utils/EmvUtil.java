@@ -10,6 +10,9 @@ import com.morefun.yapi.emv.EmvTermCfgConstrants;
 import com.morefun.yapi.emv.EmvTransDataConstrants;
 import com.morefun.ysdk.sample.device.DeviceHelper;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class EmvUtil {
 
     private final static String TAG = EmvUtil.class.getName();
@@ -79,10 +82,8 @@ public class EmvUtil {
 
     public static Bundle getInitBundleValue(int channelType, String amount, String cashBackAmt) {
         Bundle bundle = new Bundle();
-        byte[] transDate = new byte[3];
-        byte[] transTime = new byte[3];
 
-        getDateTime(transDate, transTime);
+        String date = getCurrentTime("yyMMddHHmmss");
 
         bundle.putInt(EmvTransDataConstrants.MKEYIDX, 1);
         bundle.putBoolean(EmvTransDataConstrants.ISSUPPORTEC, false);
@@ -91,8 +92,8 @@ public class EmvUtil {
         bundle.putInt(EmvTransDataConstrants.CHANNELTYPE, channelType);
 
         bundle.putByte(EmvTransDataConstrants.B9C, (byte) 0x0);
-        bundle.putString(EmvTransDataConstrants.TRANSDATE, HexUtil.bytesToHexString(transDate));
-        bundle.putString(EmvTransDataConstrants.TRANSTIME, HexUtil.bytesToHexString(transTime));
+        bundle.putString(EmvTransDataConstrants.TRANSDATE, date.substring(0, 6));
+        bundle.putString(EmvTransDataConstrants.TRANSTIME, date.substring(6, 12));
         bundle.putString(EmvTransDataConstrants.SEQNO, "00001");
 
         bundle.putString(EmvTransDataConstrants.TRANSAMT, amount);
@@ -174,30 +175,9 @@ public class EmvUtil {
         return null;
     }
 
-    public static int getDateTime(byte[] d, byte[] time) {
-
-        Time t = new Time(); //
-        t.setToNow();
-
-        int year = t.year;
-        d[0] = HexUtil.hexStringToByte(new String().valueOf(year % 100))[0];
-
-        int month = t.month + 1;
-        d[1] = HexUtil.hexStringToByte(new String().valueOf(month))[0];
-
-        int date = t.monthDay;
-        d[2] = HexUtil.hexStringToByte(new String().valueOf(date))[0];
-
-        int hour = t.hour; // 0-23
-        time[0] = HexUtil.hexStringToByte(new String().valueOf(hour))[0];
-
-        int minute = t.minute;
-        time[1] = HexUtil.hexStringToByte(new String().valueOf(minute))[0];
-
-        int second = t.second;
-        time[2] = HexUtil.hexStringToByte(new String().valueOf(second))[0];
-
-        return 0;
+    public static String getCurrentTime(String format) {
+        SimpleDateFormat df = new SimpleDateFormat(format);
+        Date curDate = new Date(System.currentTimeMillis());
+        return df.format(curDate);
     }
-
 }
