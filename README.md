@@ -144,7 +144,8 @@ Contactless Floor Limit            :  If the limit is exceeded, the transaction 
 
 Contactless CVM Limit             :  If the limit is exceeded, the transaction will request CVM method.
 
-
+###  the type contactless mode
+After the transaction is over, you can judge by obtaining the value of 9F39tag, 07 is contactless EMV mode, 91 is contactless mag-stripe mode.
 
 ###  View the values of AID & CAPK 
 
