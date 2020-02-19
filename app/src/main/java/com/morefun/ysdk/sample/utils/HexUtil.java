@@ -184,7 +184,7 @@ public class HexUtil {
 
     public static byte[] xor(byte[] op1, byte[] op2) {
         if (op1.length != op2.length) {
-            throw new IllegalArgumentException("参数错误，长度不一致");
+            throw new IllegalArgumentException("Parameter error, parameter length is different");
         }
         byte[] result = new byte[op1.length];
         for (int i = 0; i < op1.length; i++) {
