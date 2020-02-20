@@ -6,18 +6,21 @@ import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.Log;
 
+import com.morefun.yapi.emv.EMVTag9CConstants;
 import com.morefun.yapi.emv.EmvTermCfgConstrants;
 import com.morefun.yapi.emv.EmvTransDataConstrants;
 import com.morefun.ysdk.sample.device.DeviceHelper;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class EmvUtil {
 
     private final static String TAG = EmvUtil.class.getName();
 
-    public static final String[] arqcTLVTags = new String[]{"9F26",
+    public static final String[] arqcTLVTags = new String[]{
+            "9F26",
             "9F27",
             "9F10",
             "9F37",
@@ -91,7 +94,7 @@ public class EmvUtil {
         bundle.putInt(EmvTransDataConstrants.ISQPBOCFORCEONLINE, 0);
         bundle.putInt(EmvTransDataConstrants.CHANNELTYPE, channelType);
 
-        bundle.putByte(EmvTransDataConstrants.B9C, (byte) 0x0);
+        bundle.putByte(EmvTransDataConstrants.B9C, (byte) EMVTag9CConstants.EMV_TRANS_SALE);
         bundle.putString(EmvTransDataConstrants.TRANSDATE, date.substring(0, 6));
         bundle.putString(EmvTransDataConstrants.TRANSTIME, date.substring(6, 12));
         bundle.putString(EmvTransDataConstrants.SEQNO, "00001");
@@ -102,7 +105,8 @@ public class EmvUtil {
         bundle.putString(EmvTransDataConstrants.MERNAME, "MOREFUN");
         bundle.putString(EmvTransDataConstrants.MERID, "488923");
         bundle.putString(EmvTransDataConstrants.TERMID, "4999000");
-        bundle.putString(EmvTransDataConstrants.CONTACTLESS_PIN_FREE_AMT, "2000");
+        bundle.putString(EmvTransDataConstrants.CONTACTLESS_PIN_FREE_AMT, "200000");
+        bundle.putStringArrayList(EmvTransDataConstrants.TERMINAL_TLVS, createArrayList("DF81180170", "DF81190118"));
         return bundle;
     }
 
@@ -120,7 +124,7 @@ public class EmvUtil {
             byte[] data = new byte[512];
             Log.d(TAG, "getPbocData Tag:" + tagName);
             int len = DeviceHelper.getEmvHandler().readEmvData(new String[]{tagName.toUpperCase()}, data, new Bundle());
-            if (len > 0 && data != null) {
+            if (len > 0) {
                 TlvData tlvData = TlvData.fromRawData(HexUtil.subByte(data, 0, len), 0);
                 if (isHex) {
                     return tlvData.getValue();
@@ -179,5 +183,13 @@ public class EmvUtil {
         SimpleDateFormat df = new SimpleDateFormat(format);
         Date curDate = new Date(System.currentTimeMillis());
         return df.format(curDate);
+    }
+
+    public static <T> ArrayList<T> createArrayList(T ... elements) {
+        ArrayList<T> list = new ArrayList<T>();
+        for (T element : elements) {
+            list.add(element);
+        }
+        return list;
     }
 }

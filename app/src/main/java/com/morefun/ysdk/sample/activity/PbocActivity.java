@@ -314,7 +314,7 @@ public class PbocActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int index) {
                 try {
-                    DeviceHelper.getEmvHandler().onSetSelAppResponse(index + 1);
+                    DeviceHelper.getEmvHandler().onSetSelAppResponse(index);
                 } catch (RemoteException e) {
 
                 }
