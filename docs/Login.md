@@ -1,7 +1,7 @@
+### [Home](https://github.com/mf-android/YDemo)
 
 
-
-anble dukpt, Please set login with 09000000
+enble dukpt, Please set login with 09000000
 ```
 int ret = DeviceServiceEngine.login(new Bundle(), "09000000");
 boolean loginResult = (ret == ServiceResult.Success);
