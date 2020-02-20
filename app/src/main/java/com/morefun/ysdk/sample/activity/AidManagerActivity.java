@@ -105,6 +105,8 @@ public class AidManagerActivity extends BaseActivity {
 
         } catch (RemoteException e) {
 
+        } catch (NullPointerException e) {
+            showResult(textView, e.getMessage());
         }
 
     }

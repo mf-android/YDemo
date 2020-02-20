@@ -15,7 +15,7 @@
         android:id="@+id/led2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Led red" />
+        android:text="Led yellow" />
 
     <CheckBox
         android:id="@+id/led3"
@@ -28,7 +28,7 @@
         android:id="@+id/led4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Led yellow" />
+        android:text="Led red" />
 
     <Button
         android:id="@+id/button"
