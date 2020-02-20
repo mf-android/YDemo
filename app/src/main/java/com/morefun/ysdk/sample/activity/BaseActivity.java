@@ -16,7 +16,7 @@ public abstract class BaseActivity extends Activity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                textView.append(text +"\r\n");
+                textView.append(text + "\r\n");
             }
         });
     }

@@ -86,6 +86,8 @@ public class CapkManagerActivity extends BaseActivity {
             showResult(textView, "Clear aid success!");
         } catch (RemoteException e) {
 
+        } catch (NullPointerException e) {
+            showResult(textView, e.getMessage());
         }
 
     }

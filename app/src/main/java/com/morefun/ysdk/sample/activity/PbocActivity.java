@@ -88,7 +88,6 @@ public class PbocActivity extends BaseActivity {
                     inputAmout.dismiss();
                     try {
                         showResult(textView, getString(R.string.msg_icorrfid));
-                        stopSearch();
                         searchCard();
                     } catch (RemoteException e) {
 
@@ -368,8 +367,6 @@ public class PbocActivity extends BaseActivity {
         String arqcTlv = EmvUtil.getTLVDatas(EmvUtil.arqcTLVTags);
 
         builder.append(EmvUtil.getTLVDatas(EmvUtil.arqcTLVTags));
-        builder.append("9F0306000000000000");
-
 
         if (!TlvDataList.fromBinary(arqcTlv).contains("9F27")) {
             builder.append(TlvData.fromData("9F27", new byte[]{(byte) 0x80}));

@@ -31,9 +31,7 @@ public class InputDialog extends Dialog {
     EditText etInput;
 
     private String inputString;
-    /**
-     * 设置确定取消按钮的回调
-     */
+
     public OnClickBottomListener onClickBottomListener;
 
 
@@ -96,13 +94,9 @@ public class InputDialog extends Dialog {
         return this;
     }
     public interface OnClickBottomListener{
-        /**
-         * 点击确定按钮事件
-         */
+
         public void onPositiveClick(String content);
-        /**
-         * 点击取消按钮事件
-         */
+
         public void onNegtiveClick();
     }
 
