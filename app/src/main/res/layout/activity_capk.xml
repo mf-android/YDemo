@@ -8,19 +8,19 @@
         android:id="@+id/downloadPuk"
         android:layout_width="match_parent"
         style="@style/doneBtn"
-        android:text="Download Puk" />
+        android:text="Download CAPK" />
 
     <Button
         android:id="@+id/clearPuk"
         android:layout_width="match_parent"
         style="@style/doneBtn"
-        android:text="Clear PUK" />
+        android:text="Clear CAPK" />
 
     <Button
         android:id="@+id/getPukList"
         android:layout_width="match_parent"
         style="@style/doneBtn"
-        android:text="Get PUK" />
+        android:text="Get CAPK" />
 
 
     <ScrollView
