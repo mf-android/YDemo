@@ -142,6 +142,6 @@
     <string name="please_login_first">请先登录设备</string>
     <string name="please_swipe_card">请刷卡</string>
     <string name="aid_manager">AID管理</string>
-    <string name="puk_manager">PUK管理</string>
+    <string name="puk_manager">CAPK管理</string>
 
 </resources>

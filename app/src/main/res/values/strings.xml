@@ -139,6 +139,6 @@
     <string name="please_login_first">Please login device first</string>
     <string name="please_swipe_card">Please swipe card</string>
     <string name="aid_manager">AID Manager</string>
-    <string name="puk_manager">PUK Manager</string>
+    <string name="puk_manager">CAPK Manager</string>
 
 </resources>

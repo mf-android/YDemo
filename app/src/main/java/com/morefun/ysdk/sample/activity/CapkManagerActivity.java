@@ -40,20 +40,20 @@ public class CapkManagerActivity extends BaseActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        downloadCapk();
+                        downloadCAPK();
                     }
                 }).start();
                 break;
             case R.id.clearPuk:
-                clearCapk();
+                clearCAPK();
                 break;
             case R.id.getPukList:
-                getCapkList();
+                getCAPKList();
                 break;
         }
     }
 
-    private void downloadCapk() {
+    private void downloadCAPK(){
         String[] pukList = new String[]{
                 "9F0605A0000003339F220102DF050420211231DF060101DF070101DF028190A3767ABD1B6AA69D7F3FBF28C092DE9ED1E658BA5F0909AF7A1CCD907373B7210FDEB16287BA8E78E1529F443976FD27F991EC67D95E5F4E96B127CAB2396A94D6E45CDA44CA4C4867570D6B07542F8D4BF9FF97975DB9891515E66F525D2B3CBEB6D662BFB6C3F338E93B02142BFC44173A3764C56AADD202075B26DC2F9F7D7AE74BD7D00FD05EE430032663D27A57DF040103DF031403BB335A8549A03B87AB089D006F60852E4B8060",
                 "9F0605A0000003339F220103DF050420221231DF060101DF070101DF0281B0B0627DEE87864F9C18C13B9A1F025448BF13C58380C91F4CEBA9F9BCB214FF8414E9B59D6ABA10F941C7331768F47B2127907D857FA39AAF8CE02045DD01619D689EE731C551159BE7EB2D51A372FF56B556E5CB2FDE36E23073A44CA215D6C26CA68847B388E39520E0026E62294B557D6470440CA0AEFC9438C923AEC9B2098D6D3A1AF5E8B1DE36F4B53040109D89B77CAFAF70C26C601ABDF59EEC0FDC8A99089140CD2E817E335175B03B7AA33DDF040103DF031487F0CD7C0E86F38F89A66F8C47071A8B88586F26",
@@ -80,7 +80,7 @@ public class CapkManagerActivity extends BaseActivity {
         }
     }
 
-    private void clearCapk() {
+    private void clearCAPK() {
         try {
             DeviceHelper.getEmvHandler().clearCAPKParam();
             showResult(textView, "Clear aid success!");
@@ -92,7 +92,7 @@ public class CapkManagerActivity extends BaseActivity {
 
     }
 
-    private void getCapkList() {
+    private void getCAPKList() {
         try {
             List<EmvCapk> capkList = DeviceHelper.getEmvHandler().getCapkList();
             StringBuilder builder = new StringBuilder();
