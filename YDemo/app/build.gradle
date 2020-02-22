@@ -30,11 +30,11 @@ android {
 }
 
 dependencies {
-    implementation files('libs/mfysdk.jar')
     implementation 'com.google.zxing:core:3.3.0'
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.annotation:annotation:1.0.0'
     implementation 'com.jakewharton:butterknife:10.2.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     implementation 'com.github.f0ris.sweetalert:library:1.5.1'
+    implementation files('libs/ysdk_2.0.2615_2002221347.jar')
 }

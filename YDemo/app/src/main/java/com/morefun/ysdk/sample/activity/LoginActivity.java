@@ -33,7 +33,7 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick({R.id.button})
     public void onClick() {
-        login("00000000");
+        login("09000000");
     }
 
     //TODO if need able dukpt, Please set login with 09000000

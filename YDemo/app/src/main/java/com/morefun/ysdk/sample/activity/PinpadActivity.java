@@ -7,8 +7,10 @@ import android.widget.TextView;
 
 import com.morefun.yapi.device.pinpad.DesAlgorithmType;
 import com.morefun.yapi.device.pinpad.DesMode;
+import com.morefun.yapi.device.pinpad.DukptCalcObj;
 import com.morefun.yapi.device.pinpad.DukptKeyGid;
 import com.morefun.yapi.device.pinpad.DukptKeyType;
+import com.morefun.yapi.device.pinpad.DukptLoadObj;
 import com.morefun.yapi.device.pinpad.MacAlgorithmType;
 import com.morefun.yapi.device.pinpad.OnPinPadInputListener;
 import com.morefun.yapi.device.pinpad.PinAlgorithmMode;
@@ -26,8 +28,6 @@ public class PinpadActivity extends BaseActivity {
     @BindView(R.id.textView)
     TextView textView;
 
-    private int dukptKeyId = DukptKeyGid.GID_GROUP_EMV_IPEK;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,20 +38,26 @@ public class PinpadActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.inputPin, R.id.dukptInit, R.id.dukptCalc, R.id.calcMac})
+    @OnClick({R.id.inputPin, R.id.dukptInit, R.id.dukptDeccrypt, R.id.dukptEncrypt, R.id.calcMac, R.id.increaseKsn, R.id.getKsn})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.inputPin:
                 inputPin();
                 break;
             case R.id.increaseKsn:
-                increaseKSN();
+                increaseKsn(true);
+                break;
+            case R.id.getKsn:
+                increaseKsn(false);
                 break;
             case R.id.dukptInit:
                 dukptInit();
                 break;
-            case R.id.dukptCalc:
-                dukptCalc();
+            case R.id.dukptEncrypt:
+                dukptEncrypt();
+                break;
+            case R.id.dukptDeccrypt:
+                dukptDecrypt();
                 break;
             case R.id.calcMac:
                 calcMac();
@@ -59,9 +65,9 @@ public class PinpadActivity extends BaseActivity {
         }
     }
 
-    private void increaseKSN() {
+    private void increaseKsn(boolean isIncrease) {
         try {
-            String ksn = DeviceHelper.getPinpad().increaseKSN(dukptKeyId, new Bundle());
+            String ksn = DeviceHelper.getPinpad().increaseKsn(isIncrease);
             showResult(textView, "ksn:" + ksn);
         } catch (RemoteException e) {
 
@@ -82,16 +88,40 @@ public class PinpadActivity extends BaseActivity {
         }
     }
 
-    private void dukptCalc() {
+    private void dukptDecrypt() {
         try {
-            byte[] data = HexUtil.hexStringToByte("04953DFFFF9D9D7B".trim());
+            String data = "494B83B9C30A7EB1";
 
-            byte keyType = DukptKeyType.MF_DUKPT_DES_KEY_PIN;
-            int desAlgorithmType = DesAlgorithmType.TDES_CBC;
-            int desMode = DesMode.ENCRYPT;
+            DukptCalcObj.DukptAlg alg = DukptCalcObj.DukptAlg.DUKPT_ALG_CBC;
+            DukptCalcObj.DukptOper oper = DukptCalcObj.DukptOper.DUKPT_DECRYPT;
+            DukptCalcObj.DukptType type = DukptCalcObj.DukptType.DUKPT_DES_KEY_DATA1;
 
-            String ret = DeviceHelper.getPinpad().dukptCalculation(dukptKeyId, keyType, desAlgorithmType, data, data.length, desMode, new Bundle());
-            showResult(textView, "ret:" + ret);
+            DukptCalcObj dukptCalcObj = new DukptCalcObj(type, oper, alg, data);
+
+            Bundle bundle = DeviceHelper.getPinpad().dukptCalcDes(dukptCalcObj);
+
+            showResult(textView, "dukpt decrypt:" + bundle.getString(DukptCalcObj.DUKPT_DATA));
+            showResult(textView, "ksn:" + bundle.getString(DukptCalcObj.DUKPT_KSN));
+
+        } catch (RemoteException e) {
+
+        }
+    }
+
+    private void dukptEncrypt() {
+        try {
+            String data = "12345678ABCDEFGH";
+
+            DukptCalcObj.DukptAlg alg = DukptCalcObj.DukptAlg.DUKPT_ALG_CBC;
+            DukptCalcObj.DukptOper oper = DukptCalcObj.DukptOper.DUKPT_ENCRYPT;
+            DukptCalcObj.DukptType type = DukptCalcObj.DukptType.DUKPT_DES_KEY_DATA1;
+
+            DukptCalcObj dukptCalcObj = new DukptCalcObj(type, oper, alg, data);
+
+            Bundle bundle = DeviceHelper.getPinpad().dukptCalcDes(dukptCalcObj);
+
+            showResult(textView, "dukpt encrypt:" + bundle.getString(DukptCalcObj.DUKPT_DATA));
+            showResult(textView, "ksn:" + bundle.getString(DukptCalcObj.DUKPT_KSN));
 
         } catch (RemoteException e) {
 
@@ -100,10 +130,12 @@ public class PinpadActivity extends BaseActivity {
 
     private void dukptInit() {
         try {
-            String bdk = "C1D0F8FB4958670DBA40AB1F3752EF0D";
+            String key = "C1D0F8FB4958670DBA40AB1F3752EF0D";
             String ksn = "FFFF9876543210" + "000000";
 
-            int ret = DeviceHelper.getPinpad().initDukptBDKAndKsn(DukptKeyGid.GID_GROUP_PIN_IPEK, bdk, ksn, true, "00000");
+            DukptLoadObj dukptLoadObj = new DukptLoadObj(key, ksn, DukptLoadObj.DukptKeyType.DUKPT_BDK_PLAINTEXT, DukptLoadObj.DukptKeyIndex.KEY_INDEX_0);
+
+            int ret = DeviceHelper.getPinpad().dukptLoad(dukptLoadObj);
             showResult(textView, "Dukpt init:" + ret);
 
         } catch (RemoteException e) {

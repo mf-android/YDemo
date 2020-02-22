@@ -10,11 +10,6 @@
         style="@style/doneBtn"
         android:text="Input Pin" />
 
-    <Button
-        android:id="@+id/increaseKsn"
-        android:layout_width="match_parent"
-        style="@style/doneBtn"
-        android:text="Increase ksn" />
 
     <Button
         android:id="@+id/dukptInit"
@@ -23,10 +18,28 @@
         android:text="Dukpt init" />
 
     <Button
-        android:id="@+id/dukptCalc"
+        android:id="@+id/getKsn"
         android:layout_width="match_parent"
         style="@style/doneBtn"
-        android:text="Dukpt calc" />
+        android:text="Get current ksn" />
+
+    <Button
+        android:id="@+id/increaseKsn"
+        android:layout_width="match_parent"
+        style="@style/doneBtn"
+        android:text="Increase ksn" />
+
+    <Button
+        android:id="@+id/dukptEncrypt"
+        android:layout_width="match_parent"
+        style="@style/doneBtn"
+        android:text="Dukpt encrypt" />
+
+    <Button
+        android:id="@+id/dukptDeccrypt"
+        android:layout_width="match_parent"
+        style="@style/doneBtn"
+        android:text="Dukpt decrypt" />
 
     <Button
         android:id="@+id/calcMac"
@@ -34,12 +47,19 @@
         style="@style/doneBtn"
         android:text="Calc Mac" />
 
-    <TextView
-        android:layout_margin="5dp"
-        android:id="@+id/textView"
-        android:textSize="18sp"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="" />
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:layout_margin="5dp"
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="18sp" />
+
+    </ScrollView>
 
 </LinearLayout>

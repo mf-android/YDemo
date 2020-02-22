@@ -3,7 +3,6 @@ package com.morefun.ysdk.sample.utils;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.text.TextUtils;
-import android.text.format.Time;
 import android.util.Log;
 
 import com.morefun.yapi.emv.EMVTag9CConstants;
