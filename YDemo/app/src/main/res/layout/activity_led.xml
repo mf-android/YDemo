@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <CheckBox
+        android:id="@+id/led1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Led blue" />
+
+    <CheckBox
+        android:id="@+id/led2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Led yellow" />
+
+    <CheckBox
+        android:id="@+id/led3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Led green" />
+
+
+    <CheckBox
+        android:id="@+id/led4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Led red" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        style="@style/doneBtn"
+        android:text="@string/menu_led" />
+
+</LinearLayout>
