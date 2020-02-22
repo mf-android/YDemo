@@ -3,54 +3,65 @@ YDemo base on YSDK, for Morefun Android POS
 
 ## INSTALLATION
 
-#####  install YSDK apk
+###  Install YSDK apk
 
-YSDK/YSDK.apk.
+SDK path: Ydemo/SDK/YSDK.apk
+
+Install using the following adb command
 
 ```
 adb install YSDK.apk
 ```
 
-##### You may need to add mfysdk.jar to your project.
+### Linked mfysdk.jar
+
+##### add mfysdk.jar to your project.
 
 ```
-path: app/libs/mfysdk.jar 
+path: Ydemo/SDK/mfysdk.jar 
 ```
 
-YSDK/Demo.apk
+YDemo.apk
 
 APK compiled with project, can be used to run viewing functions directly.
 
 
 
+# DOCUMENT
+
+PDF: [English](Ydemo/MFYSDK_Android_Programming_Manual.pdf)
+
+Markdown: [English](docs/README.md) 
+
+SDK changes: [CHANGES.md](Ydemo/CHANGES.md)
+
 
 # FEATURES
 
-[Login](https://github.com/mf-android/YDemo/blob/master/docs/Login.md)
+[Login](docs/Login.md)
 
-[Device info](https://github.com/mf-android/YDemo/blob/master/docs/DeviceInfo.md)
+[Device info](docs/DeviceInfo.md)
 
-[PBOC](https://github.com/mf-android/YDemo/blob/master/docs/PBOC.md)
+[PBOC](docs/PBOC.md)
 
-[AID & CAPK (Add、Delete、Get)](https://github.com/mf-android/YDemo/blob/master/docs/AID&CAPK.md)
+[AID & CAPK (Add、Delete、Get)](docs/AID&CAPK.md)
 
+[Magnetic stripe](docs/MagneticStripe.md)
 
-[Magnetic stripe](https://github.com/mf-android/YDemo/blob/master/docs/MagneticStripe.md)
+[Contact & Contactless(Dip & Tap)](docs/Contact&Contactless.md)
 
-[Contact & Contactless(Dip & Tap)](https://github.com/mf-android/YDemo/blob/master/docs/Contact&Contactless.md)
-
-[PinPad](https://github.com/mf-android/YDemo/blob/master/docs/PinPad.md)
+[PinPad](docs/PinPad.md)
 
 ------
 
-[Printer](https://github.com/mf-android/YDemo/blob/master/docs/Printer.md)
+[Printer](docs/Printer.md)
 
-[LED & Buzzer](https://github.com/mf-android/YDemo/blob/master/docs/LED&Buzzer.md)
+[LED & Buzzer](docs/LED&Buzzer.md)
 
 Scanner
 
 ------
-[DUKPT（Derived Unique Key Per Transaction）《ANSI X9.24》](https://github.com/mf-android/YDemo/blob/master/docs/DUKPT.md)
+[DUKPT（Derived Unique Key Per Transaction）《ANSI X9.24》](docs/DUKPT.md)
 
 Load BDK
 
@@ -66,23 +77,9 @@ MK/SK
 
 Calculate MAC
 
-[M1Card](https://github.com/mf-android/YDemo/blob/master/docs/M1Card.md "Markdown")
+[M1Card](docs/M1Card.md)
 
 FELICA Card
-
-
-
-# DOCUMENT
-
-[CHANGES.md](https://github.com/mf-android/YDemo/blob/master/CHANGES.md "Markdown")
-
-MFYSDK_Android_Programming_Manual.pdf
-
-This manual is applicable to MF919 POS Terminal (hereinafter referred to as “MFPOS”).
-
-```
-path:YSDK/MFYSDK_Android_Programming_Manual.pdf
-```
 
 
 
