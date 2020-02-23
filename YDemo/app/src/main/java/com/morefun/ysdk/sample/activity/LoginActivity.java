@@ -1,5 +1,7 @@
 package com.morefun.ysdk.sample.activity;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.widget.Button;
@@ -33,7 +35,12 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick({R.id.button})
     public void onClick() {
-        login("09000000");
+        if (checkAppInstalled("com.morefun.mpos.reader.sample")) {
+            login("09000000");
+        } else {
+            SweetDialogUtil.showError(LoginActivity.this, "Please install ysdk first");
+        }
+
     }
 
     //TODO if need able dukpt, Please set login with 09000000
@@ -52,6 +59,8 @@ public class LoginActivity extends BaseActivity {
 
         } catch (RemoteException e) {
             textView.setText(e.toString());
+        } catch (NullPointerException e) {
+            showResult(textView, "Please restart the application");
         }
     }
 
@@ -59,5 +68,17 @@ public class LoginActivity extends BaseActivity {
         button.setText(getString(R.string.login_devices));
     }
 
-
+    private boolean checkAppInstalled(String pkgName) {
+        if (pkgName == null || pkgName.isEmpty()) {
+            return false;
+        }
+        PackageInfo packageInfo;
+        try {
+            packageInfo = getPackageManager().getPackageInfo(pkgName, 0);
+            return packageInfo != null;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
