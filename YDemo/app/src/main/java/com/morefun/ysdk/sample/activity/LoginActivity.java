@@ -35,7 +35,7 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick({R.id.button})
     public void onClick() {
-        if (checkAppInstalled("com.morefun.mpos.reader.sample")) {
+        if (checkAppInstalled("com.morefun.ysdk")) {
             login("09000000");
         } else {
             SweetDialogUtil.showError(LoginActivity.this, "Please install ysdk first");
