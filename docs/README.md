@@ -1,23 +1,31 @@
 # Function table
 
-- ### Login
 
-  | [Login](interfaces/login.md) | [logout](interfaces/logout.md) |      |
-  | ---------------------------- | ------------------------------ | ---- |
-  |                              |                                |      |
-  |                              |                                |      |
+
+- ### [Quickstart](en/Quickstart.md)
+
+  Building Your First Application on Morefun Android POS -Quick Start.
+
+  
+
+- ### DeviceServiceEngine
+
+  | [login](en/login.md)           | [getDevInfo](en/getDevInfo.md) | [setSystemClock](en/setSystemClock.md) |
+  | -------------------------------------- | ------------------------------ | ---------------------------------------------- |
+  |  |                                |                                                |
 
   
 
 - ### **PinPad**
-| [loadMasterKey](interfaces/loadMasterKey-cn.md) | [loadWorkKey](interfaces/loadWorkKey-cn.md) | |
+| [loadEncryptMKey](en/loadEncryptMKey.md) | [loadWorkKey](en/loadWKey.md) | [getMac](en/getMac.md) |
 | :-----: | :-----: | :-----: |
-| [setKeyIndex](interfaces/setKeyIndex-cn.md) | [setIcKey](interfaces/setIcKey-cn.md) | [setIcAid](interfaces/setIcAid-cn.md) |
+|    [desEncByWKey](en/desEncByWKey.md)    | [inputText](en/inputText.md)  | [inputOnlinePin](en/inputOnlinePin.md) |
+|                                                  |                                       |                                                |
 
 - ### **DUKPT**
-| [dukptLoadKey](interfaces/dukptLoadKey-cn.md) | [dukptGetKey](interfaces/dukptGetKey-cn.md) | [dukptGenKey](interfaces/dukptGenKey-cn.md) |
-| :-----: | :-----: | :-----: |
-| [dukptDes](interfaces/dukptDes-cn.md) | ||
+|      |      |      |
+| :--: | :--: | :--: |
+|      |      |      |
 
 - ### **Transaction**
 |      |      |      |
