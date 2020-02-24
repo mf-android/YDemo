@@ -1,32 +1,6 @@
 # YDemo
 YDemo base on YSDK, for Morefun Android POS
 
-## INSTALLATION
-
-###  Install YSDK apk
-
-SDK path: Ydemo/SDK/YSDK.apk
-
-Install using the following adb command
-
-```
-adb install YSDK.apk
-```
-
-### Linked mfysdk.jar
-
-##### add mfysdk.jar to your project.
-
-```
-path: Ydemo/SDK/mfysdk.jar 
-```
-
-YDemo.apk
-
-APK compiled with project, can be used to run viewing functions directly.
-
-
-
 # DOCUMENT
 
 PDF: [English](Ydemo/MFYSDK_Android_Programming_Manual.pdf)
@@ -36,52 +10,91 @@ Markdown: [English](docs/README.md)
 SDK changes: [CHANGES.md](Ydemo/CHANGES.md)
 
 
-# FEATURES
 
-[Login](docs/Login.md)
+# QUICKSTART
 
-[Device info](docs/DeviceInfo.md)
+1. #### Install YSDK apk
 
-[PBOC](docs/PBOC.md)
+> Install using the following adb command
 
-[AID & CAPK (Add、Delete、Get)](docs/AID&CAPK.md)
+```
+adb install YSDK.apk
+```
 
-[Magnetic stripe](docs/MagneticStripe.md)
+2. ### Linked mfysdk.jar
 
-[Contact & Contactless(Dip & Tap)](docs/Contact&Contactless.md)
+   add mfysdk.jar to your project.
 
-[PinPad](docs/PinPad.md)
+3. ### Binding SDK service in Application onCreate function
 
-------
+```
+    public void bindDeviceService() {
+        if (null != deviceServiceEngine) {
+            return;
+        }
 
-[Printer](docs/Printer.md)
+        Intent intent = new Intent();
+        intent.setAction(SERVICE_ACTION);
+        intent.setPackage(SERVICE_PACKAGE);
 
-[LED & Buzzer](docs/LED&Buzzer.md)
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+    }
+```
 
-Scanner
-
-------
-[DUKPT（Derived Unique Key Per Transaction）《ANSI X9.24》](docs/DUKPT.md)
-
-Load BDK
-
-Load IPEK
-
-IncreaseKSN
-
-Dukptcalculation
-
-------
-
-MK/SK
-
-Calculate MAC
-
-[M1Card](docs/M1Card.md)
-
-FELICA Card
+- #### Register a ServiceConnection
 
 
+```
+    private ServiceConnection connection = new ServiceConnection() {
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            deviceServiceEngine = null;
+            Log.e(TAG, "======onServiceDisconnected======");
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            deviceServiceEngine = DeviceServiceEngine.Stub.asInterface(service);
+            Log.d(TAG, "======onServiceConnected======");
+
+            initDevices();
+
+            linkToDeath(service);
+        }
+
+        private void linkToDeath(IBinder service) {
+            try {
+                service.linkToDeath(new IBinder.DeathRecipient() {
+                    @Override
+                    public void binderDied() {
+                        Log.d(TAG, "======binderDied======");
+                        deviceServiceEngine = null;
+                        bindDeviceService();
+                    }
+                }, 0);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+```
+
+- #### Init DeviceHelper
+
+
+```
+public void initDevices(){
+	try {
+        DeviceHelper.reset();
+        DeviceHelper.initDevices(MyApplication.this);
+    } catch (RemoteException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+[DeviceHelper](YDemo\app\src\main\java\com\morefun\ysdk\sample\device\DeviceHelper.java)  class  From reference Ydemo project.
 
 
 #  FAQ
