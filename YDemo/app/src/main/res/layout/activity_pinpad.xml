@@ -4,47 +4,75 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/inputPin"
-        android:layout_width="match_parent"
-        style="@style/doneBtn"
-        android:text="Input Pin" />
 
-
-    <Button
-        android:id="@+id/dukptInit"
+    <LinearLayout
         android:layout_width="match_parent"
-        style="@style/doneBtn"
-        android:text="Dukpt init" />
+        android:layout_height="50dp"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/getKsn"
-        android:layout_width="match_parent"
-        style="@style/doneBtn"
-        android:text="Get current ksn" />
+        <Button
+            android:id="@+id/dukptInit"
+            style="@style/doneBtn"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:text="Dukpt init" />
 
-    <Button
-        android:id="@+id/increaseKsn"
-        android:layout_width="match_parent"
-        style="@style/doneBtn"
-        android:text="Increase ksn" />
+        <Button
+            android:id="@+id/inputPin"
+            style="@style/doneBtn"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:text="Input Pin" />
 
-    <Button
-        android:id="@+id/dukptEncrypt"
-        android:layout_width="match_parent"
-        style="@style/doneBtn"
-        android:text="Dukpt encrypt" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/dukptDeccrypt"
+    <LinearLayout
         android:layout_width="match_parent"
-        style="@style/doneBtn"
-        android:text="Dukpt decrypt" />
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/getKsn"
+            style="@style/doneBtn"
+            android:layout_width="match_parent"
+            android:text="Get current ksn" />
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/increaseKsn"
+            style="@style/doneBtn"
+            android:layout_width="match_parent"
+            android:text="Increase ksn" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/dukptEncrypt"
+            style="@style/doneBtn"
+            android:layout_width="match_parent"
+            android:text="Dukpt encrypt" />
+
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/dukptDeccrypt"
+            style="@style/doneBtn"
+            android:layout_width="match_parent"
+            android:text="Dukpt decrypt" />
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/calcMac"
-        android:layout_width="match_parent"
         style="@style/doneBtn"
+        android:layout_width="match_parent"
         android:text="Calc Mac" />
 
     <ScrollView
@@ -53,13 +81,18 @@
 
 
         <TextView
-            android:layout_margin="5dp"
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:text=""
             android:textSize="18sp" />
 
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"></LinearLayout>
 
 </LinearLayout>

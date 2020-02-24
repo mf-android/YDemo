@@ -14,6 +14,7 @@ import com.morefun.yapi.device.pinpad.DukptLoadObj;
 import com.morefun.yapi.device.pinpad.MacAlgorithmType;
 import com.morefun.yapi.device.pinpad.OnPinPadInputListener;
 import com.morefun.yapi.device.pinpad.PinAlgorithmMode;
+import com.morefun.yapi.device.pinpad.PinPadConstrants;
 import com.morefun.ysdk.sample.R;
 import com.morefun.ysdk.sample.device.DeviceHelper;
 import com.morefun.ysdk.sample.utils.HexUtil;
@@ -24,6 +25,7 @@ import butterknife.OnClick;
 
 
 public class PinpadActivity extends BaseActivity {
+    private String encrypt;
 
     @BindView(R.id.textView)
     TextView textView;
@@ -77,12 +79,24 @@ public class PinpadActivity extends BaseActivity {
 
     private void calcMac() {
         try {
-            String hexData = "00000000005010016222620910029130840241205100100367FD3414057DB801BE18A309A544C5174CC777525974CBD467BCC56EA16629F3B016488A6C314921485C75F57066D4682FEDC1F910C5C8136A201279B590898B40D7098461D345168810CCFEBC61204B3E6F364A95175EF54C7EBAAEC2A6AEE44D9783747124D313B78A3F754C5ECC611533C4957377DD2067DF927C80461C4E4C20A8A4CC57EF1CCE2BC1AEEA442431256F66A25AB855912BA82FB8AD308F0EDE358CDDDEA63C95401B8335C8689E5735E0FB96733426FD71A7248E140A95CB4B4313AC0DBDA1E70EA8800000000000";
-            int keyId = 0;
-            byte[] data = HexUtil.hexStringToByte(hexData);
-            byte[] macBlock = DeviceHelper.getPinpad().getMac(keyId, MacAlgorithmType.ECB, DesAlgorithmType.TDES, data, new Bundle());
+            byte[] data = HexUtil.hexStringToByte("00000000005010016222620910029130840241205100100367FD3414057DB801BE18A309A544C5174CC777525974CBD467BCC56EA16629F3B016488A6C314921485C75F57066D4682FEDC1F910C5C8136A201279B590898B40D7098461D345168810CCFEBC61204B3E6F364A95175EF54C7EBAAEC2A6AEE44D9783747124D313B78A3F754C5ECC611533C4957377DD2067DF927C80461C4E4C20A8A4CC57EF1CCE2BC1AEEA442431256F66A25AB855912BA82FB8AD308F0EDE358CDDDEA63C95401B8335C8689E5735E0FB96733426FD71A7248E140A95CB4B4313AC0DBDA1E70EA8800000000000");
 
-            showResult(textView, "macBlock:" + HexUtil.bytesToHexString(macBlock));
+            byte[] xor = new byte[8];
+
+            for (int i = 0; i < 8; i++) {
+                xor[i % 8] = (byte) (xor[i % 8] ^ data[i]);
+            }
+
+            DukptCalcObj.DukptAlg alg = DukptCalcObj.DukptAlg.DUKPT_ALG_CBC;
+            DukptCalcObj.DukptOper oper = DukptCalcObj.DukptOper.DUKPT_ENCRYPT;
+            DukptCalcObj.DukptType type = DukptCalcObj.DukptType.DUKPT_DES_KEY_MAC1;
+
+            DukptCalcObj dukptCalcObj = new DukptCalcObj(type, oper, alg, HexUtil.bytesToHexString(xor));
+            Bundle bundle = DeviceHelper.getPinpad().dukptCalcDes(dukptCalcObj);
+
+            showResult(textView, "dukpt mac:" + bundle.getString(DukptCalcObj.DUKPT_DATA));
+            showResult(textView, "ksn:" + bundle.getString(DukptCalcObj.DUKPT_KSN));
+
         } catch (RemoteException e) {
 
         }
@@ -90,7 +104,7 @@ public class PinpadActivity extends BaseActivity {
 
     private void dukptDecrypt() {
         try {
-            String data = "494B83B9C30A7EB1";
+            String data = encrypt;
 
             DukptCalcObj.DukptAlg alg = DukptCalcObj.DukptAlg.DUKPT_ALG_CBC;
             DukptCalcObj.DukptOper oper = DukptCalcObj.DukptOper.DUKPT_DECRYPT;
@@ -119,8 +133,8 @@ public class PinpadActivity extends BaseActivity {
             DukptCalcObj dukptCalcObj = new DukptCalcObj(type, oper, alg, data);
 
             Bundle bundle = DeviceHelper.getPinpad().dukptCalcDes(dukptCalcObj);
-
-            showResult(textView, "dukpt encrypt:" + bundle.getString(DukptCalcObj.DUKPT_DATA));
+            encrypt = bundle.getString(DukptCalcObj.DUKPT_DATA);
+            showResult(textView, "dukpt encrypt:" + encrypt);
             showResult(textView, "ksn:" + bundle.getString(DukptCalcObj.DUKPT_KSN));
 
         } catch (RemoteException e) {
@@ -149,8 +163,10 @@ public class PinpadActivity extends BaseActivity {
         byte[] panBlock = "1234567890123456".getBytes();
         Bundle bundle = new Bundle();
 
+        bundle.putString(PinPadConstrants.TITLE_HEAD_CONTENT, "Please input the online pin");
+
         try {
-            DeviceHelper.getPinpad().inputOnlinePin(bundle, panBlock, 0, PinAlgorithmMode.ISO9564FMT1, new OnPinPadInputListener.Stub() {
+            DeviceHelper.getPinpad().inputOnlinePin(bundle, panBlock, 10, PinAlgorithmMode.ISO9564FMT1, new OnPinPadInputListener.Stub() {
                 @Override
                 public void onInputResult(int ret, byte[] pinBlock, String ksn) throws RemoteException {
                     StringBuilder builder = new StringBuilder();
