@@ -12,7 +12,7 @@ public int setKeyIndex(int mainKeyIndex)
 - #### Parameter
 | Name | Type | Description |
 | :-------- | :--------| :------ |
-| mainKeyIndex | int | See DukptLoadObj definitions |
+| mainKeyIndex | int | values are as follows 0 ~7 |
 
 - #### Return
 | Value | Description |
