@@ -11,11 +11,11 @@ int inputText(in Bundle bundle, in OnPinPadInputListener listener, int mode);
 ```
 
 - #### Parameter
-| Parameter | Type                                            | Description               |
-| :-------- | :---------------------------------------------- | :------------------------ |
-| bundle    | Bundle                                          | See **PinPadConstrants**. |
-| listener  | [OnPinPadInputListener](#OnPinPadInputListener) | Callback                  |
-| mode      | int                                             |                           |
+| Parameter | Type                                            | Description                                      |
+| :-------- | :---------------------------------------------- | :----------------------------------------------- |
+| bundle    | Bundle                                          | See [PinPadConstrants](enum.md#PinPadConstrants) |
+| listener  | [OnPinPadInputListener](#OnPinPadInputListener) | Input Callback                                   |
+| mode      | int                                             | Reserve                                          |
 
 - #### Return
 | Type | Description |
@@ -46,18 +46,6 @@ void onSendKey(byte keyCode);
   | keyCode   | byte | See  **ServiceResult** |
 
 
-
-### Set Password Length
-
-```
-setSupportPinLen(in int[] pinLen);
-```
-
-- ##### setSupportPinLen
-
-  | Parameter | Class | Description |
-  | --------- | ----- | ----------- |
-  | pinLen    | int[] | {max, min}  |
 
 #### For example
 

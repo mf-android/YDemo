@@ -16,8 +16,8 @@ int inputOnlinePin(in Bundle bundle,in byte[] panBlock, int mKeyId, int pinAlgMo
 | bundle     | Bundle                | [PinPadConstrants](enum.md#PinPadConstrants) |
 | panBlock   | byte[]                | pan                           |
 | mKeyId     | int                   | work key index                |
-| pinAlgMode | int |                               |
-| listener   | OnPinPadInputListener | See **OnPinPadInputListener** |
+| pinAlgMode | int | [PinAlgorithmMode](enum.md#PinAlgorithmMode) |
+| listener   | [OnPinPadInputListener](#OnPinPadInputListener) | Input Callback |
 
 
 #### Return
@@ -29,7 +29,7 @@ int inputOnlinePin(in Bundle bundle,in byte[] panBlock, int mKeyId, int pinAlgMo
 
 #### OnPinPadInputListener
 
-```
+```java
 void onInputResult(int retCode, in byte[] pin ,String ksn);
 	
 void onSendKey(byte keyCode);
@@ -51,8 +51,23 @@ void onSendKey(byte keyCode);
 
 #### For example
 
-```
+```java
+Bundle bundle = new Bundle();
+bundle.putBoolean(PinPadConstrants.IS_SHOW_PASSWORD_BOX, false);
+bundle.putBoolean(PinPadConstrants.IS_SHOW_TITLE_HEAD, false);
+bundle.putString(PinPadConstrants.TITLE_HEAD_CONTENT, "Please input onine Pin\n");
+ byte[] panBlock = "6799998900000074324".getBytes();
+mSDKManager.getPinPad().inputOnlinePin(bundle, panBlock, 0, PinAlgorithmMode.ISO9564FMT1, new OnPinPadInputListener.Stub() {
+            @Override
+            public void onInputResult(int ret, byte[] pinBlock, String pinKsn) throws RemoteException {
+                
+            }
 
+            @Override
+            public void onSendKey(byte keyCode) throws RemoteException {
+
+            }
+        });
 ```
 
 

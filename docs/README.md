@@ -21,15 +21,24 @@
 | :------------------------------: | :--------------------------------: | :------------------------------: |
 | [setKeyIndex](en/setKeyIndex.md) |                                    |                                  |
 
-- ### **Transaction**
-|      |      |      |
+- ### **EmvHandler**
+| [emvProcess](en/emvProcess.md) | [readEmvData](en/readEmvData.md) | [isErrorCode](en/isErrorCode.md) |
 | :-----: | :-----: |:-----: |
-|      |      |      |
-|      |      | |
+| [initTermConfig](en/initTermConfig.md) | [addAidParam](en/addAidParam.md) | [addCAPKParam](en/addCAPKParam.md) |
+
+- ### **Cpu Card**
+| [searchCard](en/searchCard.md) | [stopSearch](en/stopSearch.md) |      |
+| :----------------------------: | :----------------------------: | :--: |
+|                                |                                |      |
+
+- ### **Magnetic stripe Card**
+| [searchCard](en/searchCard.md) | [stopSearch](en/stopSearch.md) |      |
+| :----------------------------: | :----------------------------: | :--: |
+|                                |                                |      |
+
 
 - ### **Other**
-|      |      |      |
-| :--: | :--: | :--: |
-|      |      |      |
-|      |      |      |
-
+| [PowerLed](en/PowerLed.md) | [beep](en/beep.md) |      |
+| :------------------------: | :----------------: | :--: |
+|                            |                    |      |
+|                            |                    |      |
