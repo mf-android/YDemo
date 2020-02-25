@@ -17,9 +17,9 @@
 |                                                  |                                       |                                                |
 
 - ### **DUKPT**
-|      |      |      |
-| :--: | :--: | :--: |
-|      |      |      |
+|   [dukptLoad](en/dukptLoad.md)   | [dukptCalcDes](en/dukptCalcDes.md) | [increaseKsn](en/increaseKsn.md) |
+| :------------------------------: | :--------------------------------: | :------------------------------: |
+| [setKeyIndex](en/setKeyIndex.md) |                                    |                                  |
 
 - ### **Transaction**
 |      |      |      |

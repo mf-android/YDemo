@@ -165,62 +165,47 @@ AID& CAPK menu -> View AID list、 View AID list.
 
 ### About Dukpt
 
-##### 1.Inject IPEK key & KSN 
-
-Please see YDEMO source code (init IPEK And Ksn).
+##### 1.Inject key 
 
 ```
-String IPEK = "C1D0F8FB4958670DBA40AB1F3752EF0D";
-//KSN must be 20 length String. 95A627000210210 00000
+String key = "C1D0F8FB4958670DBA40AB1F3752EF0D";
 String ksn = "FFFF9876543210" + "000000";
-int ret = DeviceServiceEngine.getPinPad().initDukptIPEKAndKsn(PIN_GROUP_INDEX, IPEK, ksn,true, "00000");
+DukptLoadObj dukptLoadObj = new DukptLoadObj(key, ksn, 
+	DukptLoadObj.DukptKeyType.DUKPT_BDK_PLAINTEXT, 
+	DukptLoadObj.DukptKeyIndex.KEY_INDEX_0);
+DeviceHelper.getPinpad().dukptLoad(dukptLoadObj);
 ```
-##### 2.Inject BDK key & KSN 
+```
 
-```
-//BDK 32 length String.
-String BDK = "C1D0F8FB4958670DBA40AB1F3752EF0D";
-//KSN must be 20 length String. 95A627000210210 00000
-String ksn = "FFFF9876543210" + "000000";
-int ret = DeviceServiceEngine.getPinPad().initDukptBDKAndKsn(KeyIndex, BDK, ksn,true, "00000");
 ```
 ##### 3. Get KSN
 
-increaseKSN API : Generate new PEK and return new KSN.
+increaseKsn API : Increase new KSN or get last KSN.
 
 ```
-public void increaseKSN(PinPad pinPad) throws RemoteException {
-        // one transaction can only be called once, Every time you get it, the PEK key changes
-        //  need to get the ksn first before search card.
-        // increaseKSN API : Generate PEK and return new KSN
-        trackKsn = pinPad.increaseKSN(TRACK_GROUP_INDEX, new Bundle());
-}
+boolean isIncrease = false;
+String ksn = DeviceHelper.getPinpad().increaseKsn(isIncrease);
 
 ```
 ##### 4.Encrypt data
 
 ```
-String ksn = engine.getPinPad().increaseKSN(KeyIndex, new Bundle());
-        // data length should be is multiple of 8.
-         byte[] inputData = Utils.str2Bcd("04953DFFFF9D9D7B".trim());
-		 byte[] data = Utils.checkInputData(inputData);
-        byte keyType = DukptKeyType.MF_DUKPT_DES_KEY_PIN;
-        //only support TDES.
-        int desAlgorithmType = DesAlgorithmType.TDES_CBC;
-        int desMode = DesMode.ENCRYPT; // DesMode.ENCRYPT DesMode.DECRYPT
-//        String dukptCalculation(int keyIndex, byte keyType, int desAlgorithmType, byte[] data, int dataLen, int desMode, Bundle bundle)
-        String calculationData = engine.getPinPad().dukptCalculation(DukptKeyGid.GID_GROUP_EMV_IPEK, keyType, desAlgorithmType ,data, data.length , desMode, new Bundle());
-        Log.d(TAG,"calculationData = " + calculationData);
-        Log.d(TAG,"ksn = " + ksn);
-        alertDialogOnShowListener.showMessage(
-                "multiple of 8 = " + (data.length / 8 ==0)
-                +"\n dukptCalculation ksn :" +(ksn)
-                + "\n" + " calculationData :" + calculationData);
+String data = "12345678ABCDEFGH";
+
+DukptCalcObj.DukptAlg alg = DukptCalcObj.DukptAlg.DUKPT_ALG_CBC;
+DukptCalcObj.DukptOper oper = DukptCalcObj.DukptOper.DUKPT_ENCRYPT;
+DukptCalcObj.DukptType type = DukptCalcObj.DukptType.DUKPT_DES_KEY_DATA1;
+
+DukptCalcObj dukptCalcObj = new DukptCalcObj(type, oper, alg, data);
+Bundle bundle = DeviceHelper.getPinpad().dukptCalcDes(dukptCalcObj);
+
+String encrypt = bundle.getString(DukptCalcObj.DUKPT_DATA);
+String ksn = bundle.getString(DukptCalcObj.DUKPT_KSN));
 ```
 
 ##### 5.How many sets of keys can I use ?
 
-​	At most 6 groups of keys are supported, so the API needs to pass in the relevant key index.
+​	At most 8 groups of keys are supported, so the API needs to pass in the relevant key index.
 
 ```
 public interface DukptKeyGid {
