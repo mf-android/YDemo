@@ -10,7 +10,7 @@ void setSystemClock(String datetime);
 ```
 
 - #### Parameter
-| Parameter | Type  | Description    |
+| Name | Type  | Description    |
 | :-------- | :----- | :------------- |
 | datetime  | String | YYYYMMDDHHMMSS |
 

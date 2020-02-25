@@ -10,16 +10,17 @@ int login(in Bundle bundle, String bussinessId);
 ```
 
 #### Parameter
-| Parameter   | Class  | Description                                    |
-| :---------- | :----- | :--------------------------------------------- |
-| bundle      | Bundle | Reserve                                        |
-| bussinessId | String | “**09000000**” DUKPT      “**00000000**” MK/SK |
+| Name        | Type   | Description          |
+| :---------- | :----- | :------------------- |
+| bundle      | Bundle | Reserve              |
+| bussinessId | String | “**00000000**” MK/SK |
 
 
 #### Return
-| Class | Description           |
-| :---- | :-------------------- |
-| int   | 0: succeed;   1: fail |
+| Value | Description |
+| :---- | :---------- |
+| 0     | succeed     |
+| else  | fail        |
 
 Constant value returned by login
 

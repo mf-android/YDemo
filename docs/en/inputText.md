@@ -18,13 +18,14 @@ int inputText(in Bundle bundle, in OnPinPadInputListener listener, int mode);
 | mode      | int                                             |                           |
 
 - #### Return
-| Type | Description               |
-| :--- | :------------------------ |
-| int  | 0: succeed;   other: fail |
+| Type | Description |
+| :--- | :---------- |
+| 0    | Succeed     |
+| else | Fail        |
 
 ### OnPinPadInputListener
 
-```
+```java
 void onInputResult(int retCode, in byte[] pin ,String ksn);
 	
 void onSendKey(byte keyCode);
@@ -32,7 +33,7 @@ void onSendKey(byte keyCode);
 
 - #### onInputResult
 
-| Parameter | Class  | Description               |
+| Parameter | Type   | Description               |
 | --------- | ------ | ------------------------- |
 | retCode   | int    | 0: succeed;   other: fail |
 | pin       | byte[] | Pin data.                 |
@@ -40,9 +41,9 @@ void onSendKey(byte keyCode);
 
 - #### onSendKey
 
-  | Parameter | Class | Description            |
-  | --------- | ----- | ---------------------- |
-  | keyCode   | byte  | See  **ServiceResult** |
+  | Parameter | Type | Description            |
+  | --------- | ---- | ---------------------- |
+  | keyCode   | byte | See  **ServiceResult** |
 
 
 
@@ -60,7 +61,7 @@ setSupportPinLen(in int[] pinLen);
 
 #### For example
 
-```
+```java
   	Bundle bundle = new Bundle();
     bundle.putBoolean(PinPadConstrants.IS_SHOW_PASSWORD_BOX, false);
     bundle.putBoolean(PinPadConstrants.IS_SHOW_TITLE_HEAD, false);
@@ -79,5 +80,6 @@ setSupportPinLen(in int[] pinLen);
 
 
 ### See also
-[Home](../README.md) |[loadEncryptMKey](loadEncryptMKey.md)|[loadWKey](loadWKey.md)|[desEncByWKey](desEncByWKey.md)|[desEncByWKey](desEncByWKey.md)|[getMac](getMac.md)|[inputText](inputText.md)
+
+[Home](../README.md) |[loadEncryptMKey](loadEncryptMKey.md)|[loadWKey](loadWKey.md)|[desEncByWKey](desEncByWKey.md)|[desEncByWKey](desEncByWKey.md)|[getMac](getMac.md)|[inputText](inputText.md)|[inputOnlinePin](inputOnlinePin.md)|[setSupportPinLen](setSupportPinLen.md)
 

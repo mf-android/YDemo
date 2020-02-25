@@ -11,16 +11,16 @@ byte[] getMac(int keyIndex, int mode,int desType, in byte[] data
 ```
 
 - #### Parameter
-| Parameter | Class  | Description               |
-| :-------- | :----- | :------------------------ |
-| keyIndex  | int    | Work key index.           |
-| mode      | int    | See **MacAlgorithmType**. |
-| desType   | int    | Reserve.                  |
-| data      | byte[] | Source data.              |
-| bundle    | Bundle | Reserve.                  |
+| Name     | Type   | Description                                  |
+| :------- | :----- | :------------------------------------------- |
+| keyIndex | int    | Work key index.                              |
+| mode     | int    | [MacAlgorithmType](enum.md#MacAlgorithmType) |
+| desType  | int    | Reserve.                                     |
+| data     | byte[] | Source data.                                 |
+| bundle   | Bundle | Reserve.                                     |
 
 - #### Return
-| Class  | Description                    |
+| Type   | Description                    |
 | :----- | :----------------------------- |
 | byte[] | Calculate the result from mac. |
 
@@ -35,5 +35,5 @@ byte[] getMac(int keyIndex, int mode,int desType, in byte[] data
 
 ### See also
 
-[Function table](../README.md) |[loadEncryptMKey](loadEncryptMKey.md)|[loadWKey](loadWKey.md)|[desEncByWKey](desEncByWKey.md)|[desEncByWKey](desEncByWKey.md)|[getMac](getMac.md)
+[Home](../README.md) |[loadEncryptMKey](loadEncryptMKey.md)|[loadWKey](loadWKey.md)|[desEncByWKey](desEncByWKey.md)|[desEncByWKey](desEncByWKey.md)|[getMac](getMac.md)|[inputText](inputText.md)|[inputOnlinePin](inputOnlinePin.md)|[setSupportPinLen](setSupportPinLen.md)
 

@@ -2,12 +2,6 @@
 
 
 
-- ### [Quickstart](en/Quickstart.md)
-
-  Building Your First Application on Morefun Android POS -Quick Start.
-
-  
-
 - ### DeviceServiceEngine
 
   | [login](en/login.md)           | [getDevInfo](en/getDevInfo.md) | [setSystemClock](en/setSystemClock.md) |

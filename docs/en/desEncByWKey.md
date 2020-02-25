@@ -11,17 +11,18 @@ int desEncByWKey(int mKeyIdx, int wKeyType, in byte[] data, int dataLen, int des
 ```
 
 - #### Parameter
-| Parameter | Class  | Description          |
-| :-------- | :----- | :------------------- |
-| mKeyIdx   | int    | Work key index       |
-| keyType   | int    | See [WorkKeyType](enum.md#WorkKeyType). |
-| data      | byte[] | Source data          |
-| dataLen   | int    | Source data length.  |
+| Name    | Type   | Description                             |
+| :------ | :----- | :-------------------------------------- |
+| mKeyIdx | int    | Work key index.                         |
+| keyType | int    | See [WorkKeyType](enum.md#WorkKeyType). |
+| data    | byte[] | Source data.                            |
+| dataLen | int    | Source data length.                     |
 
 - #### Return
-| Class | Description               |
-| :---- | :------------------------ |
-| int   | 0: succeed;   other: fail |
+| Value | Description |
+| :---- | :---------- |
+| 0     | Succeed.    |
+| else  | Fail.       |
 
 ### For example:
 
@@ -35,5 +36,5 @@ final int ret = engine.getPinPad().desEncByWKey(0, WorkKeyType.TDKEY, tdKeyBytes
 
 ### See also
 
-[Home](../README.md) |[loadEncryptMKey](loadEncryptMKey.md)|[loadWKey](loadWKey.md)|[desEncByWKey](desEncByWKey.md)|[desEncByWKey](desEncByWKey.md)
+[Home](../README.md) |[loadEncryptMKey](loadEncryptMKey.md)|[loadWKey](loadWKey.md)|[desEncByWKey](desEncByWKey.md)|[desEncByWKey](desEncByWKey.md)|[getMac](getMac.md)|[inputText](inputText.md)|[inputOnlinePin](inputOnlinePin.md)|[setSupportPinLen](setSupportPinLen.md)
 

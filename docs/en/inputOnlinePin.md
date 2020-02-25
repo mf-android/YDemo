@@ -13,10 +13,10 @@ int inputOnlinePin(in Bundle bundle,in byte[] panBlock, int mKeyId, int pinAlgMo
 #### Parameter
 | Name  | Type                 | Description                   |
 | :--------- | :-------------------- | :---------------------------- |
-| bundle     | Bundle                | See **PinPadConstrants**.     |
+| bundle     | Bundle                | [PinPadConstrants](enum.md#PinPadConstrants) |
 | panBlock   | byte[]                | pan                           |
 | mKeyId     | int                   | work key index                |
-| pinAlgMode |                       |                               |
+| pinAlgMode | int |                               |
 | listener   | OnPinPadInputListener | See **OnPinPadInputListener** |
 
 
@@ -25,7 +25,6 @@ int inputOnlinePin(in Bundle bundle,in byte[] panBlock, int mKeyId, int pinAlgMo
 | :---- | :------------------------ |
 | 0     | succeed. |
 | other |  fail. |
-
 
 
 #### OnPinPadInputListener
@@ -38,38 +37,17 @@ void onSendKey(byte keyCode);
 
 - #### onInputResult
 
-| Parameter | Class  | Description               |
-| --------- | ------ | ------------------------- |
-| retCode   | int    | 0: succeed;   other: fail |
-| pin       | byte[] | Pin data.                 |
-| ksn       | String | For dukpt.                |
+| Name    | Type   | Description               |
+| ------- | ------ | ------------------------- |
+| retCode | int    | 0: succeed;   other: fail |
+| pin     | byte[] | Pin data.                 |
+| ksn     | String | For dukpt.                |
 
 - #### onSendKey
 
-  | Parameter | Class | Description            |
-  | --------- | ----- | ---------------------- |
-  | keyCode   | byte  | See  **ServiceResult** |
-
-#### ServiceResult
-
-| Parameter           | Value | Description   |
-| ------------------- | ----- | ------------- |
-| PinPad_Input_Cancel | -7006 | Cancel button |
-| PinPad_Input_OK     | -7044 | Okay button   |
-| PinPad_Input_Clear  | -7035 | Clear button  |
-| PinPad_Input_Num    | -7045 | Number        |
-
-#### Set Password Length
-
-```
-setSupportPinLen(in int[] pinLen);
-```
-
-- ##### setSupportPinLen
-
-  | Parameter | Class | Description |
-  | --------- | ----- | ----------- |
-  | pinLen    | int[] | {max, min}  |
+  | Name    | Type | Description            |
+  | ------- | ---- | ---------------------- |
+  | keyCode | byte | [ServiceResult](enum.md#ServiceResult) |
 
 #### For example
 
@@ -81,5 +59,5 @@ setSupportPinLen(in int[] pinLen);
 
 ### See also
 
-[Home](../README.md) |[loadEncryptMKey](loadEncryptMKey.md)|[loadWKey](loadWKey.md)|[desEncByWKey](desEncByWKey.md)|[desEncByWKey](desEncByWKey.md)|[getMac](getMac.md)|[inputText](inputText.md)
+[Home](../README.md) |[loadEncryptMKey](loadEncryptMKey.md)|[loadWKey](loadWKey.md)|[desEncByWKey](desEncByWKey.md)|[desEncByWKey](desEncByWKey.md)|[getMac](getMac.md)|[inputText](inputText.md)|[inputOnlinePin](inputOnlinePin.md)|[setSupportPinLen](setSupportPinLen.md)
 

@@ -14,7 +14,7 @@ Bundle getDevInfo();
   > void
 
 - #### Return
-| Class  | Description                                              |
+| Type   | Description                                              |
 | :----- | :------------------------------------------------------- |
 | Bundle | See [DeviceInfoConstrants](enum.md#DeviceInfoConstrants) |
 

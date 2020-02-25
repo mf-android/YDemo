@@ -10,7 +10,7 @@ int loadEncryptMKey(int mKeyIdx, in byte[] keyData, int keyDataLen, int decMKeyI
 ```
 
 - #### Parameter
-| Parameter  | Class   | Description                          |
+| Parameter  | Type    | Description                          |
 | :--------- | :------ | :----------------------------------- |
 | mKeyIdx    | int     | Save master key index(0~98).         |
 | keyData    | byte[]  | Ciphertext key.                      |
@@ -20,10 +20,12 @@ int loadEncryptMKey(int mKeyIdx, in byte[] keyData, int keyDataLen, int decMKeyI
 
 
 - #### Return
-| Class | Description               |
-| :---- | :------------------------ |
-| int   | 0: succeed;   other: fail |
+| Value | Description |
+| :---- | :---------- |
+| 0     | Succeed     |
+| else  | Fail        |
 
 
 ### See also
-[Home](../README.md) |[loadEncryptMKey](loadEncryptMKey.md)|[loadWKey](loadWKey.md)|[desEncByWKey](desEncByWKey.md)|[desEncByWKey](desEncByWKey.md)|[getMac](getMac.md)|[inputText](inputText.md)
+
+[Home](../README.md) |[loadEncryptMKey](loadEncryptMKey.md)|[loadWKey](loadWKey.md)|[desEncByWKey](desEncByWKey.md)|[desEncByWKey](desEncByWKey.md)|[getMac](getMac.md)|[inputText](inputText.md)|[inputOnlinePin](inputOnlinePin.md)|[setSupportPinLen](setSupportPinLen.md)
