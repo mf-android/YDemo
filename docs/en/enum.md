@@ -1,5 +1,5 @@
 
-#### DeviceInfoConstrants
+### DeviceInfoConstrants
 
 | Name               | Value           | Description               |
 | ------------------ | --------------- | ------------------------- |
@@ -12,7 +12,7 @@
 | COMMOM_HARDWARE    | "hardware"      | Basechip version.         |
 
 
-#### MacAlgorithmType
+### MacAlgorithmType
 
 | Name | Value | Description |
 | ---- | ----- | ----------- |
@@ -21,7 +21,7 @@
 
 
 
-#### PinPadConstrants
+### PinPadConstrants
 
 | Name                 | Value   | Description                      |
 | -------------------- | ------- | -------------------------------- |
@@ -30,7 +30,7 @@
 | IS_SHOW_PASSWORD_BOX | boolean | Password layout password view.   |
 
 
-#### ServiceResult
+### ServiceResult
 
 | Parameter           | Value | Description                |
 | ------------------- | ----- | -------------------------- |
@@ -44,11 +44,41 @@
 | PinPad_No_Key_Error    | -7001 | Master key is empty         |
 
 
-#### WorkKeyType
+### WorkKeyType
 
 | Name   | Value | Description |
 | ------ | ----- | ----------- |
 | PINKEY | 0     | Pin key.    |
 | MACKEY | 1     | Mac key.    |
 | TDKEY  | 2     | Track key.  |
+
+### EMVTermCfgConstrants
+
+| Name            | Value             | Description                                                  |
+| --------------- | ----------------- | ------------------------------------------------------------ |
+| TERMCAP         | "termCap"         | Indicates the card data input, CVM, and security capabilities of the Terminal. |
+| TRANS_PROP_9F66 | "trans_prop_9F66" | Terminal Transaction Qualifiers.                             |
+| TERMTYPE        | "termType"        | Terminal type.                                               |
+| COUNTRYCODE     | "countryCode"     | Country code.                                                |
+| CURRENCYCODE    | "curCode"         | Currency code.                                               |
+
+
+
+### ICCSearchResult
+
+| Name      | Value       | Description              |
+| --------- | ----------- | ------------------------ |
+| CARDTYPE  | "CardType"  | Card type                |
+| M1SN      | “M1_sn"     | M1 card sn               |
+| CARDOTHER | "CardOther" | Contact:1; Contactless:7 |
+
+### IccCardType
+
+| Name      | Value       | Description |
+| --------- | ----------- | ----------- |
+| CPUCARD   | "CPUCARD"   | CPU card    |
+| AT24CXX   | "AT24CXX"   | CPU card    |
+| AT88SC102 | "AT88SC102" | CPU card    |
+| M1CARD    | "M1CARD"    | M1 Card     |
+| PSAM      | "PSAM"      | PSAM        |
 

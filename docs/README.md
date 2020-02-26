@@ -26,15 +26,15 @@
 | :-----: | :-----: |:-----: |
 | [initTermConfig](en/initTermConfig.md) | [addAidParam](en/addAidParam.md) | [addCAPKParam](en/addCAPKParam.md) |
 
-- ### **Cpu Card**
-| [searchCard](en/searchCard.md) | [stopSearch](en/stopSearch.md) |      |
-| :----------------------------: | :----------------------------: | :--: |
-|                                |                                |      |
+- ### **CPU Card**
+| [searchCard](en/searchCard.md) |      |      |
+| :----------------------------: | :--: | :--: |
+|                                |      |      |
 
-- ### **Magnetic stripe Card**
-| [searchCard](en/searchCard.md) | [stopSearch](en/stopSearch.md) |      |
-| :----------------------------: | :----------------------------: | :--: |
-|                                |                                |      |
+- ### **MagCardReader**
+| [searchCard](en/MagsearchCard.md) |      |      |
+| :-------------------------------: | :--: | :--: |
+|                                   |      |      |
 
 
 - ### **Other**
