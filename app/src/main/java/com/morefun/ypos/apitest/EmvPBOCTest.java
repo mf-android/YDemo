@@ -373,7 +373,7 @@ public class EmvPBOCTest extends BaseApiTest {
         builder.append("trackKsn = " + ksn);
         builder.append("\nIC data \n");
 
-        builder.append(mEmvTagHelper.getICCardData());
+        builder.append(mEmvTagHelper.getTapPBOCData());
 
         ksn = inoutBundle.getString(DukptCalcObj.DUKPT_KSN);
         Log.d(TAG, "track ksn =" + ksn);

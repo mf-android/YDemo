@@ -318,4 +318,33 @@ public class Utils {
         }
         return list;
     }
+
+    public static String flushLeft(char c, long length, String content) {
+        String str = "";
+        String cs = "";
+        if (content.length() > length) {
+            str = content;
+        } else {
+            for (int i = 0; i < length - content.length(); i++) {
+                cs = cs + c;
+            }
+        }
+        str = content + cs;
+        return str;
+    }
+
+    public static String flushRight(char c, long length, String content) {
+        String str = "";
+        String cs = "";
+        if (content.length() > length) {
+            str = content;
+        } else {
+            for (int i = 0; i < length - content.length(); i++) {
+                cs = cs + c;
+            }
+        }
+        str = cs + content;
+        return str;
+    }
+
 }
