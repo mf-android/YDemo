@@ -31,7 +31,7 @@ public class EmvTagHelper {
      * @return
      */
     public static List<String> getTagList() {
-        return Arrays.asList("9F34", "9F33", "57", "9F02", "9F03", "9F10", "9F1A", "9F1E", "9F21", "9F26", "9F27", "9F36", "9F37"
+        return Arrays.asList("9F07","9F35","9F34", "9F33", "57", "9F02", "9F03", "9F10", "9F1A", "9F1E", "9F21", "9F26", "9F27", "9F36", "9F37"
                 , "9F4E", "9F6E", "4F", "50", "82", "84", "95", "9A", "9C", "5F24", "5F2A", "5F2D", "5F34");
         //"5F20",
     }
@@ -58,6 +58,8 @@ public class EmvTagHelper {
                 String result = getPBOCData(tag, true);
                 if ("9F03".equalsIgnoreCase(tag)) {
                     builder.append(tag + "=" + getPBOCHex(tag, 12) + LINE_BREAK);
+                } else if ("9F07".equalsIgnoreCase(tag)) {
+                    builder.append(tag + "=" + getPBOCHex(tag, 4) + LINE_BREAK);
                 } else if ("9F4E".equalsIgnoreCase(tag)) {
                     builder.append(tag + "=" + Utils.flushLeft('0', 30, result) + LINE_BREAK);
                 } else if ("5F24".equalsIgnoreCase(tag)) {
