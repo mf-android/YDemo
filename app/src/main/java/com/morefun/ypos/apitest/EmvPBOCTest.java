@@ -19,7 +19,6 @@ import com.morefun.yapi.device.reader.icc.OnSearchIccCardListener;
 import com.morefun.yapi.device.reader.mag.MagCardInfoEntity;
 import com.morefun.yapi.device.reader.mag.OnSearchMagCardListener;
 import com.morefun.yapi.emv.EmvChannelType;
-import com.morefun.yapi.emv.EmvDataSource;
 import com.morefun.yapi.emv.EmvErrorCode;
 import com.morefun.yapi.emv.EmvErrorConstrants;
 import com.morefun.yapi.emv.EmvHandler;
@@ -34,7 +33,7 @@ import com.morefun.ypos.MainActivity;
 import com.morefun.ypos.R;
 import com.morefun.ypos.config.DukptConfigs;
 import com.morefun.ypos.config.EmvProcessConfig;
-import com.morefun.ypos.config.EmvTagUtils;
+import com.morefun.ypos.config.EmvTagHelper;
 import com.morefun.ypos.interfaces.OnInputAmountCallBack;
 import com.morefun.ypos.interfaces.OnSelectAppCallBack;
 import com.morefun.ypos.uitls.ActionItems;
@@ -52,7 +51,7 @@ public class EmvPBOCTest extends BaseApiTest {
     EmvHandler mEmvHandler;
     MainActivity.AlertDialogOnShowListener mAlertDialogOnShowListener;
     static EmvPBOCTest mEmvHandlerTest;
-
+    private EmvTagHelper mEmvTagHelper;
     public static EmvPBOCTest getInstance() {
         if (mEmvHandlerTest == null) {
             synchronized (EmvPBOCTest.class) {
@@ -71,6 +70,7 @@ public class EmvPBOCTest extends BaseApiTest {
         try {
             mSDKManager = engine;
             mEmvHandler = engine.getEmvHandler();
+            mEmvTagHelper = new EmvTagHelper(mEmvHandler,DukptConfigs.getTrackIPEKBundle());
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -319,7 +319,7 @@ public class EmvPBOCTest extends BaseApiTest {
         Bundle inoutBundle = DukptConfigs.getTrackIPEKBundle();
         Log.d(TAG, "cardNum =" + cardNum);
         if (TextUtils.isEmpty(cardNum)) {
-            cardNum = getTag("5A", inoutBundle);
+            cardNum = mEmvTagHelper.getPBOCData("5A", true);
         }
         Log.d(TAG, "cardNum after =" + cardNum);
         mAlertDialogOnShowListener.dismissProgress();
@@ -356,14 +356,13 @@ public class EmvPBOCTest extends BaseApiTest {
         Bundle inoutBundle = DukptConfigs.getTrackIPEKBundle();
         Log.d(TAG, "cardNum =" + cardNum);
         if (TextUtils.isEmpty(cardNum) || TextUtils.equals(cardNum, "NULL")) {
-            cardNum = getTag("5A", inoutBundle);
+            cardNum = mEmvTagHelper.getPBOCData("5A", true);
         }
         Log.d(TAG, "cardNum after =" + cardNum);
         mAlertDialogOnShowListener.dismissProgress();
         StringBuilder builder = new StringBuilder();
         builder.append("CardNum = " + cardNum + "\n");
-        builder.append("CardOrg = " + CardOrgUtil.EMVGetChipKernelId(getTagByBytes("4F")) + "\n");
-        List<String> tagList = EmvTagUtils.getTagList();
+        builder.append("CardOrg = " + CardOrgUtil.getCardTypFromAid(mEmvTagHelper.getPBOCData("4F", true)) + "\n");
         String[] taglist = EmvProcessConfig.getTagList().toArray(new String[EmvProcessConfig.getTagList().size()]);
         byte[] data = new byte[1024];
 
@@ -372,31 +371,9 @@ public class EmvPBOCTest extends BaseApiTest {
         Log.d(TAG, "track ksn =" + ksn);
         builder.append("trackKsn = " + ksn);
         builder.append("\nIC data \n");
-        for (String tag : tagList) {
-            if (tag.length() == 2) {
-                builder.append("00" + tag + "=" + getTag(tag, inoutBundle) + "\n");
-            } else {
-                String result = getTag(tag, inoutBundle);
-                String ascResult = getTagByHex2asc(tag, inoutBundle);
-                if ("9F03".equalsIgnoreCase(tag)) {
-                    builder.append(tag + "=" + (result == null ? "000000000000" : result) + "\n");
-                } else if ("9F4E".equalsIgnoreCase(tag)) {
-                    builder.append(tag + "=" + ascResult + "\n");
-                } else if ("5F20".equalsIgnoreCase(tag)) {
-                    builder.append(tag + "=" + (ascResult == null ? "0000" : ascResult) + "\n");
-                } else if ("5F30".equalsIgnoreCase(tag)) {
-                    builder.append(tag + "=" + (result == null ? "0000" : result) + "\n");
-                } else {
-                    builder.append(tag + "=" + getTag(tag, inoutBundle) + "\n");
-                }
-            }
-        }
-        //custom tag
-        builder.append("PinKsn 00C1" + "=" + getTagByHex2asc(EmvDataSource.GET_PIN_KSN_TAG_C1, inoutBundle) + "\n");
-        builder.append("PinBlock 00C7" + "=" + getTag(EmvDataSource.GET_PIN_BLOCK_TAG_C7, inoutBundle) + "\n");
-        builder.append("Masked pan 00C4" + "=" + getTag(EmvDataSource.GET_MASKED_PAN_TAG_C4, inoutBundle) + "\n");
-        builder.append("track2 00C2" + "=" + getTag(EmvDataSource.GET_TRACK2_TAG_C2, inoutBundle) + "\n");
-        builder.append("Track ksn 00C0" + "=" + getTag(EmvDataSource.GET_TRACK_KSN_TAG_C0, inoutBundle) + "\n");
+
+        builder.append(mEmvTagHelper.getICCardData());
+
         ksn = inoutBundle.getString(DukptCalcObj.DUKPT_KSN);
         Log.d(TAG, "track ksn =" + ksn);
         if (readLength > 0) {
@@ -510,53 +487,6 @@ public class EmvPBOCTest extends BaseApiTest {
         }, 60, bundle);
     }
 
-    private String getTag(String tag, Bundle bundle) {
-        return getTagByEmv(tag, mEmvHandler, bundle);
-    }
-
-    private byte[] getTagByBytes(String tag) {
-        return getTagByEmvs(tag, mEmvHandler);
-    }
-
-    public static byte[] getTagByEmvs(String tag, EmvHandler emvHandler) {
-        byte[] Tag = string2byte(tag);
-        try {
-            byte[] tlvs = emvHandler.getTlvs(Tag, 0, new Bundle());
-//            Log.d(TAG, "value =" + byte2string(tlvs));
-            return tlvs;
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static String getTagByEmv(String tag, EmvHandler emvHandler, Bundle bundle) {
-        byte[] Tag = string2byte(tag);
-        try {
-            byte[] tlvs = emvHandler.getTlvs(Tag, 0, bundle);
-//            Log.d(TAG, "value =" + byte2string(tlvs));
-            return byte2string(tlvs);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private String getTagByHex2asc(String tag, Bundle bundle) {
-        byte[] Tag = string2byte(tag);
-        try {
-            byte[] tlvs = mEmvHandler.getTlvs(Tag, 0, bundle);
-//            Log.d(TAG, "value =" + byte2string(tlvs));
-            if (tlvs != null) {
-                return new String(tlvs);
-            } else {
-                return null;
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public void initTermConfig() throws RemoteException {
         mSDKManager.getEmvHandler().initTermConfig(EmvProcessConfig.getInitTermConfig());
