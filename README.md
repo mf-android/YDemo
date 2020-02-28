@@ -1,92 +1,100 @@
-TAQ
-
 # YDemo
 YDemo base on YSDK, for Morefun Android POS
 
-## INSTALLATION
-
-#####  install YSDK apk
-
-YSDK/YSDK.apk.
-
-```
-adb install  YSDK.apk
-```
-
-##### You may need to add mfysdk.jar to your project.
-
-```
-path: app/libs/mfysdk.jar 
-```
-
-YSDK/Demo.apk
-
-APK compiled with project, can be used to run viewing functions directly.
-
-
-
-
-# FEATURES
-
-[Login](https://github.com/mf-android/YDemo/blob/master/docs/Login.md "Markdown")
-
-Device info
-
-PBOC
-
-AID & CAPK (Add、Delete、Get)
-
-Magnetic stripe 
-
-Contact & Contactless(Dip & Tap)
-
-PinPad
-
-------
-
-Printer
-
-LED & Buzzer
-
-Scanner
-
-------
-
-DUKPT （Derived Unique Key Per Transaction）《ANSI X9.24》
-
-Load BDK
-
-Load IPEK
-
-IncreaseKSN
-
-Dukptcalculation
-
-------
-
-MK/SK
-
-Calculate MAC
-
-M1Card
-
-FELICA Card
-
-
-
 # DOCUMENT
 
-[CHANGES.md](https://github.com/mf-android/YDemo/blob/master/CHANGES.md "Markdown")
+PDF: [English](Ydemo/MFYSDK_Android_Programming_Manual.pdf)
 
-MFYSDK_Android_Programming_Manual.pdf
+Markdown: [English](docs/README.md) 
 
-This manual is applicable to MF919 POS Terminal (hereinafter referred to as “MFPOS”).
+SDK changes: [CHANGES.md](Ydemo/CHANGES.md)
+
+
+
+# QUICKSTART
+
+1. #### Install YSDK apk
+
+> Install using the following adb command
 
 ```
-path:docs/MFYSDK_Android_Programming_Manual.pdf
+adb install YSDK.apk
 ```
 
+2. ### Linked mfysdk.jar
 
+   add mfysdk.jar to your project.
+
+3. ### Binding SDK service in Application onCreate function
+
+```
+    public void bindDeviceService() {
+        if (null != deviceServiceEngine) {
+            return;
+        }
+
+        Intent intent = new Intent();
+        intent.setAction(SERVICE_ACTION);
+        intent.setPackage(SERVICE_PACKAGE);
+
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+    }
+```
+
+- #### Register a ServiceConnection
+
+
+```
+    private ServiceConnection connection = new ServiceConnection() {
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            deviceServiceEngine = null;
+            Log.e(TAG, "======onServiceDisconnected======");
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            deviceServiceEngine = DeviceServiceEngine.Stub.asInterface(service);
+            Log.d(TAG, "======onServiceConnected======");
+
+            initDevices();
+
+            linkToDeath(service);
+        }
+
+        private void linkToDeath(IBinder service) {
+            try {
+                service.linkToDeath(new IBinder.DeathRecipient() {
+                    @Override
+                    public void binderDied() {
+                        Log.d(TAG, "======binderDied======");
+                        deviceServiceEngine = null;
+                        bindDeviceService();
+                    }
+                }, 0);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+```
+
+- #### Init DeviceHelper
+
+
+```
+public void initDevices(){
+	try {
+        DeviceHelper.reset();
+        DeviceHelper.initDevices(MyApplication.this);
+    } catch (RemoteException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+[DeviceHelper](YDemo\app\src\main\java\com\morefun\ysdk\sample\device\DeviceHelper.java)  class  From reference Ydemo project.
 
 
 #  FAQ
@@ -144,7 +152,8 @@ Contactless Floor Limit            :  If the limit is exceeded, the transaction 
 
 Contactless CVM Limit             :  If the limit is exceeded, the transaction will request CVM method.
 
-
+###  the type contactless mode
+After the transaction is over, you can judge by obtaining the value of 9F39tag, 07 is contactless EMV mode, 91 is contactless mag-stripe mode.
 
 ###  View the values of AID & CAPK 
 
@@ -156,62 +165,47 @@ AID& CAPK menu -> View AID list、 View AID list.
 
 ### About Dukpt
 
-##### 1.Inject IPEK key & KSN 
-
-Please see YDEMO source code (init IPEK And Ksn).
+##### 1.Inject key 
 
 ```
-String IPEK = "C1D0F8FB4958670DBA40AB1F3752EF0D";
-//KSN must be 20 length String. 95A627000210210 00000
+String key = "C1D0F8FB4958670DBA40AB1F3752EF0D";
 String ksn = "FFFF9876543210" + "000000";
-int ret = DeviceServiceEngine.getPinPad().initDukptIPEKAndKsn(PIN_GROUP_INDEX, IPEK, ksn,true, "00000");
+DukptLoadObj dukptLoadObj = new DukptLoadObj(key, ksn, 
+	DukptLoadObj.DukptKeyType.DUKPT_BDK_PLAINTEXT, 
+	DukptLoadObj.DukptKeyIndex.KEY_INDEX_0);
+DeviceHelper.getPinpad().dukptLoad(dukptLoadObj);
 ```
-##### 2.Inject BDK key & KSN 
+```
 
-```
-//BDK 32 length String.
-String BDK = "C1D0F8FB4958670DBA40AB1F3752EF0D";
-//KSN must be 20 length String. 95A627000210210 00000
-String ksn = "FFFF9876543210" + "000000";
-int ret = DeviceServiceEngine.getPinPad().initDukptBDKAndKsn(KeyIndex, BDK, ksn,true, "00000");
 ```
 ##### 3. Get KSN
 
-increaseKSN API : Generate new PEK and return new KSN.
+increaseKsn API : Increase new KSN or get last KSN.
 
 ```
-public void increaseKSN(PinPad pinPad) throws RemoteException {
-        // one transaction can only be called once, Every time you get it, the PEK key changes
-        //  need to get the ksn first before search card.
-        // increaseKSN API : Generate PEK and return new KSN
-        trackKsn = pinPad.increaseKSN(TRACK_GROUP_INDEX, new Bundle());
-}
+boolean isIncrease = false;
+String ksn = DeviceHelper.getPinpad().increaseKsn(isIncrease);
 
 ```
 ##### 4.Encrypt data
 
 ```
-String ksn = engine.getPinPad().increaseKSN(KeyIndex, new Bundle());
-        // data length should be is multiple of 8.
-         byte[] inputData = Utils.str2Bcd("04953DFFFF9D9D7B".trim());
-		 byte[] data = Utils.checkInputData(inputData);
-        byte keyType = DukptKeyType.MF_DUKPT_DES_KEY_PIN;
-        //only support TDES.
-        int desAlgorithmType = DesAlgorithmType.TDES_CBC;
-        int desMode = DesMode.ENCRYPT; // DesMode.ENCRYPT DesMode.DECRYPT
-//        String dukptCalculation(int keyIndex, byte keyType, int desAlgorithmType, byte[] data, int dataLen, int desMode, Bundle bundle)
-        String calculationData = engine.getPinPad().dukptCalculation(DukptKeyGid.GID_GROUP_EMV_IPEK, keyType, desAlgorithmType ,data, data.length , desMode, new Bundle());
-        Log.d(TAG,"calculationData = " + calculationData);
-        Log.d(TAG,"ksn = " + ksn);
-        alertDialogOnShowListener.showMessage(
-                "multiple of 8 = " + (data.length / 8 ==0)
-                +"\n dukptCalculation ksn :" +(ksn)
-                + "\n" + " calculationData :" + calculationData);
+String data = "12345678ABCDEFGH";
+
+DukptCalcObj.DukptAlg alg = DukptCalcObj.DukptAlg.DUKPT_ALG_CBC;
+DukptCalcObj.DukptOper oper = DukptCalcObj.DukptOper.DUKPT_ENCRYPT;
+DukptCalcObj.DukptType type = DukptCalcObj.DukptType.DUKPT_DES_KEY_DATA1;
+
+DukptCalcObj dukptCalcObj = new DukptCalcObj(type, oper, alg, data);
+Bundle bundle = DeviceHelper.getPinpad().dukptCalcDes(dukptCalcObj);
+
+String encrypt = bundle.getString(DukptCalcObj.DUKPT_DATA);
+String ksn = bundle.getString(DukptCalcObj.DUKPT_KSN));
 ```
 
 ##### 5.How many sets of keys can I use ?
 
-​	At most 6 groups of keys are supported, so the API needs to pass in the relevant key index.
+​	At most 8 groups of keys are supported, so the API needs to pass in the relevant key index.
 
 ```
 public interface DukptKeyGid {
