@@ -52,6 +52,7 @@ public class EmvPBOCTest extends BaseApiTest {
     MainActivity.AlertDialogOnShowListener mAlertDialogOnShowListener;
     static EmvPBOCTest mEmvHandlerTest;
     private EmvTagHelper mEmvTagHelper;
+
     public static EmvPBOCTest getInstance() {
         if (mEmvHandlerTest == null) {
             synchronized (EmvPBOCTest.class) {
@@ -70,7 +71,7 @@ public class EmvPBOCTest extends BaseApiTest {
         try {
             mSDKManager = engine;
             mEmvHandler = engine.getEmvHandler();
-            mEmvTagHelper = new EmvTagHelper(mEmvHandler,DukptConfigs.getTrackIPEKBundle());
+            mEmvTagHelper = new EmvTagHelper(mEmvHandler);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -389,7 +390,8 @@ public class EmvPBOCTest extends BaseApiTest {
     public void emvPBOC(Bundle bundle, String amount) {
         int channel = bundle.getInt(ICCSearchResult.CARDOTHER) == IccReaderSlot.ICSlOT1 ? EmvChannelType.FROM_ICC : EmvChannelType.FROM_PICC;
         mChannel = channel;
-        Bundle inBundle = EmvProcessConfig.getInitBundleValue(channel, "0.52", "0.22");
+
+        Bundle inBundle = EmvProcessConfig.getInitBundleValue(channel, transformAmount(amount), "0.22");
         cardNum = "";
         try {
             initTermConfig();
@@ -402,6 +404,17 @@ public class EmvPBOCTest extends BaseApiTest {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    private String transformAmount(String amount) {
+        try {
+            long lAmount = Long.parseLong(amount);
+            amount = String.valueOf(lAmount * 100);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG , "amount = " + amount);
+        return amount;
     }
 
     /**
