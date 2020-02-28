@@ -141,13 +141,5 @@ public class EmvProcessConfig {
         return tagList;
     }
 
-    /**
-     * TODO : Please add any EMV tag, if you need
-     *
-     * @return
-     */
-    public static List<String> getTagListThirdCompany() {
-        return Arrays.asList("9F16", "9F34", "9F06", "5F30", "9F33", "57", "9F02", "9F03", "9F10", "9F1A", "9F1E", "9F21", "9F26", "9F27", "9F36", "9F37"
-                , "9F4E", "9F6E", "4F", "50", "82", "84", "95", "9A", "9C", "5F20", "5F24", "5F2A", "5F2D", "5F34");
-    }
+
 }

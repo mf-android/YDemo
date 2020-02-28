@@ -34,6 +34,7 @@ import com.morefun.ypos.MainActivity;
 import com.morefun.ypos.R;
 import com.morefun.ypos.config.DukptConfigs;
 import com.morefun.ypos.config.EmvProcessConfig;
+import com.morefun.ypos.config.EmvTagUtils;
 import com.morefun.ypos.interfaces.OnInputAmountCallBack;
 import com.morefun.ypos.interfaces.OnSelectAppCallBack;
 import com.morefun.ypos.uitls.ActionItems;
@@ -362,7 +363,7 @@ public class EmvPBOCTest extends BaseApiTest {
         StringBuilder builder = new StringBuilder();
         builder.append("CardNum = " + cardNum + "\n");
         builder.append("CardOrg = " + CardOrgUtil.EMVGetChipKernelId(getTagByBytes("4F")) + "\n");
-        List<String> tagList = EmvProcessConfig.getTagListThirdCompany();
+        List<String> tagList = EmvTagUtils.getTagList();
         String[] taglist = EmvProcessConfig.getTagList().toArray(new String[EmvProcessConfig.getTagList().size()]);
         byte[] data = new byte[1024];
 
