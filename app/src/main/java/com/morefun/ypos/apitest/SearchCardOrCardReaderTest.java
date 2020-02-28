@@ -185,7 +185,6 @@ public class SearchCardOrCardReaderTest {
         Log.d(TAG, "ServiceCode ===" + magCardInfoEntity.getServiceCode());
         StringBuilder builder = new StringBuilder();
         builder.append("Card: " + magCardInfoEntity.getCardNo());
-        builder.append("CardOrg: " + CardOrgUtil.EMVGetMagKernelId(magCardInfoEntity.getCardNo()));
         builder.append("\nTk1: " + magCardInfoEntity.getTk1());
         builder.append("\nTk2: " + magCardInfoEntity.getTk2());
         builder.append("\nTk3: " + magCardInfoEntity.getTk3());

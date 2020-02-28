@@ -24,6 +24,7 @@ import com.morefun.ypos.BaseApiTest;
 import com.morefun.ypos.MainActivity;
 import com.morefun.ypos.R;
 import com.morefun.ypos.config.DukptConfigs;
+import com.morefun.ypos.config.EmvTagHelper;
 import com.morefun.ypos.uitls.ToastUtils;
 import com.morefun.ypos.uitls.Utils;
 
@@ -188,7 +189,7 @@ public class PinPadTest extends BaseApiTest {
         Bundle bundle = DukptConfigs.getPinIPEKBundle();
         if (TextUtils.isEmpty(pan)) {
             //pan
-            pan = EmvPBOCTest.getTagByEmv("5A", mSDKManager.getEmvHandler(), bundle);
+            pan = new EmvTagHelper(mSDKManager.getEmvHandler()).getPBOCData("5A", true);
         }
         byte[] panBlock = pan.getBytes();
         Log.d(TAG, "pan =" + pan);
