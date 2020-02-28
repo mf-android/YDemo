@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.morefun.yapi.ServiceResult;
 import com.morefun.yapi.device.beeper.BeepModeConstrants;
-import com.morefun.yapi.device.pinpad.KSNConstrants;
+import com.morefun.yapi.device.pinpad.DukptCalcObj;
 import com.morefun.yapi.device.reader.icc.ICCSearchResult;
 import com.morefun.yapi.device.reader.icc.IccCardReader;
 import com.morefun.yapi.device.reader.icc.IccCardType;
@@ -367,17 +367,27 @@ public class EmvPBOCTest extends BaseApiTest {
         byte[] data = new byte[1024];
 
         int readLength = mEmvHandler.readEmvData(taglist, data, inoutBundle);
-        String ksn = inoutBundle.getString(KSNConstrants.DUKPT_KSN);
+        String ksn = inoutBundle.getString(DukptCalcObj.DUKPT_KSN);
         Log.d(TAG, "track ksn =" + ksn);
         builder.append("trackKsn = " + ksn);
         builder.append("\nIC data \n");
         for (String tag : tagList) {
-            if ("9F4E".equalsIgnoreCase(tag)) {
-                builder.append(tag + "=" + getTagByHex2asc(tag, inoutBundle) + "\n");
-            } else if ("5F20".equalsIgnoreCase(tag)) {
-                builder.append(tag + "=" + getTagByHex2asc(tag, inoutBundle) + "\n");
+            if (tag.length() == 2) {
+                builder.append("00" + tag + "=" + getTag(tag, inoutBundle) + "\n");
             } else {
-                builder.append(tag + "=" + getTag(tag, inoutBundle) + "\n");
+                String result = getTag(tag, inoutBundle);
+                String ascResult = getTagByHex2asc(tag, inoutBundle);
+                if ("9F03".equalsIgnoreCase(tag)) {
+                    builder.append(tag + "=" + (result == null ? "000000000000" : result) + "\n");
+                } else if ("9F4E".equalsIgnoreCase(tag)) {
+                    builder.append(tag + "=" + ascResult + "\n");
+                } else if ("5F20".equalsIgnoreCase(tag)) {
+                    builder.append(tag + "=" + (ascResult == null ? "0000" : ascResult) + "\n");
+                } else if ("5F30".equalsIgnoreCase(tag)) {
+                    builder.append(tag + "=" + (result == null ? "0000" : result) + "\n");
+                } else {
+                    builder.append(tag + "=" + getTag(tag, inoutBundle) + "\n");
+                }
             }
         }
         //custom tag
@@ -386,7 +396,7 @@ public class EmvPBOCTest extends BaseApiTest {
         builder.append("Masked pan 00C4" + "=" + getTag(EmvDataSource.GET_MASKED_PAN_TAG_C4, inoutBundle) + "\n");
         builder.append("track2 00C2" + "=" + getTag(EmvDataSource.GET_TRACK2_TAG_C2, inoutBundle) + "\n");
         builder.append("Track ksn 00C0" + "=" + getTag(EmvDataSource.GET_TRACK_KSN_TAG_C0, inoutBundle) + "\n");
-        ksn = inoutBundle.getString(KSNConstrants.DUKPT_KSN);
+        ksn = inoutBundle.getString(DukptCalcObj.DUKPT_KSN);
         Log.d(TAG, "track ksn =" + ksn);
         if (readLength > 0) {
             byte[] ARQCData = Utils.getByteArray(data, 0, readLength);
@@ -401,7 +411,7 @@ public class EmvPBOCTest extends BaseApiTest {
     public void emvPBOC(Bundle bundle, String amount) {
         int channel = bundle.getInt(ICCSearchResult.CARDOTHER) == IccReaderSlot.ICSlOT1 ? EmvChannelType.FROM_ICC : EmvChannelType.FROM_PICC;
         mChannel = channel;
-        Bundle inBundle = EmvProcessConfig.getInitBundleValue(channel, amount, "0.22");
+        Bundle inBundle = EmvProcessConfig.getInitBundleValue(channel, "0.52", "0.22");
         cardNum = "";
         try {
             initTermConfig();
@@ -539,7 +549,7 @@ public class EmvPBOCTest extends BaseApiTest {
             if (tlvs != null) {
                 return new String(tlvs);
             } else {
-                return "NULL";
+                return null;
             }
         } catch (RemoteException e) {
             e.printStackTrace();

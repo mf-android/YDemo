@@ -15,17 +15,15 @@ import static com.morefun.ypos.uitls.Utils.getDateTime;
 import static com.morefun.ypos.uitls.Utils.pubByteToHexString;
 
 public class EmvProcessConfig {
+
     public static Bundle getInitTermConfig() {
         Bundle bundle1 = new Bundle();
-        bundle1.putByteArray(EmvTermCfgConstrants.TERMCAP, new byte[]{(byte) 0x20, (byte) 0x68, (byte) 0x08});
-//        bundle1.putByteArray(EmvTermCfgConstrants.MERID_ANS_9F16, new byte[]{(byte) 0x50, (byte) 0x43, (byte) 0x54,(byte) 0x53, (byte) 0x31, (byte) 0x32, (byte) 0x50, (byte) 0x43, (byte) 0x54,(byte) 0x53 });
-        bundle1.putByteArray(EmvTermCfgConstrants.ADDTERMCAP, new byte[]{(byte) 0xF2, (byte) 0x00, (byte) 0xF0, (byte) 0xA0, (byte) 0x01});
-        //bundle1.putByteArray(EmvTermCfgConstrants.TERMCAP, new byte[]{(byte) 0xE0, (byte) 0xF8, (byte) 0xC8});
+        bundle1.putByteArray(EmvTermCfgConstrants.TERMCAP, new byte[]{(byte) 0xE0, (byte) 0xF8, (byte) 0xC8});
+        bundle1.putByteArray(EmvTermCfgConstrants.MERID_ANS_9F16, new byte[]{(byte) 0x50, (byte) 0x43, (byte) 0x54,(byte) 0x53, (byte) 0x31, (byte) 0x32, (byte) 0x50, (byte) 0x43, (byte) 0x54,(byte) 0x53 });
+        bundle1.putByteArray(EmvTermCfgConstrants.ADDTERMCAP, new byte[]{(byte) 0xF2, (byte) 0x10, (byte) 0xF0, (byte) 0xA0, (byte) 0x01});
         bundle1.putByte(EmvTermCfgConstrants.TERMTYPE, (byte) 0x22);
-        //TODO please change the country code  & currency code
         bundle1.putByteArray(EmvTermCfgConstrants.COUNTRYCODE, new byte[]{(byte) 0x03, (byte) 0x56});
         bundle1.putByteArray(EmvTermCfgConstrants.CURRENCYCODE, new byte[]{(byte) 0x03, (byte) 0x56});
-//        bundle1.putByteArray(EmvTermCfgConstrants.TRANS_PROP_9F66, new byte[]{(byte) 0x05, (byte) 0x06,(byte) 0x06,(byte) 0x06});
         bundle1.putByteArray(EmvTermCfgConstrants.TRANS_PROP_9F66, new byte[]{0x36, (byte) 0x00, (byte) 0xc0, (byte) 0x00});
         return bundle1;
     }
@@ -43,14 +41,10 @@ public class EmvProcessConfig {
      * @return
      */
     private static ArrayList<String> setTerminalParamByTlvs() {
-        //DF811B0130DF8122050101010101DF81180170DF811901185F2A020156
         ArrayList<String> terminalParams = new ArrayList<>();
-//        terminalParams.add("DF811B0130");
-//        terminalParams.add("DF8122050101010101");
         //master adjust
         terminalParams.add("DF81180170");
         terminalParams.add("DF81190118");
-//        terminalParams.add("9F4005F200F0A001");
         return terminalParams;
     }
 
@@ -75,7 +69,7 @@ public class EmvProcessConfig {
         bundle.putInt(EmvTransDataConstrants.ISQPBOCFORCEONLINE, 0);
         bundle.putInt(EmvTransDataConstrants.CHANNELTYPE, channelType);
 
-        bundle.putByte(EmvTransDataConstrants.B9C, getTrans9C());
+        bundle.putByte(EmvTransDataConstrants.B9C, (byte) 0x00);
         bundle.putString(EmvTransDataConstrants.TRANSDATE, pubByteToHexString(transDate));
         bundle.putString(EmvTransDataConstrants.TRANSTIME, pubByteToHexString(transTime));
         bundle.putString(EmvTransDataConstrants.SEQNO, "00001");
@@ -86,29 +80,12 @@ public class EmvProcessConfig {
         bundle.putString(EmvTransDataConstrants.MERNAME, "MOREFUN");
         bundle.putString(EmvTransDataConstrants.MERID, "488923");
         bundle.putString(EmvTransDataConstrants.TERMID, "4999000");
-        //Pin Free Amount for contactLess
         bundle.putString(EmvTransDataConstrants.CONTACTLESS_PIN_FREE_AMT, "200000");
-        //TODO For online transactions, the terminal must force to enter the password,Please set true
-//        bundle.putBoolean(EmvTransDataConstrants.FORCE_ONLINE_CALL_PIN, false);
-        //some additional requirements, It's optional
+        bundle.putBoolean(EmvTransDataConstrants.FORCE_ONLINE_CALL_PIN, true);
         bundle.putStringArrayList(EmvTransDataConstrants.TERMINAL_TLVS, setTerminalParamByTlvs());
         return bundle;
     }
 
-    /**
-     * @return
-     */
-    public static byte getTrans9C() {
-//        return EMVTag9CConstants.EMV_TRANS_CASH;
-//        return EMVTag9CConstants.EMV_TRANS_CASHBACK;
-        return EMVTag9CConstants.EMV_TRANS_SALE;
-//        return EMVTag9CConstants.EMV_TRANS_INQUIRY;
-//        return EMVTag9CConstants.EMV_CASH_DISBUERSE;
-        //Rupay
-//        return EMVTag9CConstants.RUPAY_VOID;
-//        return EMVTag9CConstants.RUPAY_LEGACY_MONEY_ADD;
-//        return EMVTag9CConstants.RUPAY_MONEY_ADD;
-    }
 
     public static List<String> getTagList() {
         List<String> tagList = new ArrayList<>();
@@ -160,6 +137,7 @@ public class EmvProcessConfig {
         tagList.add("9F5D");
         tagList.add("9F63");
         tagList.add("9F26");
+//        tagList.add("9F26");
         return tagList;
     }
 

@@ -10,10 +10,7 @@ import android.util.Log;
 
 import com.morefun.yapi.ServiceResult;
 import com.morefun.yapi.device.pinpad.DesAlgorithmType;
-import com.morefun.yapi.device.pinpad.DesMode;
 import com.morefun.yapi.device.pinpad.DispTextMode;
-import com.morefun.yapi.device.pinpad.DukptKeyGid;
-import com.morefun.yapi.device.pinpad.DukptKeyType;
 import com.morefun.yapi.device.pinpad.MacAlgorithmType;
 import com.morefun.yapi.device.pinpad.OnPinPadInputListener;
 import com.morefun.yapi.device.pinpad.PinAlgorithmMode;
@@ -155,7 +152,6 @@ public class PinPadTest extends BaseApiTest {
         bundle.putBoolean(PinPadConstrants.IS_SHOW_PASSWORD_BOX, true);
         bundle.putBoolean(PinPadConstrants.IS_SHOW_TITLE_HEAD, true);
         bundle.putString(PinPadConstrants.TITLE_HEAD_CONTENT, "Please input offline Pin\n");
-//        bundle.putString(PinPadConstrants.COMMON_TYPEFACE_PATH , path);
         pinResult = mSDKManager.getPinPad().inputText(bundle, new OnPinPadInputListener.Stub() {
             @Override
             public void onInputResult(int ret, byte[] pin, String ksn) throws RemoteException {
@@ -274,8 +270,7 @@ public class PinPadTest extends BaseApiTest {
         String BDK = "C1D0F8FB4958670DBA40AB1F3752EF0D";
         //KSN must be 20 length String. 95A627000210210 00000
         String ksn = "FFFF9876543210" + "000000";
-        int ret = engine.getPinPad().initDukptBDKAndKsn(KeyIndex, BDK, ksn, true, "00000");
-        alertDialogOnShowListener.showMessage("initDukptBDKAndKsn ret :" + (ret == ServiceResult.Success));
+//        alertDialogOnShowListener.showMessage("initDukptBDKAndKsn ret :" + (ret == ServiceResult.Success));
     }
 
     //support 0~5;
@@ -286,26 +281,11 @@ public class PinPadTest extends BaseApiTest {
         String IPEK = "C1D0F8FB4958670DBA40AB1F3752EF0D";
         //KSN must be 20 length String. 95A627000210210 00000
         String ksn = "FFFF9876543210" + "000000";
-        int ret = engine.getPinPad().initDukptIPEKAndKsn(KeyIndex, IPEK, ksn, true, "00000");//its a open function for ipek keys
-        alertDialogOnShowListener.showMessage("initDukptIPEKAndKsn ret :" + (ret == ServiceResult.Success));
+//        int ret = engine.getPinPad().initDukptIPEKAndKsn(KeyIndex, IPEK, ksn, true, "00000");//its a open function for ipek keys
+//        alertDialogOnShowListener.showMessage("initDukptIPEKAndKsn ret :" + (ret == ServiceResult.Success));
     }
 
     public static void dukptCalculation(DeviceServiceEngine engine, final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener) throws RemoteException {
-        String ksn = engine.getPinPad().increaseKSN(KeyIndex, new Bundle());
-        // data length should be is multiple of 8.
-        byte[] inputData = Utils.str2Bcd("04953DFFFF9D9D7B".trim());
-        byte[] data = Utils.checkInputData(inputData);
-        byte keyType = DukptKeyType.MF_DUKPT_DES_KEY_PIN;
-        //only support TDES.
-        int desAlgorithmType = DesAlgorithmType.TDES_CBC;
-        int desMode = DesMode.ENCRYPT; // DesMode.ENCRYPT DesMode.DECRYPT
-//        String dukptCalculation(int keyIndex, byte keyType, int desAlgorithmType, byte[] data, int dataLen, int desMode, Bundle bundle)
-        String calculationData = engine.getPinPad().dukptCalculation(DukptKeyGid.GID_GROUP_EMV_IPEK, keyType, desAlgorithmType, data, data.length, desMode, new Bundle());
-        Log.d(TAG, "calculationData = " + calculationData);
-        Log.d(TAG, "ksn = " + ksn);
-        alertDialogOnShowListener.showMessage(
-                "multiple of 8 = " + (data.length / 8 == 0)
-                        + "\n dukptCalculation ksn :" + (ksn)
-                        + "\n" + " calculationData :" + calculationData);
+
     }
 }

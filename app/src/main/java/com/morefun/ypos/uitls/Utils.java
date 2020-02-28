@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class Utils {
 
@@ -263,7 +264,7 @@ public class Utils {
 
     public static String byte2string(byte[] b) {
         if (b == null || b.length == 0) {
-            return "NULL";
+            return null;
         }
         String asci = new String();
         for (int i = 0; i < b.length; ++i) {
@@ -308,5 +309,13 @@ public class Utils {
             cardNum = cardNum.substring(0, cardNum.length() - 1);
         }
         return cardNum;
+    }
+
+    public static <T> ArrayList<T> createArrayList(T ... elements) {
+        ArrayList<T> list = new ArrayList<T>();
+        for (T element : elements) {
+            list.add(element);
+        }
+        return list;
     }
 }
