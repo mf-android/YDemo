@@ -5,13 +5,8 @@ import android.os.RemoteException;
 import android.view.View;
 import android.widget.TextView;
 
-import com.morefun.yapi.device.pinpad.DesAlgorithmType;
-import com.morefun.yapi.device.pinpad.DesMode;
 import com.morefun.yapi.device.pinpad.DukptCalcObj;
-import com.morefun.yapi.device.pinpad.DukptKeyGid;
-import com.morefun.yapi.device.pinpad.DukptKeyType;
 import com.morefun.yapi.device.pinpad.DukptLoadObj;
-import com.morefun.yapi.device.pinpad.MacAlgorithmType;
 import com.morefun.yapi.device.pinpad.OnPinPadInputListener;
 import com.morefun.yapi.device.pinpad.PinAlgorithmMode;
 import com.morefun.yapi.device.pinpad.PinPadConstrants;
@@ -69,7 +64,7 @@ public class PinpadActivity extends BaseActivity {
 
     private void increaseKsn(boolean isIncrease) {
         try {
-            String ksn = DeviceHelper.getPinpad().increaseKsn(isIncrease);
+            String ksn = DeviceHelper.getPinpad().increaseKSN(0, isIncrease);
             showResult(textView, "ksn:" + ksn);
         } catch (RemoteException e) {
 
@@ -87,9 +82,9 @@ public class PinpadActivity extends BaseActivity {
                 xor[i % 8] = (byte) (xor[i % 8] ^ data[i]);
             }
 
-            DukptCalcObj.DukptAlg alg = DukptCalcObj.DukptAlg.DUKPT_ALG_CBC;
-            DukptCalcObj.DukptOper oper = DukptCalcObj.DukptOper.DUKPT_ENCRYPT;
-            DukptCalcObj.DukptType type = DukptCalcObj.DukptType.DUKPT_DES_KEY_MAC1;
+            DukptCalcObj.DukptAlgEnum alg = DukptCalcObj.DukptAlgEnum.DUKPT_ALG_CBC;
+            DukptCalcObj.DukptOperEnum oper = DukptCalcObj.DukptOperEnum.DUKPT_ENCRYPT;
+            DukptCalcObj.DukptTypeEnum type = DukptCalcObj.DukptTypeEnum.DUKPT_DES_KEY_MAC1;
 
             DukptCalcObj dukptCalcObj = new DukptCalcObj(type, oper, alg, HexUtil.bytesToHexString(xor));
             Bundle bundle = DeviceHelper.getPinpad().dukptCalcDes(dukptCalcObj);
@@ -106,9 +101,9 @@ public class PinpadActivity extends BaseActivity {
         try {
             String data = encrypt;
 
-            DukptCalcObj.DukptAlg alg = DukptCalcObj.DukptAlg.DUKPT_ALG_CBC;
-            DukptCalcObj.DukptOper oper = DukptCalcObj.DukptOper.DUKPT_DECRYPT;
-            DukptCalcObj.DukptType type = DukptCalcObj.DukptType.DUKPT_DES_KEY_DATA1;
+            DukptCalcObj.DukptAlgEnum alg = DukptCalcObj.DukptAlgEnum.DUKPT_ALG_CBC;
+            DukptCalcObj.DukptOperEnum oper = DukptCalcObj.DukptOperEnum.DUKPT_DECRYPT;
+            DukptCalcObj.DukptTypeEnum type = DukptCalcObj.DukptTypeEnum.DUKPT_DES_KEY_DATA1;
 
             DukptCalcObj dukptCalcObj = new DukptCalcObj(type, oper, alg, data);
 
@@ -126,11 +121,12 @@ public class PinpadActivity extends BaseActivity {
         try {
             String data = "12345678ABCDEFGH";
 
-            DukptCalcObj.DukptAlg alg = DukptCalcObj.DukptAlg.DUKPT_ALG_CBC;
-            DukptCalcObj.DukptOper oper = DukptCalcObj.DukptOper.DUKPT_ENCRYPT;
-            DukptCalcObj.DukptType type = DukptCalcObj.DukptType.DUKPT_DES_KEY_DATA1;
+            DukptCalcObj.DukptAlgEnum alg = DukptCalcObj.DukptAlgEnum.DUKPT_ALG_CBC;
+            DukptCalcObj.DukptOperEnum oper = DukptCalcObj.DukptOperEnum.DUKPT_ENCRYPT;
+            DukptCalcObj.DukptTypeEnum type = DukptCalcObj.DukptTypeEnum.DUKPT_DES_KEY_DATA1;
+            DukptCalcObj.DukptKeyIndexEnum index = DukptCalcObj.DukptKeyIndexEnum.KEY_INDEX_0;
 
-            DukptCalcObj dukptCalcObj = new DukptCalcObj(type, oper, alg, data);
+            DukptCalcObj dukptCalcObj = new DukptCalcObj(index, type, oper, alg, data);
 
             Bundle bundle = DeviceHelper.getPinpad().dukptCalcDes(dukptCalcObj);
             encrypt = bundle.getString(DukptCalcObj.DUKPT_DATA);
@@ -147,7 +143,9 @@ public class PinpadActivity extends BaseActivity {
             String key = "C1D0F8FB4958670DBA40AB1F3752EF0D";
             String ksn = "FFFF9876543210" + "000000";
 
-            DukptLoadObj dukptLoadObj = new DukptLoadObj(key, ksn, DukptLoadObj.DukptKeyType.DUKPT_BDK_PLAINTEXT, DukptLoadObj.DukptKeyIndex.KEY_INDEX_0);
+            DukptLoadObj dukptLoadObj = new DukptLoadObj(key, ksn
+                    , DukptLoadObj.DukptKeyTypeEnum.DUKPT_BDK_PLAINTEXT
+                    , DukptLoadObj.DukptKeyIndexEnum.KEY_INDEX_0);
 
             int ret = DeviceHelper.getPinpad().dukptLoad(dukptLoadObj);
             showResult(textView, "Dukpt init:" + ret);

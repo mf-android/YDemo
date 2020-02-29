@@ -41,6 +41,9 @@ public class EmvUtil {
     };
 
     public static final String[] tags = new String[]{
+            "5F20",
+            "5F30",
+            "9F03",
             "9F26",
             "9F27",
             "9F10",
@@ -93,13 +96,13 @@ public class EmvUtil {
         bundle.putInt(EmvTransDataConstrants.ISQPBOCFORCEONLINE, 0);
         bundle.putInt(EmvTransDataConstrants.CHANNELTYPE, channelType);
 
-        bundle.putByte(EmvTransDataConstrants.B9C, (byte) EMVTag9CConstants.EMV_TRANS_SALE);
+        bundle.putByte(EmvTransDataConstrants.B9C, (byte) EMVTag9CConstants.EMV_TRANS_CASHBACK);
+        bundle.putString(EmvTransDataConstrants.CASHBACKAMT, cashBackAmt);
         bundle.putString(EmvTransDataConstrants.TRANSDATE, date.substring(0, 6));
         bundle.putString(EmvTransDataConstrants.TRANSTIME, date.substring(6, 12));
         bundle.putString(EmvTransDataConstrants.SEQNO, "00001");
 
         bundle.putString(EmvTransDataConstrants.TRANSAMT, amount);
-        bundle.putString(EmvTransDataConstrants.CASHBACKAMT, cashBackAmt);
 
         bundle.putString(EmvTransDataConstrants.MERNAME, "MOREFUN");
         bundle.putString(EmvTransDataConstrants.MERID, "488923");

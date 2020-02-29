@@ -47,6 +47,15 @@ public class TlvDataList {
         return null;
     }
 
+    public TlvData getTLV(String tag, TlvData defalutTlvData) {
+        for (TlvData d : data) {
+            if (d.getTag().equals(tag)) {
+                return d;
+            }
+        }
+        return defalutTlvData;
+    }
+
     public TlvDataList getTLVs(String... tags) {
         TlvDataList list = new TlvDataList();
         for (String tag : tags) {

@@ -147,7 +147,7 @@ public class PbocActivity extends BaseActivity {
     private void emvProcess(int channel, String amount) throws RemoteException {
 
         DeviceHelper.getEmvHandler().initTermConfig(EmvUtil.getInitTermConfig());
-        DeviceHelper.getEmvHandler().emvProcess(EmvUtil.getInitBundleValue(channel, amount, "0.02"), new OnEmvProcessListener.Stub() {
+        DeviceHelper.getEmvHandler().emvProcess(EmvUtil.getInitBundleValue(channel, amount, "0.01"), new OnEmvProcessListener.Stub() {
 
             @Override
             public void onSelApp(List<String> appNameList, boolean isFirstSelect) throws RemoteException {
@@ -164,7 +164,7 @@ public class PbocActivity extends BaseActivity {
 
             @Override
             public void onCardHolderInputPin(boolean isOnlinePin, int leftTimes) throws RemoteException {
-                showResult(textView, "onCardHolderInputPin");
+                showResult(textView, "onCardHolderInputPin isOnlinePin:" + isOnlinePin);
 
                 String cardNo = EmvUtil.readPan();
 

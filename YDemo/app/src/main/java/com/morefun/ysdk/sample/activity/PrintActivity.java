@@ -1,7 +1,12 @@
 package com.morefun.ysdk.sample.activity;
 
+import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -12,6 +17,8 @@ import com.morefun.yapi.device.printer.OnPrintListener;
 import com.morefun.ysdk.sample.R;
 import com.morefun.ysdk.sample.device.DeviceHelper;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +57,8 @@ public class PrintActivity extends BaseActivity {
 
             List<MulPrintStrEntity> list = new ArrayList<>();
             MulPrintStrEntity entity = new MulPrintStrEntity("POS purchase order", fontSize);
+            Bitmap imageFromAssetsFile = getImageFromAssetsFile(this, "china_union_pay.bmp");
+            entity.setBitmap(imageFromAssetsFile);
             entity.setMarginX(50);
             entity.setUnderline(true);
             entity.setYspace(30);
@@ -71,7 +80,9 @@ public class PrintActivity extends BaseActivity {
             list.add(new MulPrintStrEntity("==========================", fontSize));
             //feed pager one line
             list.add(new MulPrintStrEntity("\n", fontSize));
-            list.add(new MulPrintStrEntity("CARD HOLDER SIGNATURE", fontSize));
+            entity = new MulPrintStrEntity("CARD HOLDER SIGNATURE", fontSize);
+            entity.setBitmap(imageFromAssetsFile);
+            list.add(entity);
             list.add(new MulPrintStrEntity("\n", fontSize));
             list.add(new MulPrintStrEntity("--------------------------------------", fontSize));
             list.add(new MulPrintStrEntity(" I ACKNOWLEDGE	SATISFACTORY RECEIPT OF RELATIVE GOODS/SERVICES", fontSize));
@@ -92,4 +103,17 @@ public class PrintActivity extends BaseActivity {
         button.setText(getString(R.string.menu_print));
     }
 
+    private static Bitmap getImageFromAssetsFile(Context context, String fileName) {
+        Bitmap image = null;
+        AssetManager am = context.getResources().getAssets();
+        try {
+            InputStream is = am.open(fileName);
+            image = BitmapFactory.decodeStream(is);
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.d("getImageFromAssetsFile" ,"Bitmpa =" + image);
+        return image;
+    }
 }

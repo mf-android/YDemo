@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.morefun.ysdk.sample"
-        minSdkVersion 22
+        minSdkVersion 23
         targetSdkVersion 26
         versionCode 2020
         versionName new Date().format("yyMMdd")
@@ -36,5 +36,5 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.2.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     implementation 'com.github.f0ris.sweetalert:library:1.5.1'
-    implementation files('libs/ysdk_2.0.2615_2002221347.jar')
+    implementation files('libs/ysdk_3.0.2626_2002281015.jar')
 }
