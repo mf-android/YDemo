@@ -18,11 +18,9 @@ import static com.morefun.ypos.uitls.Utils.string2byte;
 public class EmvTagHelper {
     private static final String TAG = "EmvTagHelper";
     private EmvHandler mEmvHandler;
-    Bundle inoutBundle;
 
     public EmvTagHelper(EmvHandler mEmvHandler) {
         this.mEmvHandler = mEmvHandler;
-        inoutBundle = DukptConfigs.getTrackIPEKBundle();
     }
 
     /**
@@ -77,17 +75,23 @@ public class EmvTagHelper {
             builder.append("00C1" + "=" + getPBOCData(EmvDataSource.GET_PIN_KSN_TAG_C1, false) + LINE_BREAK);
             builder.append("00C7" + "=" + C7 + LINE_BREAK);
         }
-//        builder.append("00C4" + "=" + getPBOCData(EmvDataSource.GET_MASKED_PAN_TAG_C4, true) + LINE_BREAK);
+        builder.append("00C4" + "=" + getPBOCData(EmvDataSource.GET_MASKED_PAN_TAG_C4, true) + LINE_BREAK);
         builder.append("00C2" + "=" + getPBOCData(EmvDataSource.GET_TRACK2_TAG_C2, true) + LINE_BREAK);
         builder.append("00C0" + "=" + getPBOCData(EmvDataSource.GET_TRACK_KSN_TAG_C0, true) + LINE_BREAK);
-        Log.d(TAG, builder.toString());
+        builder.append("9F53" + "=" + getPBOCHex("9F53", 2) + LINE_BREAK);
+        builder.append("9F11" + "=" + getPBOCHex("9F11", 2) + LINE_BREAK);
+        builder.append("9F12" + "=" + getPBOCHex("9F12", 10) + LINE_BREAK);
+        builder.append("9F09" + "=" + getPBOCData("9F09", true) + LINE_BREAK);
+        builder.append("009B" + "=" + getPBOCData("9B", true) + LINE_BREAK);
+//        builder.append("9F19" + "=" + getPBOCData("9F19", true) + LINE_BREAK);
+        Log.d(TAG, "IC card data" + builder.toString());
         return builder.toString();
     }
 
     private String getPBOCHex(String tag, int length) {
         String pbocData = getPBOCData(tag, true);
         if (pbocData == null) {
-            Utils.flushLeft('0', length, "");
+           return Utils.flushLeft('0', length, "");
         }
         return pbocData;
     }
@@ -95,7 +99,7 @@ public class EmvTagHelper {
     public String getPBOCData(String tag, boolean isHex) {
         byte[] Tag = string2byte(tag);
         try {
-            byte[] tlvs = mEmvHandler.getTlvs(Tag, 0, inoutBundle);
+            byte[] tlvs = mEmvHandler.getTlvs(Tag, 0, DukptConfigs.getTrackIPEKBundle());
             if (tlvs != null) {
                 if (isHex) {
                     return HexUtil.bytesToHexString(tlvs);

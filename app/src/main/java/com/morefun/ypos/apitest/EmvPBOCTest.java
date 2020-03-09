@@ -365,7 +365,7 @@ public class EmvPBOCTest extends BaseApiTest {
         builder.append("CardNum = " + cardNum + "\n");
         builder.append("CardOrg = " + CardOrgUtil.getCardTypFromAid(mEmvTagHelper.getPBOCData("4F", true)) + "\n");
         String[] taglist = EmvProcessConfig.getTagList().toArray(new String[EmvProcessConfig.getTagList().size()]);
-        byte[] data = new byte[1024];
+        byte[] data = new byte[3096];
 
         int readLength = mEmvHandler.readEmvData(taglist, data, inoutBundle);
         String ksn = inoutBundle.getString(DukptCalcObj.DUKPT_KSN);
@@ -376,12 +376,12 @@ public class EmvPBOCTest extends BaseApiTest {
         builder.append(mEmvTagHelper.getTapPBOCData());
 
         ksn = inoutBundle.getString(DukptCalcObj.DUKPT_KSN);
-        Log.d(TAG, "track ksn =" + ksn);
+//        Log.d(TAG, "track ksn =" + ksn);
         if (readLength > 0) {
             byte[] ARQCData = Utils.getByteArray(data, 0, readLength);
-            builder.append(Utils.byte2string(ARQCData));
+//            builder.append(Utils.byte2string(ARQCData));
         }
-        Log.d(TAG, "" + builder.toString());
+//        Log.d(TAG, "" + builder.toString());
         mAlertDialogOnShowListener.showMessage("" + builder.toString());
     }
 
