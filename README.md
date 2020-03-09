@@ -1,5 +1,6 @@
 # YDemo
-YDemo base on YSDK, for Morefun Android POS
+YDemo base on YSDK, for Morefun Android POS.
+Demo calling YSDK features via AIDL.
 
 # DOCUMENT
 
