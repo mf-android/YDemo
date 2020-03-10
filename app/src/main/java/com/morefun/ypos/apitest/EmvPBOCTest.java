@@ -52,6 +52,8 @@ public class EmvPBOCTest extends BaseApiTest {
     MainActivity.AlertDialogOnShowListener mAlertDialogOnShowListener;
     static EmvPBOCTest mEmvHandlerTest;
     private EmvTagHelper mEmvTagHelper;
+    private String cardNum;
+    private static String mAmount;
 
     public static EmvPBOCTest getInstance() {
         if (mEmvHandlerTest == null) {
@@ -87,6 +89,7 @@ public class EmvPBOCTest extends BaseApiTest {
                     listener.showMessage("input amount fail");
                     return;
                 }
+                mAmount = amount;
                 try {
                     //TODO >>> if is dukpt, Please check if you need KSN add one and genrate new PEK
                     if (DukptConfigs.isDukpt) {
@@ -136,7 +139,7 @@ public class EmvPBOCTest extends BaseApiTest {
             }
         }
     };
-    private String cardNum;
+
 
     public void initEmvListener() {
         mOnEmvProcessListener = new OnEmvProcessListener.Stub() {
@@ -416,7 +419,15 @@ public class EmvPBOCTest extends BaseApiTest {
         Log.d(TAG , "amount = " + amount);
         return amount;
     }
-
+    private long getAmountLong(String amount) {
+        try {
+            return Long.parseLong(amount)  * 100;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG , "amount = " + amount);
+        return 0;
+    }
     /**
      * Contactless check card
      *
@@ -481,7 +492,9 @@ public class EmvPBOCTest extends BaseApiTest {
             }
         };
         iccCardReader.searchCard(listener, 60, new String[]{IccCardType.CPUCARD, IccCardType.AT24CXX, IccCardType.AT88SC102});
-        rfReader.searchCard(listener, 60, new String[]{IccCardType.CPUCARD, IccCardType.AT24CXX, IccCardType.AT88SC102});
+        if (getAmountLong(mAmount) <= 2000){
+            rfReader.searchCard(listener, 60, new String[]{IccCardType.CPUCARD, IccCardType.AT24CXX, IccCardType.AT88SC102});
+        }
         //m1Reader.searchCard(listener, 60, new String[]{IccCardType.M1CARD});
         Bundle bundle = DukptConfigs.getTrackIPEKBundle();
         //Mag CardReader
