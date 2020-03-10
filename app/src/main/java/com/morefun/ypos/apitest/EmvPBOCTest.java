@@ -421,7 +421,7 @@ public class EmvPBOCTest extends BaseApiTest {
     }
     private long getAmountLong(String amount) {
         try {
-            return Long.parseLong(amount)  * 100;
+            return Long.parseLong(amount);
         } catch (Exception e) {
             e.printStackTrace();
         }
