@@ -11,6 +11,7 @@ import android.util.Log;
 import com.morefun.yapi.ServiceResult;
 import com.morefun.yapi.device.pinpad.DesAlgorithmType;
 import com.morefun.yapi.device.pinpad.DispTextMode;
+import com.morefun.yapi.device.pinpad.DukptLoadObj;
 import com.morefun.yapi.device.pinpad.MacAlgorithmType;
 import com.morefun.yapi.device.pinpad.OnPinPadInputListener;
 import com.morefun.yapi.device.pinpad.PinAlgorithmMode;
@@ -278,12 +279,19 @@ public class PinPadTest extends BaseApiTest {
     static int KeyIndex = 0;
 
     public static void initDukptIPEKAndKsn(DeviceServiceEngine engine, final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener) throws RemoteException {
-        //IPEK 32 length String.
-        String IPEK = "C1D0F8FB4958670DBA40AB1F3752EF0D";
-        //KSN must be 20 length String. 95A627000210210 00000
-        String ksn = "FFFF9876543210" + "000000";
-//        int ret = engine.getPinPad().initDukptIPEKAndKsn(KeyIndex, IPEK, ksn, true, "00000");//its a open function for ipek keys
-//        alertDialogOnShowListener.showMessage("initDukptIPEKAndKsn ret :" + (ret == ServiceResult.Success));
+        try {
+            String key = "C1D0F8FB4958670DBA40AB1F3752EF0D";
+            String ksn = "FFFF9876543210" + "000000";
+
+            DukptLoadObj dukptLoadObj = new DukptLoadObj(key, ksn
+                    , DukptLoadObj.DukptKeyTypeEnum.DUKPT_BDK_PLAINTEXT
+                    , DukptLoadObj.DukptKeyIndexEnum.KEY_INDEX_0);
+
+            int ret = engine.getPinPad().dukptLoad(dukptLoadObj);
+            alertDialogOnShowListener.showMessage("dukptLoad ret :" + (ret));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void dukptCalculation(DeviceServiceEngine engine, final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener) throws RemoteException {
