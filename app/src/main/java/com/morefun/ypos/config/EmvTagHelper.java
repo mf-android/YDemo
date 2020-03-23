@@ -84,8 +84,30 @@ public class EmvTagHelper {
         builder.append("9F09" + "=" + getPBOCData("9F09", true) + LINE_BREAK);
         builder.append("009B" + "=" + getPBOCData("9B", true) + LINE_BREAK);
 //        builder.append("9F19" + "=" + getPBOCData("9F19", true) + LINE_BREAK);
+        appendFromContact(builder);
         Log.d(TAG, "IC card data" + builder.toString());
         return builder.toString();
+    }
+
+    /**
+     * 5F20=393135303130303536333830333237,
+     * 9F16=424354455354313233343536373800,
+     * 9F06=A0000000041010
+     * 5F30=0226,
+     * 00D0=DEB98F599E4DBDBE27414811695E9097,
+     * 9F41=00001669,
+     */
+    public void appendFromContact(StringBuilder bder){
+        Log.d(TAG, "contact" );
+        StringBuilder builder = new StringBuilder();
+        builder.append("5F20" + "=" + getPBOCData("5F20", true) + LINE_BREAK);
+        builder.append("9F16" + "=" + getPBOCData("9F16", true) + LINE_BREAK);
+        builder.append("9F06" + "=" + getPBOCData("9F06", true) + LINE_BREAK);
+        builder.append("5F30" + "=" + getPBOCData("5F30", true) + LINE_BREAK);
+        builder.append("00D0" + "=" + getPBOCData("00D0", true) + LINE_BREAK);
+        builder.append("9F41" + "=" + getPBOCData("9F41", true) + LINE_BREAK);
+        Log.d(TAG, "contact" + builder.toString() );
+        bder.append(builder.toString());
     }
 
     private String getPBOCHex(String tag, int length) {
