@@ -40,6 +40,7 @@ import com.morefun.ypos.uitls.ActionItems;
 import com.morefun.ypos.uitls.CardOrgUtil;
 import com.morefun.ypos.uitls.Utils;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.morefun.ypos.uitls.Utils.byte2string;
@@ -367,24 +368,23 @@ public class EmvPBOCTest extends BaseApiTest {
         StringBuilder builder = new StringBuilder();
         builder.append("CardNum = " + cardNum + "\n");
         builder.append("CardOrg = " + CardOrgUtil.getCardTypFromAid(mEmvTagHelper.getPBOCData("4F", true)) + "\n");
-        String[] taglist = EmvProcessConfig.getTagList().toArray(new String[EmvProcessConfig.getTagList().size()]);
+        String[] taglist = {"9F07","9F35","9F34", "9F33", "57", "9F02", "9F03", "9F10", "9F1A", "9F1E", "9F21", "9F26", "9F27", "9F36", "9F37"
+                , "9F4E", "9F6E", "4F", "50", "82", "84", "95", "9A", "9C", "5F24", "5F2A", "5F2D", "5F34"};
         byte[] data = new byte[3096];
 
         int readLength = mEmvHandler.readEmvData(taglist, data, inoutBundle);
         String ksn = inoutBundle.getString(DukptCalcObj.DUKPT_KSN);
+        if (readLength > 0) {
+            byte[] ARQCData = Utils.getByteArray(data, 0, readLength);
+//            builder.append(Utils.byte2string(ARQCData));
+        }
         Log.d(TAG, "track ksn =" + ksn);
         builder.append("trackKsn = " + ksn);
         builder.append("\nIC data \n");
 
         builder.append(mEmvTagHelper.getTapPBOCData());
-
         ksn = inoutBundle.getString(DukptCalcObj.DUKPT_KSN);
-//        Log.d(TAG, "track ksn =" + ksn);
-        if (readLength > 0) {
-            byte[] ARQCData = Utils.getByteArray(data, 0, readLength);
-//            builder.append(Utils.byte2string(ARQCData));
-        }
-//        Log.d(TAG, "" + builder.toString());
+
         mAlertDialogOnShowListener.showMessage("" + builder.toString());
     }
 
