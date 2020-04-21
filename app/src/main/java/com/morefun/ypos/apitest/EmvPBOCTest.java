@@ -502,7 +502,8 @@ public class EmvPBOCTest extends BaseApiTest {
             @Override
             public void onSearchResult(int retCode, MagCardInfoEntity magCardInfoEntity) throws RemoteException {
                 if (retCode == ServiceResult.Success) {
-                    mAlertDialogOnShowListener.showMessage(SearchCardOrCardReaderTest.getCardInfo(magCardInfoEntity));
+                    Log.d(TAG ,"00E0 :" + mEmvTagHelper.getPBOCData("00E0", true));
+                    mAlertDialogOnShowListener.showMessage(mEmvTagHelper.getPBOCData("00E0", true));
                     rfReader.stopSearch();
                     iccCardReader.stopSearch();
                     mSDKManager.getMagCardReader().stopSearch();
