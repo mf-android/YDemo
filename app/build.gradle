@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
 
     defaultConfig {
-        applicationId "com.morefun.ydmeo"
+        applicationId "com.morefun.sample"
         minSdkVersion 22
         targetSdkVersion 26
         versionCode 2020
@@ -25,7 +25,7 @@ android {
 }
 
 dependencies {
-    implementation files('libs/ysdk_3.0.2626_2002281015.jar')
+    implementation files('libs/ysdk_3.6.b69213d_2009211252.jar')
    // implementation files('libs/commons-codec-1.2.jar')
     //zxing lib
     implementation 'com.google.zxing:core:3.3.0'

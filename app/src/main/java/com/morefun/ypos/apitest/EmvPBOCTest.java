@@ -317,6 +317,13 @@ public class EmvPBOCTest extends BaseApiTest {
             public void onIssuerVoiceReference(String sPan) throws RemoteException {
                 //reserved
             }
+            /**
+             * @param offlinePinCallBackResult  0: Success
+             */
+            @Override
+            public void onDisplayOfflinePin(int offlinePinCallBackResult) throws RemoteException {
+
+            }
         };
     }
 
