@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -38,6 +39,7 @@ import com.morefun.ypos.interfaces.OnInputAmountCallBack;
 import com.morefun.ypos.interfaces.OnSelectAppCallBack;
 import com.morefun.ypos.uitls.ActionItems;
 import com.morefun.ypos.uitls.CardOrgUtil;
+import com.morefun.ypos.uitls.PreferenceUtils;
 import com.morefun.ypos.uitls.Utils;
 
 import java.util.Arrays;
@@ -81,7 +83,7 @@ public class EmvPBOCTest extends BaseApiTest {
         mAlertDialogOnShowListener = listener;
         return this;
     }
-
+    static long startTick;
     public static void PBOC(final DeviceServiceEngine mSDKManager, final MainActivity.AlertDialogOnShowListener listener) {
         listener.onInputAmount(new OnInputAmountCallBack() {
             @Override
@@ -97,9 +99,11 @@ public class EmvPBOCTest extends BaseApiTest {
                         DukptConfigs.testInjectIPEK3(mSDKManager.getPinPad());
                         DukptConfigs.getInstance().increaseKSN(mSDKManager.getPinPad());
                     }
+                    startTick = System.currentTimeMillis();
                     EmvPBOCTest.getInstance().setEmvHandler(mSDKManager, listener).searchCard(new MainActivity.OnSearchListener() {
                         @Override
                         public void onSearchResult(int retCode, Bundle bundle) {
+                            Log.d(TAG, "time = " + (System.currentTimeMillis() - startTick) +"ms");
                             if (ServiceResult.Success == retCode) {
                                 EmvPBOCTest.getInstance().emvPBOC(bundle, amount);
                             } else {
@@ -202,7 +206,7 @@ public class EmvPBOCTest extends BaseApiTest {
 
             @Override
             public void onOnlineProc(Bundle bundle) throws RemoteException {
-                Log.d(TAG, "onOnlineProc = " + bundle);
+                Log.d(TAG, "onOnlineProc = " + (System.currentTimeMillis() - startTick) + "ms");
 //                beep(true);
                 showOnlineDeal(bundle);
             }
@@ -231,10 +235,11 @@ public class EmvPBOCTest extends BaseApiTest {
             //TODO  onFinish : it will return EMV result after ARPC (issuer script ) perform.
             @Override
             public void onFinish(int ret, Bundle bundle) throws RemoteException {
-                Log.d(TAG, "onFinish = " + ret);
+                Log.d(TAG, "onFinish = " + ret + "time= " + (System.currentTimeMillis() - startTick) + "ms");
                 byte[] errorCode = bundle.getByteArray(EmvErrorConstrants.EMV_ERROR_CODE);
                 if (errorCode != null) {
-                    Log.d(TAG, "onFinish error= " + new String(errorCode).trim());
+                    boolean isAPPSEl_PPSE = mSDKManager.getEmvHandler().isErrorCode(EmvErrorCode.QPBOC_ERR_APPSEL_PPSE);
+                    Log.d(TAG, "onFinish error= " + new String(errorCode).trim() + ","  + isAPPSEl_PPSE);
                 }
                 mAlertDialogOnShowListener.dismissProgress();
                 if (ret == ServiceResult.Success) {//trans accept
@@ -328,19 +333,19 @@ public class EmvPBOCTest extends BaseApiTest {
     }
 
     public void showOnlineDeal(final Bundle bundle) throws RemoteException {
-        Bundle inoutBundle = DukptConfigs.getTrackIPEKBundle();
-        Log.d(TAG, "cardNum =" + cardNum);
-        if (TextUtils.isEmpty(cardNum)) {
-            cardNum = mEmvTagHelper.getPBOCData("5A", true);
-        }
-        Log.d(TAG, "cardNum after =" + cardNum);
-        mAlertDialogOnShowListener.dismissProgress();
-        StringBuilder builder = new StringBuilder();
-        final byte[] pinBytes = bundle.getByteArray(EmvOnlineRequest.PIN);
-        Log.d(TAG, "EmvOnlineRequest.PIN = " + byte2string(pinBytes));
-        final byte[] cardSn = bundle.getByteArray(EmvOnlineRequest.CARDSN);
-        builder.append("CardSn = " + byte2string(cardSn) + "\n");
-        builder.append("PinBlock = " + byte2string(pinBytes) + "\n");
+//        Bundle inoutBundle = DukptConfigs.getTrackIPEKBundle();
+//        Log.d(TAG, "cardNum =" + cardNum);
+//        if (TextUtils.isEmpty(cardNum)) {
+//            cardNum = mEmvTagHelper.getPBOCData("5A", true);
+//        }
+//        Log.d(TAG, "cardNum after =" + cardNum);
+//        mAlertDialogOnShowListener.dismissProgress();
+//        StringBuilder builder = new StringBuilder();
+//        final byte[] pinBytes = bundle.getByteArray(EmvOnlineRequest.PIN);
+//        Log.d(TAG, "EmvOnlineRequest.PIN = " + byte2string(pinBytes));
+//        final byte[] cardSn = bundle.getByteArray(EmvOnlineRequest.CARDSN);
+//        builder.append("CardSn = " + byte2string(cardSn) + "\n");
+//        builder.append("PinBlock = " + byte2string(pinBytes) + "\n");
 
         //Authorisation Response Cryptogram of an EMV transaction
         Bundle online = new Bundle();
@@ -360,8 +365,8 @@ public class EmvPBOCTest extends BaseApiTest {
         int OnlineProcResponse = true ? ServiceResult.Success : ServiceResult.Fail;
         mSDKManager.getEmvHandler().onSetOnlineProcResponse(OnlineProcResponse, online);
 
-        Log.d(TAG, "" + builder.toString());
-        mAlertDialogOnShowListener.showMessage("" + builder.toString());
+//        Log.d(TAG, "" + builder.toString());
+//        mAlertDialogOnShowListener.showMessage("" + builder.toString());
     }
 
     void onFinishShow() throws RemoteException {
@@ -375,16 +380,15 @@ public class EmvPBOCTest extends BaseApiTest {
         StringBuilder builder = new StringBuilder();
         builder.append("CardNum = " + cardNum + "\n");
         builder.append("CardOrg = " + CardOrgUtil.getCardTypFromAid(mEmvTagHelper.getPBOCData("4F", true)) + "\n");
-        String[] taglist = {"9F07","9F35","9F34", "9F33", "57", "9F02", "9F03", "9F10", "9F1A", "9F1E", "9F21", "9F26", "9F27", "9F36", "9F37"
-                , "9F4E", "9F6E", "4F", "50", "82", "84", "95", "9A", "9C", "5F24", "5F2A", "5F2D", "5F34"};
+//        String[] taglist = {"9F07","9F35","9F34", "9F33", "57", "9F02", "9F03", "9F10", "9F1A", "9F1E", "9F21", "9F26", "9F27", "9F36", "9F37"
+//                , "9F4E", "9F6E", "4F", "50", "82", "84", "95", "9A", "9C", "5F24", "5F2A", "5F2D", "5F34"};
         byte[] data = new byte[3096];
 
-        int readLength = mEmvHandler.readEmvData(taglist, data, inoutBundle);
+//        int readLength = mEmvHandler.readEmvData(taglist, data, inoutBundle);
         String ksn = inoutBundle.getString(DukptCalcObj.DUKPT_KSN);
-        if (readLength > 0) {
-            byte[] ARQCData = Utils.getByteArray(data, 0, readLength);
-//            builder.append(Utils.byte2string(ARQCData));
-        }
+//        if (readLength > 0) {
+//            byte[] ARQCData = Utils.getByteArray(data, 0, readLength);
+//        }
         Log.d(TAG, "track ksn =" + ksn);
         builder.append("trackKsn = " + ksn);
         builder.append("\nIC data \n");
@@ -404,6 +408,7 @@ public class EmvPBOCTest extends BaseApiTest {
         Bundle inBundle = EmvProcessConfig.getInitBundleValue(channel, transformAmount(amount), "0.22");
         cardNum = "";
         try {
+
             initTermConfig();
             int ret = mSDKManager.getEmvHandler().emvProcess(inBundle, mOnEmvProcessListener);
             //ARPC deal result.
@@ -474,14 +479,18 @@ public class EmvPBOCTest extends BaseApiTest {
         mAlertDialogOnShowListener.showProgress(getString(R.string.msg_icorrfid), new ActionItems.OnCancelCall() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                try {
                     //m1Reader.stopSearch();
-                    rfReader.stopSearch();
-                    iccCardReader.stopSearch();
-                    mSDKManager.getMagCardReader().stopSearch();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                rfReader.stopSearch();
+                                iccCardReader.stopSearch();
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
             }
         });
         OnSearchIccCardListener.Stub listener = new OnSearchIccCardListener.Stub() {
@@ -490,18 +499,32 @@ public class EmvPBOCTest extends BaseApiTest {
                 Log.d(TAG, "retCode= " + retCode);
                 Log.d(TAG, "rfReader  used by RF card  = " + (bundle.getInt(ICCSearchResult.CARDOTHER) == IccReaderSlot.RFSlOT));
                 Log.d(TAG, "iccCardReader used by IC  " + (bundle.getInt(ICCSearchResult.CARDOTHER) == IccReaderSlot.ICSlOT1));
-
-                rfReader.stopSearch();
-                iccCardReader.stopSearch();
-                mSDKManager.getMagCardReader().stopSearch();
+                Log.d(TAG, "time = " + (System.currentTimeMillis() - startTick) +"ms");
+                if (getAmountLong(mAmount) <= 2000 &&  (bundle.getInt(ICCSearchResult.CARDOTHER) == IccReaderSlot.RFSlOT)){
+                   // throw  your need messsage ?
+                    return;
+                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            rfReader.stopSearch();
+                            iccCardReader.stopSearch();
+                            mSDKManager.getMagCardReader().stopSearch();
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
                 onSearchListener.onSearchResult(retCode, bundle);
+                //remove
 //                mSDKManager.getBeeper().beep(retCode == ServiceResult.Success ? BeepModeConstrants.SUCCESS : BeepModeConstrants.FAIL);
             }
         };
         iccCardReader.searchCard(listener, 60, new String[]{IccCardType.CPUCARD, IccCardType.AT24CXX, IccCardType.AT88SC102});
-        if (getAmountLong(mAmount) <= 2000){
-            rfReader.searchCard(listener, 60, new String[]{IccCardType.CPUCARD, IccCardType.AT24CXX, IccCardType.AT88SC102});
-        }
+
+        rfReader.searchCard(listener, 60, new String[]{IccCardType.CPUCARD, IccCardType.AT24CXX, IccCardType.AT88SC102});
+
         //m1Reader.searchCard(listener, 60, new String[]{IccCardType.M1CARD});
         Bundle bundle = DukptConfigs.getTrackIPEKBundle();
         //Mag CardReader
@@ -514,7 +537,7 @@ public class EmvPBOCTest extends BaseApiTest {
                     rfReader.stopSearch();
                     iccCardReader.stopSearch();
                     mSDKManager.getMagCardReader().stopSearch();
-                    mSDKManager.getBeeper().beep(retCode == ServiceResult.Success ? BeepModeConstrants.SUCCESS : BeepModeConstrants.FAIL);
+//                    mSDKManager.getBeeper().beep(retCode == ServiceResult.Success ? BeepModeConstrants.SUCCESS : BeepModeConstrants.FAIL);
 //                    mAlertDialogOnShowListener.showPinPad(magCardInfoEntity.getCardNo());
                 }
             }
@@ -523,16 +546,21 @@ public class EmvPBOCTest extends BaseApiTest {
 
 
     public void initTermConfig() throws RemoteException {
-        mSDKManager.getEmvHandler().initTermConfig(EmvProcessConfig.getInitTermConfig());
+        boolean isConfig = PreferenceUtils.getBoolean(MainActivity.getContext(), "config", "config", false);
+        if (!isConfig){
+            mSDKManager.getEmvHandler().initTermConfig(EmvProcessConfig.getInitTermConfig());
+            PreferenceUtils.putBoolean(MainActivity.getContext(), "config", "config", true);
+        }
         Log.d(TAG, "initTermConfig after ");
     }
 
     public void beep(boolean isSuccess) {
-        try {
-            mSDKManager.getBeeper().beep(isSuccess ? BeepModeConstrants.SUCCESS : BeepModeConstrants.FAIL);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+        //remove
+//        try {
+//            mSDKManager.getBeeper().beep(isSuccess ? BeepModeConstrants.SUCCESS : BeepModeConstrants.FAIL);
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
     }
 
 }
