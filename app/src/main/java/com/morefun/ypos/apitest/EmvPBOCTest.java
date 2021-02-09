@@ -278,11 +278,26 @@ public class EmvPBOCTest extends BaseApiTest {
                     } else {
                         mAlertDialogOnShowListener.showMessage("trans refuse");
                     }
-                } else if (ret == ServiceResult.Emv_Cancel) {// trans cancel
-                    beep(false);
-                    mAlertDialogOnShowListener.showMessage("trans cancel");
+                } else if (ret == ServiceResult.Emv_TryAgain) {
+                    //Master need support
+                    int retCode = bundle.getInt(EmvErrorConstrants.EMV_GOTO_CODE, 0);
+                    if (retCode == GoToConstants.GOTO_TRY_AGAIN_CARD || retCode == GoToConstants.GOTO_TRY_AGAIN_MOBILE ) {
+                        if (retCode == GoToConstants.GOTO_TRY_AGAIN_MOBILE){
+                            mAlertDialogOnShowListener.showMessage("Please see phone" );
+                        }
+                        mAlertDialogOnShowListener.showMessage("Please call contactless search " );
+                        //TODO
+                    }
+                } else if (ret == ServiceResult.Emv_TryOtherPage) {
+                    int retCode = bundle.getInt(EmvErrorConstrants.EMV_GOTO_CODE, 0);
+                    if (retCode == -8){
+                        mAlertDialogOnShowListener.showMessage( "Please insert, swipe or try another card");
+                    }else if (retCode == -9){
+                        mAlertDialogOnShowListener.showMessage( "Please insert, swipe card");
+                    }else {
+                        mAlertDialogOnShowListener.showMessage( "Emv try other page " + retCode);
+                    }
                 } else {
-                    beep(false);
                     mAlertDialogOnShowListener.showMessage(getString(R.string.other_trans_result));
                     try {
                         mSDKManager.getBeeper().beep(BeepModeConstrants.FAIL);
@@ -327,6 +342,11 @@ public class EmvPBOCTest extends BaseApiTest {
              */
             @Override
             public void onDisplayOfflinePin(int offlinePinCallBackResult) throws RemoteException {
+
+            }
+
+            @Override
+            public void inputAmount(int i) throws RemoteException {
 
             }
         };
