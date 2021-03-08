@@ -18,6 +18,7 @@ import com.morefun.yapi.device.reader.icc.IccCardType;
 import com.morefun.yapi.device.reader.icc.IccReaderSlot;
 import com.morefun.yapi.device.reader.icc.OnSearchIccCardListener;
 import com.morefun.yapi.device.reader.mag.MagCardInfoEntity;
+import com.morefun.yapi.device.reader.mag.MagConstant;
 import com.morefun.yapi.device.reader.mag.OnSearchMagCardListener;
 import com.morefun.yapi.emv.EmvChannelType;
 import com.morefun.yapi.emv.EmvErrorCode;
@@ -515,7 +516,7 @@ public class EmvPBOCTest extends BaseApiTest {
         });
         OnSearchIccCardListener.Stub listener = new OnSearchIccCardListener.Stub() {
             @Override
-            public void onSearchResult(int retCode, Bundle bundle) throws RemoteException {
+            public void onSearchResult(int retCode, final Bundle bundle) throws RemoteException {
                 Log.d(TAG, "retCode= " + retCode);
                 Log.d(TAG, "rfReader  used by RF card  = " + (bundle.getInt(ICCSearchResult.CARDOTHER) == IccReaderSlot.RFSlOT));
                 Log.d(TAG, "iccCardReader used by IC  " + (bundle.getInt(ICCSearchResult.CARDOTHER) == IccReaderSlot.ICSlOT1));
@@ -530,7 +531,9 @@ public class EmvPBOCTest extends BaseApiTest {
                         try {
                             rfReader.stopSearch();
                             iccCardReader.stopSearch();
-                            mSDKManager.getMagCardReader().stopSearch();
+                            if (bundle.getInt(ICCSearchResult.CARDOTHER) == IccReaderSlot.ICSlOT1){
+                                mSDKManager.getMagCardReader().stopSearch();
+                            }
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
@@ -547,6 +550,7 @@ public class EmvPBOCTest extends BaseApiTest {
 
         //m1Reader.searchCard(listener, 60, new String[]{IccCardType.M1CARD});
         Bundle bundle = DukptConfigs.getTrackIPEKBundle();
+        bundle.putBoolean(MagConstant.KEY_CHECK_MAG_FIRST, true);
         //Mag CardReader
         mSDKManager.getMagCardReader().searchCard(new OnSearchMagCardListener.Stub() {
             @Override

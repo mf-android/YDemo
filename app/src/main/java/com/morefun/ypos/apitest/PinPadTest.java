@@ -227,7 +227,7 @@ public class PinPadTest extends BaseApiTest {
                 alertDialogOnShowListener.showMessage("online pin : " + byte2string(pinBlock) + "\n pinKsn = " + pinKsn);
 
                 if (mEmvHandler != null && ret == ServiceResult.Success) {
-                    mEmvHandler.onSetCardHolderInputPin(isByPass ? new byte[0] : Utils.getByteArray(pinBlock, 0, 8));
+                    mEmvHandler.onSetCardHolderInputPin(pinBlock);
                 }
             }
 
@@ -280,8 +280,8 @@ public class PinPadTest extends BaseApiTest {
 
     public static void initDukptIPEKAndKsn(DeviceServiceEngine engine, final MainActivity.AlertDialogOnShowListener alertDialogOnShowListener) throws RemoteException {
         try {
-            String key = "C1D0F8FB4958670DBA40AB1F3752EF0D";
-            String ksn = "FFFF9876543210" + "000000";
+            String key = "111111111111111111111111111111111";
+            String ksn = "FFFF1111111" + "000000";
 
             DukptLoadObj dukptLoadObj = new DukptLoadObj(key, ksn
                     , DukptLoadObj.DukptKeyTypeEnum.DUKPT_BDK_PLAINTEXT
